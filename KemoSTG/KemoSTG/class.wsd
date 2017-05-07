@@ -1,0 +1,152 @@
+@startuml
+title クラス図
+package Interface {
+	interface ObjectInterface{
+		+virtual void Initialize() = 0
+		+virtual void Finalize() = 0
+	}
+
+	interface Activity {
+		+virtual void Update() = 0
+		+virtual void Draw() = 0
+	}
+}
+
+ObjectInterface <|-- Figure
+
+Activity <|-- Dialog
+Activity <|-- Timer
+Activity <|-- Figure
+Activity <|-- Scene
+
+class Figure {
+	#double X
+	#double Y
+	+void Move(double X, double Y)
+	+virtual void Update()
+}
+
+package Dialog {
+	class Dialog {
+		#std::string Message
+		#bool Active
+		#void ButtonDraw(std::string Text)
+		+Dialog()
+		+Dialog(std::string Text)
+		+~Dialog()
+		+void Show()
+		+void Hide()
+		+void Update()
+		+virtual void Draw()
+	}
+
+	class OKDialog {
+		#bool Decide
+		+void Draw()
+	}
+
+	class TimerDialog {
+		#Timer Timer
+		+void SetHideTime(double Time)
+	}
+
+	class YesNoDialog {
+		#int Cursor
+		+void SetDefaultState()
+		+int GetSelectState()
+		+void Draw()
+	}
+
+	class WordDialog {
+		+void Draw()
+	}
+
+	class ResolutionChangeDialog {
+		+void Draw()
+	}
+
+	Dialog <|-- TimerDialog
+	Dialog <|-- OKDialog
+	Dialog <|-- YesNoDialog
+	TimerDialog <|-- WordDialog
+	TimerDialog <|-- ResolutionChangeDialog
+	YesNoDialog <|-- ResolutionChangeDialog
+}
+
+package Timer {
+	class Timer {
+		#int Value
+		#int DefaultValue
+		#bool Active
+		#bool CountDown
+		+void SetValue(int Value)
+		+void SetSeond(double Second)
+		+void SetDefaultValue(int Value)
+		+void EnableCountDown(bool Mode)
+		+int GetValue()
+		+double GetSecond()
+		+int GetDefaultValue()
+		+void Start()
+		+void Stop()
+		+void Reset()
+		+void Update()
+		+virtual void Draw()
+	}
+
+	class BossTimer {
+		+void Draw()
+	}
+
+	class SelectTimer {
+		+void Draw()
+		+void Draw(int X, int Y)
+	}
+
+	Timer <|-- BossTimer
+	Timer <|-- SelectTimer
+}
+
+package Player {
+	class Player {
+		#Timer InvincibleTime
+		+void Initialize()
+		+void Finalize()
+		+void Update()
+		+void Draw()
+	}
+
+	Figure <|-- Player
+}
+
+package Enemy {
+	class Enemy {
+		#int HP
+	}
+
+	class BossEnemy {
+		#BossTimer Timer
+	}
+
+	Figure <|-- Enemy
+	Enemy <|-- BossEnemy
+}
+
+package Scene {
+	class BaseScene {
+		-int Oppai
+		+int GetSize()
+	}
+}
+
+package StringResource {
+	enum Language {
+		+Japanese
+		+English
+	}
+
+	class StringResource {
+		#std::string Text
+		+std::string GetString(Language Language)
+	}
+}
+@enduml
