@@ -19,11 +19,13 @@ Activity <|-- Timer
 Activity <|-- Figure
 Activity <|-- Scene
 
-class Figure {
-	#double X
-	#double Y
-	+void Move(double X, double Y)
-	+virtual void Update()
+package Figure {
+	class Figure {
+		#double X
+		#double Y
+		+void Move(double X, double Y)
+		+virtual void Update()
+	}
 }
 
 package Dialog {
@@ -74,15 +76,28 @@ package Dialog {
 }
 
 package Timer {
+	enum CountMode {
+		+CountUp
+		+CountDown
+		+Loop
+	}
+
 	class Timer {
 		#int Value
 		#int DefaultValue
 		#bool Active
 		#bool CountDown
+		#bool Loop
+		+Timer()
+		+Timer(int Value)
+		+Timer(double Second)
+		+Timer(int Value, CountMode CountMode)
+		+Timer(double Second, CountMode CountMode)
 		+void SetValue(int Value)
-		+void SetSeond(double Second)
+		+void SetSecond(double Second)
 		+void SetDefaultValue(int Value)
-		+void EnableCountDown(bool Mode)
+		+void SetCountMode(CountMode Mode)
+		+void EnableCountLoop(bool Flag)
 		+int GetValue()
 		+double GetSecond()
 		+int GetDefaultValue()
@@ -121,6 +136,7 @@ package Player {
 package Enemy {
 	class Enemy {
 		#int HP
+		#Timer Timer
 	}
 
 	class BossEnemy {
@@ -129,6 +145,34 @@ package Enemy {
 
 	Figure <|-- Enemy
 	Enemy <|-- BossEnemy
+}
+
+package Bullet {
+	enum PlayerBulletType {
+
+	}
+
+	enum EnemyBulletType {
+
+	}
+
+	class Bullet {
+		#double Angle
+		#double Speed
+		+void Update()
+	}
+
+	class PlayerBullet {
+		+void Draw()
+	}
+
+	class EnemyBullet {
+		+void Draw()
+	}
+
+	Figure <|-- Bullet
+	Bullet <|-- PlayerBullet
+	Bullet <|-- EnemyBullet
 }
 
 package Scene {
