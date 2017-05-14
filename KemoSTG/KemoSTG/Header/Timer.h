@@ -8,30 +8,39 @@ enum eCountMode {
 
 class cTimer {
 protected:
-	AUTO_INT mValue;
-	AUTO_INT mDefaultValue;
-	eCountMode mCountMode;
-	bool fActive;
-	bool fLoopCount;
+	AUTO_INT mValue;	// 数値
+	AUTO_INT mDefaultValue;	// デフォルト時の数値
+	eCountMode mCountMode;	// カウント方法
+	bool fActive;	// カウント有効フラグ
+	//bool fLoopCount;	// 繰り返しカウントフラグ
 public:
 	cTimer();
-	cTimer(AUTO_INT Value);
-	cTimer(double Second);
-	cTimer(AUTO_INT Value, eCountMode CountMode);
-	cTimer(double Second, eCountMode CountMode);
+	cTimer(const AUTO_INT Value);
+	cTimer(const double Second);
+	cTimer(const AUTO_INT Value, const eCountMode CountMode);
+	cTimer(const double Second, const eCountMode CountMode);
 
-	void SetValue(AUTO_INT Value);
-	void SetSecond(double Second);
-	void SetDefaultValue(AUTO_INT Value);
-	void SetCountMode(eCountMode Mode);
-	void EnableLoopCount(bool Flag);
-	AUTO_INT GetValue();
-	double GetSecond();
-	eCountMode GetCountMode();
+	void SetValue(const AUTO_INT Value);	// 値を設定
+	void SetSecond(const double Second);	// 値を秒単位で設定
+	void SetDefaultValue(const AUTO_INT Value);	// デフォルト値を設定
+	void SetCountMode(const eCountMode Mode);	// カウント方法を指定
+	//void SetLoopCountFlag(const bool Flag);	// 繰り返しカウントの有無を設定
+	void AddValue(const AUTO_INT Value);	// 値を加算
+	void AddSecond(const double Second);	// 値を秒単位で加算
+	AUTO_INT GetValue();	// 値を取得
+	double GetSecond();		// 秒単位の値を取得
+	eCountMode GetCountMode();	// カウント方法を取得
 
-	void Start();
-	void Stop();
-	void Reset();
-	void Update();
-	virtual void Draw();
+	void operator = (const AUTO_INT Value);	// 値を設定
+	void operator = (const double Value);	// 値を秒単位で設定
+	void operator += (const AUTO_INT Value);	// 値を加算
+	void operator += (const double Value);	// 値を秒単位で加算
+	void operator -= (const AUTO_INT Value);	// 値を減算
+	void operator -= (const double Value);	// 値を秒単位で減算
+
+	void Start();	// カウント開始
+	void Stop();	// カウント停止
+	void Reset();	// 値をデフォルト値に戻す
+	void Update();	// テスト用
+	virtual void Draw();	// テスト用
 };

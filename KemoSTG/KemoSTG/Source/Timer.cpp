@@ -1,48 +1,52 @@
 ﻿#include "../Header/Timer.h"
 
 cTimer::cTimer() : mValue(0), mDefaultValue(0), 
-	fActive(false), mCountMode(eCountMode_CountUp) {
+	mCountMode(eCountMode_CountUp), fActive(false) {
 
 }
 
-cTimer::cTimer(AUTO_INT Value) : mValue(Value), mDefaultValue(Value), 
-	fActive(false), mCountMode(eCountMode_CountUp) {
+cTimer::cTimer(const AUTO_INT Value) : mValue(Value), mDefaultValue(Value),
+	mCountMode(eCountMode_CountUp), fActive(false) {
 
 }
 
-cTimer::cTimer(double Second) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
-	fActive(false), mCountMode(eCountMode_CountUp) {
+cTimer::cTimer(const double Second) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
+	mCountMode(eCountMode_CountUp), fActive(false) {
 
 }
 
-cTimer::cTimer(AUTO_INT Value, eCountMode CountMode) : mValue(Value), mDefaultValue(Value),
-	fActive(false), mCountMode(eCountMode_CountUp) {
+cTimer::cTimer(const AUTO_INT Value, const eCountMode CountMode) : mValue(Value), mDefaultValue(Value),
+	mCountMode(eCountMode_CountUp), fActive(false) {
 
 }
 
-cTimer::cTimer(double Second, eCountMode CountMode) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
-	fActive(false), mCountMode(CountMode) {
+cTimer::cTimer(const double Second, const eCountMode CountMode) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
+	mCountMode(CountMode), fActive(false) {
 
 }
 
-void cTimer::SetValue(AUTO_INT Value) {
+void cTimer::SetValue(const AUTO_INT Value) {
 	mValue = Value;
 }
 
-void cTimer::SetSecond(double Second) {
+void cTimer::SetSecond(const double Second) {
 	mValue = static_cast<AUTO_INT>(Second * 60.0);
 }
 
-void cTimer::SetDefaultValue(AUTO_INT Value) {
+void cTimer::SetDefaultValue(const AUTO_INT Value) {
 	mDefaultValue = Value;
 }
 
-void cTimer::SetCountMode(eCountMode Mode) {
+void cTimer::SetCountMode(const eCountMode Mode) {
 	mCountMode = Mode;
 }
 
-void cTimer::EnableLoopCount(bool Flag) {
-	fLoopCount = Flag;
+void cTimer::AddValue(const AUTO_INT Value) {
+	mValue += Value;
+}
+
+void cTimer::AddSecond(const double Second) {
+	mValue += static_cast<AUTO_INT>(Second * 60.0);
 }
 
 AUTO_INT cTimer::GetValue() {
@@ -55,6 +59,30 @@ double cTimer::GetSecond() {
 
 eCountMode cTimer::GetCountMode() {
 	return mCountMode;
+}
+
+void cTimer::operator = (const AUTO_INT Value) {
+	this->SetValue(Value);
+}
+
+void cTimer::operator = (const double Second) {
+	this->SetSecond(Second);
+}
+
+void cTimer::operator += (const AUTO_INT Value) {
+	this->AddValue(Value);
+}
+
+void cTimer::operator += (const double Second) {
+	this->AddSecond(Second);
+}
+
+void cTimer::operator -= (const AUTO_INT Value) {
+	this->AddValue(-Value);
+}
+
+void cTimer::operator -= (const double Second) {
+	this->AddSecond(-Second);
 }
 
 void cTimer::Start() {
@@ -73,10 +101,10 @@ void cTimer::Update() {
 	if (fActive) {
 		switch (mCountMode) {
 		case eCountMode_CountUp:
-			mValue++;
+			++mValue;
 			break;
 		case eCountMode_CountDown:
-			mValue--;
+			--mValue;
 			break;
 		}
 	}

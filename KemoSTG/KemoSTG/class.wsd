@@ -176,7 +176,7 @@ package Bullet {
 }
 
 package Scene {
-	class BaseScene {
+	class Scene {
 		-int Oppai
 		+int GetSize()
 	}
