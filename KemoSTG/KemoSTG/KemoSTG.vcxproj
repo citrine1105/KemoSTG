@@ -161,6 +161,7 @@
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Activity.h" />
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Timer.h" />
     <ClInclude Include="resource.h" />
