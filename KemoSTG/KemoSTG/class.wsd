@@ -1,7 +1,7 @@
 @startuml
 title クラス図
 package Interface {
-	interface ObjectInterface{
+	interface Initialization{
 		+virtual void Initialize() = 0
 		+virtual void Finalize() = 0
 	}
@@ -12,13 +12,6 @@ package Interface {
 	}
 }
 
-ObjectInterface <|-- Figure
-
-Activity <|-- Dialog
-Activity <|-- Timer
-Activity <|-- Figure
-Activity <|-- Scene
-
 package Figure {
 	class Figure {
 		#double X
@@ -26,20 +19,41 @@ package Figure {
 		+void Move(double X, double Y)
 		+virtual void Update()
 	}
+
+	Initialization <|-- Figure
+	Activity <|-- Figure
 }
 
 package Dialog {
+	enum ButtonState {
+		+Off
+		+On
+		+Hover
+	}
+
+	enum DialogIcon {
+		+Information
+		+Question
+		+Exclamation
+		+Error
+		+Wait
+		+None
+	}
+
 	class Dialog {
 		#std::string Message
 		#bool Active
-		#void ButtonDraw(std::string Text)
+		#void ButtonDraw(std::string Message, ButtonState State)
 		+Dialog()
 		+Dialog(std::string Text)
-		+~Dialog()
+		+void Initialize()
+		+void Initialize(std::string Message, DialogIcon Icon, DefaultButton)
+		+void Finalize()
 		+void Show()
 		+void Hide()
 		+void Update()
 		+virtual void Draw()
+
 	}
 
 	class OKDialog {
@@ -67,6 +81,8 @@ package Dialog {
 		+void Draw()
 	}
 
+	Initialization <|-- Dialog
+	Activity <|-- Dialog
 	Dialog <|-- TimerDialog
 	Dialog <|-- OKDialog
 	Dialog <|-- YesNoDialog
@@ -117,8 +133,52 @@ package Timer {
 		+void Draw(int X, int Y)
 	}
 
+	Activity <|-- Timer
 	Timer <|-- BossTimer
 	Timer <|-- SelectTimer
+}
+
+package Pad {
+	enum ButtonAssign {
+		Shot
+		Bomb
+		Laser
+		Possess
+		TotalNum
+	}
+
+	enum DirectInputDPadAssign {
+		XAxis
+		YAxis
+		ZAxis
+		XRota
+		YRota
+		ZRota
+		POV1
+		POV2
+		POV3
+		POV4
+	}
+
+	enum XInputDPadAssign {
+		LeftStick
+		RightStick
+		DPad
+	}
+
+	class Pad {
+		#int PadNumber
+		#int XInputButtonAssign[TotalNum]
+		#int DirectInputButtonAssign[TotalNum]
+		+void SetButtonAssign(ButtonAssign Assign)
+		+void Initialize()
+		+void Finalize()
+		+void Update()
+		+void Draw()
+	}
+
+	Initialization <|-- Pad
+	Activity <|-- Pad
 }
 
 package Player {
@@ -177,9 +237,27 @@ package Bullet {
 
 package Scene {
 	class Scene {
-		-int Oppai
-		+int GetSize()
+		#Timer FrameTimer
+		#Pad Pad[2]
+		+virtual void Update()
+		+virtual void Draw()
 	}
+
+	class Game {
+		#Player Player
+		+virtual void Update()
+		+virtual void Draw()
+	}
+
+	Scene <|-- Game
+	Scene <|-- Title
+	Scene <|-- Menu
+	Scene <|-- Option
+	Game <|-- ArcadeGame
+	Game <|-- NoviceGame
+	Game <|-- BossRushGame
+	Initialization <|-- Scene
+	Activity <|-- Scene
 }
 
 package StringResource {
@@ -189,8 +267,14 @@ package StringResource {
 	}
 
 	class StringResource {
-		#std::string Text
+		#std::string String
+		+std::string SetString(Language Language, char *String)
+		+std::string GetString()
 		+std::string GetString(Language Language)
+		+void Initialize()
+		+void Finalize()
 	}
+
+	Initialization <|-- StringResource
 }
 @enduml

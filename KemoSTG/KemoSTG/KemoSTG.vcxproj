@@ -158,11 +158,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\StringResource.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
+    <ClInclude Include="Header\Initialization.h" />
     <ClInclude Include="Header\Macro.h" />
+    <ClInclude Include="Header\StringResource.h" />
     <ClInclude Include="Header\Timer.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

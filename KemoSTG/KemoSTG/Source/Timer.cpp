@@ -25,6 +25,10 @@ cTimer::cTimer(const double Second, const eCountMode CountMode) : mValue(static_
 
 }
 
+cTimer::~cTimer() {
+	this->Finalize();
+}
+
 void cTimer::SetValue(const AUTO_INT Value) {
 	mValue = Value;
 }
@@ -35,6 +39,10 @@ void cTimer::SetSecond(const double Second) {
 
 void cTimer::SetDefaultValue(const AUTO_INT Value) {
 	mDefaultValue = Value;
+}
+
+void cTimer::SetDefaultSecond(const double Second) {
+	mDefaultValue = static_cast<AUTO_INT>(Second * 60.0);
 }
 
 void cTimer::SetCountMode(const eCountMode Mode) {
@@ -95,6 +103,18 @@ void cTimer::Stop() {
 
 void cTimer::Reset() {
 	mValue = mDefaultValue;
+}
+
+void cTimer::Initialize() {
+	mValue = 0;
+	mDefaultValue = 0;
+	mCountMode = eCountMode_CountUp;
+	fActive = false;
+}
+
+void cTimer::Finalize() {
+	mValue = 0;
+	fActive = false;
 }
 
 void cTimer::Update() {

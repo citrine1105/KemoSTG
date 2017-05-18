@@ -2,6 +2,6 @@
 
 class iActivity {
 public:
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	virtual void Update() = 0;	// 更新処理
+	virtual void Draw() = 0;		// 描画処理
 };
