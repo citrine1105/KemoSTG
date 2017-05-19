@@ -5,12 +5,19 @@
 int Game_Init();	 // アプリケーション初期化処理
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) {
-	if (Game_Init() != 0) {
+	if (Game_Init() == 0) {
+		cStringResource tMes;
+		tMes.SetString(eLanguage_Japanese, _T("アプリケーションを開始します"));
+		tMes.SetString(eLanguage_English, _T("Application Start"));
+
+		MessageBox(GetMainWindowHandle(), tMes.GetString()->c_str(), CAPTION_STRING, MB_OK | MB_ICONINFORMATION);
+	}
+	else {
 		cStringResource tErrMes;
 		tErrMes.SetString(eLanguage_Japanese, _T("初期化に失敗しました"));
-		tErrMes.SetString(eLanguage_English, _T("Initialize Failed"));
+		tErrMes.SetString(eLanguage_English, _T("Initialization Failed"));
 
-		MessageBox(GetMainWindowHandle(), tErrMes.GetString().c_str(), CAPTION_STRING, MB_OK | MB_ICONERROR);
+		MessageBox(GetMainWindowHandle(), tErrMes.GetString()->c_str(), CAPTION_STRING, MB_OK | MB_ICONERROR);
 	}
 	SetDrawScreen(DX_SCREEN_BACK);
 
