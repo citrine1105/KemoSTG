@@ -1,5 +1,5 @@
 #pragma once
-#include "DxLib.h"
+#include "Include.h"
 
 enum eColorName {
 	eColorName_Black,

@@ -1,4 +1,4 @@
-﻿#include "DxLib.h"
+﻿#include "../Header/Include.h"
 #include "../Header/Timer.h"
 #include "../Header/Vector.h"
 #include "../Header/StringResource.h"

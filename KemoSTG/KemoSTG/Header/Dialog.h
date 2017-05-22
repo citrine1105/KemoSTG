@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Activity.h"
+#include "Include.h"
 #include "Timer.h"
 #include "StringResource.h"
 

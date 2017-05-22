@@ -1,0 +1,46 @@
+@startuml
+title ヘッダー呼び出し図
+package Header {
+	package DxLib.h #AA9CBA
+	package Initialization.h #AA9CBA
+	package Activity.h #AA9CBA
+	package Macro.h #AA9CBA
+	package Color.h #AA9CBA
+	package Include.h #AA9CBA
+	package Dialog.h #AA9CBA
+	package Timer.h #AA9CBA
+	package Vector.h #AA9CBA
+	package StringResource.h #AA9CBA
+	package cmath #AA9CBA
+	package string #AA9CBA
+}
+
+package Source {
+	package Main.cpp #F4A6EE
+	package Dialog.cpp #F4A6EE
+	package Vector.cpp #F4A6EE
+	package Timer.cpp #F4A6EE
+	package StringResource.cpp #F4A6EE
+}
+
+DxLib.h *-- Include.h
+Macro.h *-- Include.h
+Initialization.h *-- Include.h
+Activity.h *-- Include.h
+Include.h *-- Color.h
+Include.h *--- Vector.h
+Include.h *--- Dialog.h
+Include.h *--- Timer.h
+Include.h *--- StringResource.h
+Timer.h *-- Dialog.h
+StringResource.h *-- Dialog.h
+Color.h *-- Vector.h
+cmath *--- Vector.h
+string *-- StringResource.h
+
+Include.h *--- Main.cpp
+Dialog.h *--- Dialog.cpp
+Vector.h *--- Vector.cpp
+Timer.h *--- Timer.cpp
+StringResource.h *--- StringResource.cpp
+@enduml

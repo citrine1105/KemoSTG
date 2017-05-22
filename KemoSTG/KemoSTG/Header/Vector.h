@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <cmath>
-#include "Activity.h"
-#include "DxLib.h"
+#include "Include.h"
 
 class cVector2D : public iActivity {
 protected:

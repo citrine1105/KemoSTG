@@ -61,7 +61,7 @@ package Vector {
 		+void Draw()
 	}
 
-	Activity <|-- Vector2D
+	Activity <|--- Vector2D
 	Vector2D <|-- Vector3D
 }
 
@@ -89,8 +89,8 @@ package Sprite {
 		+virtual void Draw()
 	}
 
-	Initialization <|-- Sprite
-	Activity <|-- Sprite
+	Initialization <|--- Sprite
+	Activity <|--- Sprite
 }
 
 package Dialog {
@@ -151,8 +151,8 @@ package Dialog {
 		+void Draw()
 	}
 
-	Initialization <|-- Dialog
-	Activity <|-- Dialog
+	Initialization <|--- Dialog
+	Activity <|--- Dialog
 	Dialog <|-- TimerDialog
 	Dialog <|-- OKDialog
 	Dialog <|-- YesNoDialog
@@ -203,7 +203,7 @@ package Timer {
 		+void Draw(int X, int Y)
 	}
 
-	Activity <|-- Timer
+	Activity <|--- Timer
 	Timer <|-- BossTimer
 	Timer <|-- SelectTimer
 }
@@ -265,8 +265,8 @@ package Pad {
 		+void Draw()
 	}
 
-	Initialization <|-- Pad
-	Activity <|-- Pad
+	Initialization <|--- Pad
+	Activity <|--- Pad
 }
 
 package Player {
@@ -338,8 +338,8 @@ package Scene {
 	Scene <|-- Title
 	Scene <|-- Menu
 	Scene <|-- Option
-	Initialization <|-- Scene
-	Activity <|-- Scene
+	Initialization <|--- Scene
+	Activity <|--- Scene
 }
 
 package Game {
@@ -396,6 +396,6 @@ package StringResource {
 		+void Finalize()
 	}
 
-	Initialization <|-- StringResource
+	Initialization <|--- StringResource
 }
 @enduml

@@ -1,7 +1,5 @@
 ﻿#pragma once
-#include "Macro.h"
-#include "Initialization.h"
-#include "Activity.h"
+#include "Include.h"
 
 enum eCountMode {
 	eCountMode_CountUp,		// カウントアップ

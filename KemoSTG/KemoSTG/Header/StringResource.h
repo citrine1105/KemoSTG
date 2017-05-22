@@ -1,9 +1,6 @@
 ﻿#pragma once
+#include "Include.h"
 #include <string>
-#include <tchar.h>
-#include "Macro.h"
-#include "Initialization.h"
-#include <Windows.h>
 
 enum eLanguage {
 	eLanguage_Japanese,	// 日本語
