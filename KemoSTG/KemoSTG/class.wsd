@@ -12,16 +12,85 @@ package Interface {
 	}
 }
 
-package Figure {
-	class Figure {
-		#double X
-		#double Y
-		+void Move(double X, double Y)
+package Vector {
+	class Vector2D {
+		#double StartX
+		#double StartY
+		#double ComponentX
+		#double ComponentY
+		+Vector2D()
+		+Vector2D(double StartX, double StartY)
+		+double GetVectorMagnitude()
+		+void SetStartPoint(double StartX, double StartY)
+		+void SetStartPoint(Vector2D Vector)
+		+void SetEndPoint(double EndX, double EndY)
+		+void SetEndPoint(Vector2D Vector)
+		+void SetComponent(double ComponentX, double ComponentY)
+		+void SetPolarForm(double Angle, double Magnitude)
+		+void SetAngle(double Angle)
+		+void SetMagnitude(double Magnitude)
+		+void AddAngle(double Angle)
+		+void AddMagnitude(double Magnitude)
+		+void GetStartPoint(double *StartX, double *StartY);
+		+void GetEndPoint(double *StartX, double *StartY)
+		+void GetComponent(double *ComponentX, double *ComponentY)
+		+double GetAngle();
+		+virtual double GetMagnitude()
+		+Vector2D GetVectorToVector(Vector2D Vector)
+		+Vector2D GetVectorStartPointToEndPoint(Vector2D Vector)
+		+Vector2D GetVectorEndPointToEndPoint(Vector2D Vector)
+		+Vector2D operator + (Vector2D Vector)
+		+Vector2D operator - (Vector2D Vector)
+		+Vector2D operator * (double Value)
+		+Vector2D operator / (double Value)
+		+void operator += (Vector2D Vector)
+		+void operator -= (Vector2D Vector)
+		+void operator *= (double Value)
+		+void operator /= (double Value)
 		+virtual void Update()
+		+virtual void Draw()
 	}
 
-	Initialization <|-- Figure
-	Activity <|-- Figure
+	class Vector3D {
+		#double StartZ
+		#double ComponentZ
+		+void SetVectorComponent(double ComponentX, double ComponentY, double ComponentZ)
+		+Vector3D GetTargetPointVector(Vector3D Vector)
+		+void GetVectorComponent(double *ComponentX, double *ComponentY, double *ComponentZ)
+		+void GetStartPoint(double *StartX, double *StartY, double *StartZ);
+		+void Draw()
+	}
+
+	Activity <|-- Vector2D
+	Vector2D <|-- Vector3D
+}
+
+package Sprite {
+	enum MoveType {
+		+MoveType_Accelerate1
+		+MoveType_Accelerate2
+		+MoveType_Accelerate3
+		+MoveType_Uniform
+		+MoveType_Decelerate1
+		+MoveType_Decelerate2
+		+MoveType_Decelerate3
+	}
+
+	class Sprite {
+		#Vector2D MoveVector
+		#Timer DelayTimer
+		+void Move()
+		+void MoveToPoint(double X, double Y, MoveType MoveType, int DelayTime)
+		+void Stop()
+		+Vector2D GetVector()
+		+virtual void Initialize()
+		+virtual void Finalize()
+		+virtual void Update()
+		+virtual void Draw()
+	}
+
+	Initialization <|-- Sprite
+	Activity <|-- Sprite
 }
 
 package Dialog {
@@ -41,19 +110,20 @@ package Dialog {
 	}
 
 	class Dialog {
-		#std::string Message
+		#StringResource Message
+		#DialogIcon Icon
+		#DefaultButton
 		#bool Active
 		#void ButtonDraw(std::string Message, ButtonState State)
 		+Dialog()
 		+Dialog(std::string Text)
 		+void Initialize()
-		+void Initialize(std::string Message, DialogIcon Icon, DefaultButton)
+		+void Initialize(StringResource Message, DialogIcon Icon, DefaultButton)
 		+void Finalize()
 		+void Show()
 		+void Hide()
 		+void Update()
 		+virtual void Draw()
-
 	}
 
 	class OKDialog {
@@ -144,6 +214,17 @@ package Pad {
 		Bomb
 		Laser
 		Possess
+		Pause
+		Credit
+		Service
+		TotalNum
+	}
+
+	enum DPadAssign {
+		Up
+		Down
+		Left
+		Right
 		TotalNum
 	}
 
@@ -158,18 +239,25 @@ package Pad {
 		POV2
 		POV3
 		POV4
+		None
 	}
 
 	enum XInputDPadAssign {
 		LeftStick
 		RightStick
 		DPad
+		None
 	}
 
 	class Pad {
 		#int PadNumber
-		#int XInputButtonAssign[TotalNum]
-		#int DirectInputButtonAssign[TotalNum]
+		#bool Vibration
+		#int KeyInputButtonAssign[ButtonAssign.TotalNum]
+		#int XInputButtonAssign[ButtonAssign.TotalNum]
+		#int DirectInputButtonAssign[ButtonAssign.TotalNum]
+		#int KeyInputDPadAssign[DPadAssign.TotalNum]
+		#DirectInputDPadAssign DirectInputDPadAssign[DPadAssign.TotalNum][3]
+		#XInputDPadAssign XInputDPadAssign[3]
 		+void SetButtonAssign(ButtonAssign Assign)
 		+void Initialize()
 		+void Finalize()
@@ -190,7 +278,7 @@ package Player {
 		+void Draw()
 	}
 
-	Figure <|-- Player
+	Sprite <|-- Player
 }
 
 package Enemy {
@@ -203,7 +291,7 @@ package Enemy {
 		#BossTimer Timer
 	}
 
-	Figure <|-- Enemy
+	Sprite <|-- Enemy
 	Enemy <|-- BossEnemy
 }
 
@@ -230,34 +318,67 @@ package Bullet {
 		+void Draw()
 	}
 
-	Figure <|-- Bullet
+	Sprite <|-- Bullet
 	Bullet <|-- PlayerBullet
 	Bullet <|-- EnemyBullet
 }
 
 package Scene {
+	enum PlayerCharacter {
+	}
+
 	class Scene {
-		#Timer FrameTimer
 		#Pad Pad[2]
+		+virtual void Initialize()
+		+virtual void Finalize()
 		+virtual void Update()
 		+virtual void Draw()
 	}
 
-	class Game {
-		#Player Player
-		+virtual void Update()
-		+virtual void Draw()
-	}
-
-	Scene <|-- Game
 	Scene <|-- Title
 	Scene <|-- Menu
 	Scene <|-- Option
-	Game <|-- ArcadeGame
-	Game <|-- NoviceGame
-	Game <|-- BossRushGame
 	Initialization <|-- Scene
 	Activity <|-- Scene
+}
+
+package Game {
+	object ReplayHeader <<struct>> {
+		+PlayerCharacter Player[2]
+		+Name
+		+Stage
+		+
+	}
+
+	object PadInputState <<struct>> {
+		+ButtonAssign Button
+		+DPadAssign DPad
+		+int PressStartFrame
+		+unsigned short PressFrameLength
+	}
+
+	class Game {
+		#Timer FrameTimer
+		#Player Player
+		#StringResource CharacterWord
+		+virtual void Update()
+		+virtual void Draw()
+	}
+
+	class Replay {
+		#std::vector<PadInputState> Data
+	}
+
+	Scene <|-- Game
+	Game <|-- StoryPlayback
+	Game <|-- GameTitle
+	Game <|-- Ranking
+	Game <|-- CharacterSelect
+	Game <|-- Instruction
+	Game <|-- MainGame
+	Game <|-- NameEntry
+	MainGame <|-- Replay
+	Replay <|-- Demonstration
 }
 
 package StringResource {

@@ -8,7 +8,7 @@ cStringResource::~cStringResource() {
 	this->Finalize();
 }
 
-void cStringResource::SetString(eLanguage Language, const TCHAR *String) {
+void cStringResource::SetString(const eLanguage Language, const TCHAR *String) {
 	mString[Language] = String;
 }
 
@@ -26,7 +26,7 @@ std::tstring* cStringResource::GetString() {
 	}	// 条件分岐は設定に依存するように変更してください
 }
 
-std::tstring* cStringResource::GetString(eLanguage Language) {
+std::tstring* cStringResource::GetString(const eLanguage Language) {
 	return &mString[Language];	// 任意の言語
 }
 
