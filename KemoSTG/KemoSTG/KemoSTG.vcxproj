@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CoinChute.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
+    <ClInclude Include="Header\CoinChute.h" />
     <ClInclude Include="Header\Color.h" />
     <ClInclude Include="Header\Dialog.h" />
     <ClInclude Include="Header\Include.h" />

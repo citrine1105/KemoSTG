@@ -343,6 +343,13 @@ package Scene {
 }
 
 package Game {
+	enum GameMode {
+		+GameMode_Arcade
+		+GameMode_Novice
+		+GameMode_BossRush
+		+GameMode_
+	}
+
 	object ReplayHeader <<struct>> {
 		+PlayerCharacter Player[2]
 		+Name
@@ -397,5 +404,28 @@ package StringResource {
 	}
 
 	Initialization <|--- StringResource
+}
+
+package CoinChute {
+	class CoinChute {
+		#unsigned int Coin
+		#unsigned int Credit
+		#int NeedsCoinToCredit
+		+CoinChute()
+		+CoinChute(int NeedCoinToCredit)
+		+~CoinChute()
+		+void SetNeedCoinTo1Credit(int Coin)
+		+void UseCredit()
+		+void AddCoin()
+		+bool GetFreePlayFlag()
+		+unsigned int GetCoin()
+		+unsigned int GetCredit()
+		+unsigned int GetNeedStartCoin()
+		+int GetNeedCoinTo1Credit()
+		+void Initialize()
+		+void Finalize()
+	}
+
+	Initialization <|--- CoinChute
 }
 @enduml
