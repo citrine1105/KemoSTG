@@ -52,6 +52,16 @@ void cVector2D::SetMagnitude(const double Magnitude) {
 	this->SetPolarForm(tAngle, Magnitude);
 }
 
+void cVector2D::MoveStartPoint(const double StartX, const double StartY) {
+	mStartX += StartX;
+	mStartY += StartY;
+}
+
+void cVector2D::AddComponent(const double ComponentX, const double ComponentY) {
+	mComponentX += ComponentX;
+	mComponentY += ComponentY;
+}
+
 void cVector2D::AddAngle(const double Angle) {
 	double tMagnitude;
 	tMagnitude = this->GetMagnitude();

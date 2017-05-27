@@ -20,6 +20,8 @@ public:
 	void SetPolarForm(const double Angle, const double Magnitude);		// 偏角と絶対値指定
 	void SetAngle(const double Angle);				// 偏角指定
 	void SetMagnitude(const double Magnitude);		// 絶対値指定
+	void MoveStartPoint(const double StartX, const double StartY);	// 始点移動
+	void AddComponent(const double ComponentX, const double ComponentY);		// 成分加算
 	void AddAngle(const double Angle);	// 角度加算
 	void AddMagnitude(const double Magnitude);	// 大きさ加算
 	void GetStartPoint(double *StartX, double *StartY);	// 始点取得
