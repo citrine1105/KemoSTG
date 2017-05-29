@@ -172,6 +172,7 @@
     <ClInclude Include="Header\Include.h" />
     <ClInclude Include="Header\Initialization.h" />
     <ClInclude Include="Header\Macro.h" />
+    <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\StringResource.h" />
     <ClInclude Include="Header\Timer.h" />
     <ClInclude Include="Header\Vector.h" />

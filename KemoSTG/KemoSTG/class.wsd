@@ -379,6 +379,8 @@ package Game {
 
 	class Game {
 		#Timer FrameTimer
+		#Timer FrameDelayTimer
+		#int FrameDelay
 		#Player Player[2]
 		#StringResource CharacterWord
 		+virtual void Update()

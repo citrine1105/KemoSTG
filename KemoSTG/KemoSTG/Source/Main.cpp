@@ -1,7 +1,4 @@
 ﻿#include "../Header/Include.h"
-#include "../Header/Timer.h"
-#include "../Header/Vector.h"
-#include "../Header/CoinChute.h"
 #include "../Header/StringResource.h"
 
 int Game_Init();	 // アプリケーション初期化処理
@@ -24,7 +21,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
-
 		ScreenFlip();
 	}
 
@@ -42,6 +38,7 @@ int Game_Init() {
 	SetMultiThreadFlag(TRUE);	// マルチスレッド動作有効
 	SetAlwaysRunFlag(TRUE);	// 非アクティブ時も動作
 	ChangeWindowMode(TRUE);	// テスト
+	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);	// 文字列引数にUTF-8を使用
 	SetMainWindowText(CAPTION_STRING);	// タイトルバー文字列を設定
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);		// フルスクリーン時の挙動を設定
 	SetUseDirect3DVersion(DX_DIRECT3D_9EX);	// Direct3D 9Exを使用する
