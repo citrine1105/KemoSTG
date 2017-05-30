@@ -29,12 +29,14 @@ package Vector {
 		+void SetPolarForm(double Angle, double Magnitude)
 		+void SetAngle(double Angle)
 		+void SetMagnitude(double Magnitude)
+		+void MoveStartPoint(double StartX, double StartY)
+		+void AddComponent(double ComponentX, double ComponentY)
 		+void AddAngle(double Angle)
 		+void AddMagnitude(double Magnitude)
 		+void GetStartPoint(double *StartX, double *StartY);
 		+void GetEndPoint(double *StartX, double *StartY)
 		+void GetComponent(double *ComponentX, double *ComponentY)
-		+double GetAngle();
+		+double GetAngle()
 		+virtual double GetMagnitude()
 		+Vector2D GetVectorToVector(Vector2D Vector)
 		+Vector2D GetVectorStartPointToEndPoint(Vector2D Vector)
@@ -63,6 +65,26 @@ package Vector {
 
 	Activity <|--- Vector2D
 	Vector2D <|-- Vector3D
+}
+
+package Bezier {
+	class Bezier {
+		#Timer Timer
+		#unsigned short PascalTriangle[12][12]
+		#double ComponentX
+		#double ComponentY
+		+Bezier()
+		+Bezier(int Dimension)
+		+void Reset()
+		+void SetDimension(int Dimension)
+		+void GetComponent(double *ComponentX, double *ComponentY)
+		+double GetComponentX()
+		+double GetComponentY()
+		+void Update() override
+		+void Draw() override
+	}
+
+	Activity <|-- Bezier
 }
 
 package Sprite {
