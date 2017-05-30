@@ -63,7 +63,7 @@ package Vector {
 		+void Draw()
 	}
 
-	Activity <|--- Vector2D
+	Activity <|-up-- Vector2D
 	Vector2D <|-- Vector3D
 }
 
@@ -89,16 +89,18 @@ package Bezier {
 
 package Sprite {
 	enum MoveType {
-		+MoveType_Accelerate1
-		+MoveType_Accelerate2
-		+MoveType_Accelerate3
-		+MoveType_Uniform
-		+MoveType_Decelerate1
-		+MoveType_Decelerate2
-		+MoveType_Decelerate3
+		+Accelerate3
+		+Accelerate2
+		+Accelerate1
+		+Uniform
+		+Decelerate1
+		+Decelerate2
+		+Decelerate3
 	}
 
 	class Sprite {
+		#double X
+		#double Y
 		#Vector2D MoveVector
 		#Timer DelayTimer
 		+void Move()
@@ -173,8 +175,8 @@ package Dialog {
 		+void Draw()
 	}
 
-	Initialization <|--- Dialog
-	Activity <|--- Dialog
+	Initialization <|-up-- Dialog
+	Activity <|-up-- Dialog
 	Dialog <|-- TimerDialog
 	Dialog <|-- OKDialog
 	Dialog <|-- YesNoDialog
@@ -225,50 +227,50 @@ package Timer {
 		+void Draw(int X, int Y)
 	}
 
-	Activity <|--- Timer
+	Activity <|-left-- Timer
 	Timer <|-- BossTimer
 	Timer <|-- SelectTimer
 }
 
 package Pad {
 	enum ButtonAssign {
-		Shot
-		Bomb
-		Laser
-		Possess
-		Pause
-		Credit
-		Service
-		TotalNum
+		+Shot
+		+Bomb
+		+Laser
+		+Possess
+		+Pause
+		+Credit
+		+Service
+		+TotalNum
 	}
 
 	enum DPadAssign {
-		Up
-		Down
-		Left
-		Right
-		TotalNum
+		+Up
+		+Down
+		+Left
+		+Right
+		+TotalNum
 	}
 
 	enum DirectInputDPadAssign {
-		XAxis
-		YAxis
-		ZAxis
-		XRota
-		YRota
-		ZRota
-		POV1
-		POV2
-		POV3
-		POV4
-		None
+		+XAxis
+		+YAxis
+		+ZAxis
+		+XRota
+		+YRota
+		+ZRota
+		+POV1
+		+POV2
+		+POV3
+		+POV4
+		+None
 	}
 
 	enum XInputDPadAssign {
-		LeftStick
-		RightStick
-		DPad
-		None
+		+LeftStick
+		+RightStick
+		+DPad
+		+None
 	}
 
 	class Pad {
@@ -292,8 +294,16 @@ package Pad {
 }
 
 package Player {
+	enum PlayerCharacter {
+		+Power
+		+Maria
+		+None
+	}
+
 	class Player {
+		#PlayerCharacter Character
 		#Timer InvincibleTime
+		#char Life
 		+void Initialize()
 		+void Finalize()
 		+void Update()
@@ -327,8 +337,6 @@ package Bullet {
 	}
 
 	class Bullet {
-		#double Angle
-		#double Speed
 		+void Update()
 	}
 
@@ -346,9 +354,6 @@ package Bullet {
 }
 
 package Scene {
-	enum PlayerCharacter {
-	}
-
 	class Scene {
 		#Pad Pad[2]
 		+virtual void Initialize()
@@ -366,17 +371,25 @@ package Scene {
 
 package Game {
 	enum GameMode {
-		+GameMode_Arcade
-		+GameMode_Novice
-		+GameMode_BossRush
-		+GameMode_
+		+Arcade
+		+Novice
+		+BossRush
+	}
+
+	enum GameRank {
+		+VeryEasy
+		+Easy
+		+Normal
+		+Hard
+		+VeryHard
+		+Hell
 	}
 
 	object ReplayHeader <<struct>> {
 		+PlayerCharacter Player[2]
 		+Name
 		+Stage
-		+
+		+unsigned int Score[2]
 	}
 
 	object PadInputState <<struct>> {
@@ -388,7 +401,9 @@ package Game {
 
 	class Game {
 		#Timer FrameTimer
-		#Player Player
+		#Timer FrameDelayTimer
+		#int FrameDelay
+		#Player Player[2]
 		#StringResource CharacterWord
 		+virtual void Update()
 		+virtual void Draw()
@@ -425,7 +440,7 @@ package StringResource {
 		+void Finalize()
 	}
 
-	Initialization <|--- StringResource
+	Initialization <|-left-- StringResource
 }
 
 package CoinChute {
@@ -448,6 +463,6 @@ package CoinChute {
 		+void Finalize()
 	}
 
-	Initialization <|--- CoinChute
+	Initialization <|-left-- CoinChute
 }
 @enduml
