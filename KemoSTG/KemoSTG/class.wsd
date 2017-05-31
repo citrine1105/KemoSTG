@@ -87,6 +87,28 @@ package Bezier {
 	Activity <|-- Bezier
 }
 
+package Easing {
+	enum EasingType {
+		+Linear
+		+Sine
+		+Quad
+		+Cubic
+		+Quart
+		+Quint
+		+Expo
+		+Circ
+		+Back
+		+Elastic
+		+Bounce		
+	}
+
+	class Easing {
+		+easeIn(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+		+easeOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+		+easeInOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+	}
+}
+
 package Sprite {
 	enum MoveType {
 		+Accelerate3
@@ -104,7 +126,7 @@ package Sprite {
 		#Vector2D MoveVector
 		#Timer DelayTimer
 		+void Move()
-		+void MoveToPoint(double X, double Y, MoveType MoveType, int DelayTime)
+		+void MoveToPoint(double X, double Y, EasingType Type, int DelayTime)
 		+void Stop()
 		+Vector2D GetVector()
 		+virtual void Initialize()
@@ -115,6 +137,7 @@ package Sprite {
 
 	Initialization <|--- Sprite
 	Activity <|--- Sprite
+	Easing *.. Sprite
 }
 
 package Dialog {
@@ -354,6 +377,13 @@ package Bullet {
 }
 
 package Scene {
+	enum Scene{
+		+Title
+		+Menu
+		+Game
+		+Option
+	}
+
 	class Scene {
 		#Pad Pad[2]
 		+virtual void Initialize()
@@ -367,6 +397,13 @@ package Scene {
 	Scene <|-- Option
 	Initialization <|--- Scene
 	Activity <|--- Scene
+}
+
+package SceneManager {
+	class SceneManager {
+		Scene *Scene
+		Scene NextScene
+	}
 }
 
 package Game {
