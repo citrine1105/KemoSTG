@@ -110,16 +110,6 @@ package Easing {
 }
 
 package Sprite {
-	enum MoveType {
-		+Accelerate3
-		+Accelerate2
-		+Accelerate1
-		+Uniform
-		+Decelerate1
-		+Decelerate2
-		+Decelerate3
-	}
-
 	class Sprite {
 		#double X
 		#double Y

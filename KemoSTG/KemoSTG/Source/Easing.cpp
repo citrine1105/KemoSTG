@@ -104,12 +104,12 @@ double cEasing::easeOut(const eEasingType EasingType, double t, double TotalTime
 			return Max * (7.5625 * postFix * t + 0.75) + Min;
 		}
 		else if (t < (2.5 / 2.75)) {
-			postFix = t -= (2.25 / 2.75) + Min;
-			return Max  * (7.5625 * postFix * t + 0.9375) + Min;
+			postFix = t -= (2.25 / 2.75);
+			return Max * (7.5625 * postFix * t + 0.9375) + Min;
 		}
 		else {
-			postFix = t -= (2.5 / 2.75) + Min;
-			return Max  * (7.5625 * postFix * t + 0.984375) + Min;
+			postFix = t -= (2.625 / 2.75);
+			return Max * (7.5625 * postFix * t + 0.984375) + Min;
 		}
 		break;
 	default:
