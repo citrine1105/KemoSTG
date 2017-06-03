@@ -16,8 +16,8 @@ package Vector {
 	class Vector2D {
 		#double StartX
 		#double StartY
-		#double ComponentX
-		#double ComponentY
+		#double ElementX
+		#double ElementY
 		+Vector2D()
 		+Vector2D(double StartX, double StartY)
 		+double GetVectorMagnitude()
@@ -25,17 +25,17 @@ package Vector {
 		+void SetStartPoint(Vector2D Vector)
 		+void SetEndPoint(double EndX, double EndY)
 		+void SetEndPoint(Vector2D Vector)
-		+void SetComponent(double ComponentX, double ComponentY)
+		+void SetElement(double ElementX, double ElementY)
 		+void SetPolarForm(double Angle, double Magnitude)
 		+void SetAngle(double Angle)
 		+void SetMagnitude(double Magnitude)
 		+void MoveStartPoint(double StartX, double StartY)
-		+void AddComponent(double ComponentX, double ComponentY)
+		+void AddElement(double ElementX, double ElementY)
 		+void AddAngle(double Angle)
 		+void AddMagnitude(double Magnitude)
 		+void GetStartPoint(double *StartX, double *StartY);
 		+void GetEndPoint(double *StartX, double *StartY)
-		+void GetComponent(double *ComponentX, double *ComponentY)
+		+void GetElement(double *ElementX, double *ElementY)
 		+double GetAngle()
 		+virtual double GetMagnitude()
 		+Vector2D GetVectorToVector(Vector2D Vector)
@@ -55,10 +55,10 @@ package Vector {
 
 	class Vector3D {
 		#double StartZ
-		#double ComponentZ
-		+void SetVectorComponent(double ComponentX, double ComponentY, double ComponentZ)
+		#double ElementZ
+		+void SetVectorElement(double ElementX, double ElementY, double ElementZ)
 		+Vector3D GetTargetPointVector(Vector3D Vector)
-		+void GetVectorComponent(double *ComponentX, double *ComponentY, double *ComponentZ)
+		+void GetVectorElement(double *ElementX, double *ElementY, double *ElementZ)
 		+void GetStartPoint(double *StartX, double *StartY, double *StartZ);
 		+void Draw()
 	}
@@ -71,15 +71,15 @@ package Bezier {
 	class Bezier {
 		#Timer Timer
 		#unsigned short PascalTriangle[12][12]
-		#double ComponentX
-		#double ComponentY
+		#double ElementX
+		#double ElementY
 		+Bezier()
 		+Bezier(int Dimension)
 		+void Reset()
 		+void SetDimension(int Dimension)
-		+void GetComponent(double *ComponentX, double *ComponentY)
-		+double GetComponentX()
-		+double GetComponentY()
+		+void GetElement(double *ElementX, double *ElementY)
+		+double GetElementX()
+		+double GetElementY()
 		+void Update() override
 		+void Draw() override
 	}
@@ -88,6 +88,12 @@ package Bezier {
 }
 
 package Easing {
+	enum EasingFunction {
+		+easeIn
+		+easeOut
+		+easeInOut
+	}
+
 	enum EasingType {
 		+Linear
 		+Sine
@@ -103,20 +109,22 @@ package Easing {
 	}
 
 	class Easing {
-		+easeIn(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
-		+easeOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
-		+easeInOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+		+double easeIn(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+		+double easeOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
+		+double easeInOut(eEasingType EasingType, double t, double TotalTime, double Max = 1.0, double Min = 0.0)
 	}
 }
 
 package Sprite {
 	class Sprite {
-		#double X
-		#double Y
+		#double PositionX
+		#double PositionY
 		#Vector2D MoveVector
 		#Timer DelayTimer
+		#EasingFunction EaseFunc
+		#EasingType
 		+void Move()
-		+void MoveToPoint(double X, double Y, EasingType Type, int DelayTime)
+		+void MoveToPoint(double X, double Y, int DelayTime, EasingType Type, EasingFunction EasingFunction)
 		+void Stop()
 		+Vector2D GetVector()
 		+virtual void Initialize()
@@ -224,6 +232,7 @@ package Timer {
 		+int GetValue()
 		+double GetSecond()
 		+int GetDefaultValue()
+		+bool GetActiveFlag()
 		+void Start()
 		+void Stop()
 		+void Reset()
@@ -450,6 +459,18 @@ package Game {
 	Game <|-- NameEntry
 	MainGame <|-- Replay
 	Replay <|-- Demonstration
+}
+
+package ImageResource {
+	class ImageResource {
+		#int Handle
+		+void Load(TCHAR *FileName)
+		+int GetHandle()
+		+void Initialize()
+		+void Finalize()
+	}
+
+	Initialization <|-left-- ImageResource
 }
 
 package StringResource {

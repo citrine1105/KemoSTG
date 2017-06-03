@@ -161,6 +161,7 @@
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Vector.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneManager.h" />
+    <ClInclude Include="Header\Sprite.h" />
     <ClInclude Include="Header\StringResource.h" />
     <ClInclude Include="Header\Timer.h" />
     <ClInclude Include="Header\Vector.h" />

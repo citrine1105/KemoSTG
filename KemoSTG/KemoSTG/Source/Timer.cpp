@@ -69,6 +69,10 @@ eCountMode cTimer::GetCountMode() {
 	return mCountMode;
 }
 
+bool cTimer::GetActiveFlag() {
+	return fActive;
+}
+
 void cTimer::operator = (const AUTO_INT Value) {
 	this->SetValue(Value);
 }

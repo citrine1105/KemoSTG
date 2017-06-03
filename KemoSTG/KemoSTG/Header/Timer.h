@@ -32,6 +32,7 @@ public:
 	AUTO_INT GetValue();	// 値を取得
 	double GetSecond();		// 秒単位の値を取得
 	eCountMode GetCountMode();	// カウント方法を取得
+	bool GetActiveFlag();	// 有効フラグの取得
 
 	void operator = (const AUTO_INT Value);	// 値を設定
 	void operator = (const double Value);	// 値を秒単位で設定

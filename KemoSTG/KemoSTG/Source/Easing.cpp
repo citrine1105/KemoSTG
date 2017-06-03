@@ -1,5 +1,22 @@
 ﻿#include "../Header/Easing.h"
 
+double cEasing::GetEase(const eEasingFunction EasingFunction, const eEasingType EasingType, double t, double TotalTime, double Max, double Min) {
+	switch (EasingFunction) {
+	case eEasingFunction_In:
+		return this->easeIn(EasingType, t, TotalTime, Max, Min);
+		break;
+	case eEasingFunction_Out:
+		return this->easeOut(EasingType, t, TotalTime, Max, Min);
+		break;
+	case eEasingFunction_InOut:
+		return this->easeInOut(EasingType, t, TotalTime, Max, Min);
+		break;
+	default:
+		return 0.0;
+		break;
+	}
+}
+
 double cEasing::easeIn(const eEasingType EasingType, double t, double TotalTime, double Max, double Min) {
 	double s = 1.701540198866824;
 	double postFix, a, p;

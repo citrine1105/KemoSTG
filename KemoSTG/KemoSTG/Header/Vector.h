@@ -6,8 +6,8 @@ class cVector2D : public iActivity {
 protected:
 	double mStartX;	// 始点X
 	double mStartY;	// 始点Y
-	double mComponentX;	// X成分
-	double mComponentY;	// Y成分
+	double mElementX;	// X成分
+	double mElementY;	// Y成分
 public:
 	cVector2D();		// デフォルトコンストラクタ
 	cVector2D(const double StartX, const double StartY);		// 始点指定コンストラクタ
@@ -16,17 +16,17 @@ public:
 	void SetStartPoint(cVector2D Vector);	// 別ベクトルの終点に始点を置く
 	void SetEndPoint(const double EndX, const double EndY);	// 終点指定
 	void SetEndPoint(cVector2D Vector);		// 別ベクトルの始点に終点を置く
-	void SetComponent(const double ComponentX, const double ComponentY);	// 成分指定
+	void SetElement(const double ElementX, const double ElementY);	// 成分指定
 	void SetPolarForm(const double Angle, const double Magnitude);		// 偏角と絶対値指定
 	void SetAngle(const double Angle);				// 偏角指定
 	void SetMagnitude(const double Magnitude);		// 絶対値指定
 	void MoveStartPoint(const double StartX, const double StartY);	// 始点移動
-	void AddComponent(const double ComponentX, const double ComponentY);		// 成分加算
+	void AddElement(const double ElementX, const double ElementY);		// 成分加算
 	void AddAngle(const double Angle);	// 角度加算
 	void AddMagnitude(const double Magnitude);	// 大きさ加算
 	void GetStartPoint(double *StartX, double *StartY);	// 始点取得
 	void GetEndPoint(double *EndX, double *EndY);	// 終点取得
-	void GetComponent(double *ComponentX, double *ComponentY);		// 成分取得
+	void GetElement(double *ElementX, double *ElementY);		// 成分取得
 	double GetAngle();		// ベクトルの偏角
 	virtual double GetMagnitude();		// ベクトルの絶対値
 	cVector2D GetVectorToVector(cVector2D Vector);	// 別ベクトルの始点までのベクトル取得
@@ -49,16 +49,16 @@ public:
 //class cVector3D : public cVector2D {
 //protected:
 //	double mStartZ;	// 始点Z
-//	double mComponentZ;	// Z成分
+//	double mElementZ;	// Z成分
 //public:
 //	cVector3D();		// デフォルトコンストラクタ
 //	cVector3D(const double StartX, const double StartY, const double StartZ);	// 始点指定コンストラクタ
 //
 //	void SetStartPoint(const double StartX, const double StartY, const double StartZ);	// 始点指定
-//	void SetVectorComponent(const double ComponentX, const double ComponentY, double ComponentZ);	// 成分指定
+//	void SetVectorElement(const double ElementX, const double ElementY, double ElementZ);	// 成分指定
 //	//void SetVectorMagnitude(const double Magnitude);		// 絶対値指定
 //	void GetStartPoint(double *StartX, double *StartY, double *StartZ);	// 始点取得
-//	void GetVectorComponent(double *ComponentX, double *ComponentY, double *ComponentZ);		// 成分取得
+//	void GetVectorElement(double *ElementX, double *ElementY, double *ElementZ);		// 成分取得
 //	double GetVectorMagnitude() override;	// ベクトルの絶対値
 //	cVector3D GetVectorToTargetPoint(const cVector3D Vector);	// 別ベクトルの始点までのベクトル取得
 //	cVector3D GetVectorStartPointToTargetPoint(const cVector3D Vector);	// 始点から別ベクトルの始点までのベクトル取得

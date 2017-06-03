@@ -1,6 +1,6 @@
 ﻿#include "../Header/Include.h"
 #include "../Header/StringResource.h"
-#include "../Header/Easing.h"
+#include "../Header/Sprite.h"
 
 int Game_Init();	 // アプリケーション初期化処理
 
@@ -21,27 +21,35 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	}
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	int time = 0;
-	double in = 0.0, out = 0.0, inout = 0.0;
-	cEasing e;
-	std::tstring str;
+	cSprite *sp = new cSprite[11];
+	cSprite spr;
+	for (int i = 0; i < 11; i++) {
+		sp[i].SetPosition(20.0 + 59.0 * i, 40.0 );
+		sp[i].MoveToPoint(20.0 + 59.0 * i, 420.0, 180, static_cast<eEasingType>(i));
+	}
 
-	while (ProcessMessage() == 0/* && ClearDrawScreen() == 0*/ && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
-		++time;
-		//if (time >= 60) {
-		//	time = 0;
+	spr.SetCollisionRange(30.0, 30.0);
+	spr.SetPosition(320.0, 240.0);
+	bool in = false;
+
+	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
+		//for (int i = 0; i < 11; i++) {
+		//	sp[i].Update();
+		//	sp[i].Draw();
 		//}
-		in = e.easeIn(static_cast<eEasingType>(time / 174), static_cast<double>(time % 174) / 174.0, 1.0);
-		out = e.easeOut(static_cast<eEasingType>(time / 174), static_cast<double>(time % 174) / 174.0, 1.0);
-		inout = e.easeInOut(static_cast<eEasingType>(time / 174), static_cast<double>(time % 174) / 174.0, 1.0);
-		DrawString(8, 25, _T("easeIn"), GetColor(0xFF, 0xFF, 0xFF));
-		DrawPixel(time / 3, -static_cast<int>(in * 100.0) + 145, GetColor(0xFF, 0xFF, 0xFF));
-		DrawString(8, 170, _T("easeOut"), GetColor(0xFF, 0xFF, 0xFF));
-		DrawPixel(time / 3, -static_cast<int>(out * 100.0) + 290, GetColor(0xFF, 0xFF, 0xFF));
-		DrawString(8, 315, _T("easeInOut"), GetColor(0xFF, 0xFF, 0xFF));
-		DrawPixel(time / 3, -static_cast<int>(inout * 100.0) + 435, GetColor(0xFF, 0xFF, 0xFF));
-		//inout = e.easeOut(eEasing_Bounce, static_cast<double>(time % 180) / 180.0, 1.0);
-		//DrawPixel(time, -static_cast<int>(inout * 400.0) + 440, GetColor(0xFF, 0xFF, 0xFF));
+		if (GetMouseInput() & MOUSE_INPUT_LEFT) {
+			if (!in) {
+				int tX, tY;
+				GetMousePoint(&tX, &tY);
+				spr.MoveToPoint(tX, tY, 40, eEasing_Quart);
+			}
+			in = true;
+		}
+		else {
+			in = false;
+		}
+		spr.Update();
+		spr.Draw();
 		ScreenFlip();
 	}
 
