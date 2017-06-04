@@ -464,6 +464,10 @@ package Game {
 package ImageResource {
 	class ImageResource {
 		#int Handle
+		#std::string Path
+		+ImageResource()
+		+ImageResource(TCHAR *FileName)
+		+~ImageResource()
 		+void Load()
 		+void Load(TCHAR *FileName)
 		+void Delete()
@@ -473,7 +477,29 @@ package ImageResource {
 		+void Finalize()
 	}
 
-	Initialization <|-left-- ImageResource
+	Initialization <|-left- ImageResource
+}
+
+package SoundResource {
+	class SoundResource {
+		#int Hanldle
+		#int BufferNum
+		#std::string Path
+		+SoundResource()
+		+SoundResource(TCHAR *FileName, int BufferNum)
+		+~SoundResource()
+		+void Load()
+		+void Load(TCHAR *FileName, int BufferNum)
+		+void Delete()
+		+void SetPath(TCHAR *Path)
+		+void SetBufferNum(int BufferNum)
+		+void SetVolume(int Volume)
+		+int GetHandle()
+		+void Initialize()
+		+void Finalize()
+	}
+
+	Initialization <|-left- SoundResource
 }
 
 package StringResource {
