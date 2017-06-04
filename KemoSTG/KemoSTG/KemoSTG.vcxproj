@@ -160,6 +160,7 @@
     <ClCompile Include="Source\CoinChute.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
+    <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Header\Color.h" />
     <ClInclude Include="Header\Dialog.h" />
     <ClInclude Include="Header\Easing.h" />
+    <ClInclude Include="Header\ImageResource.h" />
     <ClInclude Include="Header\Include.h" />
     <ClInclude Include="Header\Initialization.h" />
     <ClInclude Include="Header\Macro.h" />

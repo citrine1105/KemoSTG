@@ -1,6 +1,7 @@
 ﻿#include "../Header/Include.h"
 #include "../Header/StringResource.h"
 #include "../Header/Sprite.h"
+#include "../Header/ImageResource.h"
 
 int Game_Init();	 // アプリケーション初期化処理
 
@@ -32,7 +33,16 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	spr.SetPosition(320.0, 240.0);
 	bool in = false;
 
+	cImageResource img(_T("./Data/Image/test.png"));
+	img.Load();
+
+	int r = 0;
+
 	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
+		clsDx();
+		if (GetASyncLoadNum() == 0) {
+			++r;
+		}
 		//for (int i = 0; i < 11; i++) {
 		//	sp[i].Update();
 		//	sp[i].Draw();
@@ -49,7 +59,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 			in = false;
 		}
 		spr.Update();
+		DrawRotaGraph(320, 240, 0.4, DEGREE_TO_RADIAN(static_cast<double>(r)), img.GetHandle(), FALSE);
 		spr.Draw();
+		printfDx(_T("%d\n"), GetASyncLoadNum());
 		ScreenFlip();
 	}
 
@@ -64,6 +76,8 @@ int Game_Init() {
 #else
 	SetOutApplicationLogValidFlag(FALSE);	// リリースモード時はログを出力しない
 #endif // _DEBUG
+	SetUseDXArchiveFlag(TRUE);	// DXアーカイブを有効に
+	SetDXArchiveKeyString(DX_ARCHIVE_KEY_STRING);	// DXアーカイブキー
 	SetMultiThreadFlag(TRUE);	// マルチスレッド動作有効
 	SetAlwaysRunFlag(TRUE);	// 非アクティブ時も動作
 	SetGraphMode(640, 480, 32);	// テスト
