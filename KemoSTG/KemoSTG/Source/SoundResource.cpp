@@ -24,6 +24,7 @@ void cSoundResource::Load(const TCHAR *FileName, const int BufferNum) {
 
 void cSoundResource::Delete() {
 	DeleteSoundMem(mHandle);
+	mHandle = NULL;
 }
 
 void cSoundResource::SetPath(const TCHAR *Path) {

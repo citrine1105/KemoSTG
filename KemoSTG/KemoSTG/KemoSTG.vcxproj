@@ -162,6 +162,7 @@
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Pad.cpp" />
     <ClCompile Include="Source\SoundResource.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
@@ -170,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
-    <ClInclude Include="Header\Bezier.h" />
     <ClInclude Include="Header\CoinChute.h" />
     <ClInclude Include="Header\Color.h" />
     <ClInclude Include="Header\Dialog.h" />
@@ -179,6 +179,7 @@
     <ClInclude Include="Header\Include.h" />
     <ClInclude Include="Header\Initialization.h" />
     <ClInclude Include="Header\Macro.h" />
+    <ClInclude Include="Header\Pad.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneManager.h" />
     <ClInclude Include="Header\SoundResource.h" />

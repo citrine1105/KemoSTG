@@ -3,6 +3,7 @@
 #include "../Header/Sprite.h"
 #include "../Header/ImageResource.h"
 #include "../Header/SoundResource.h"
+#include "../Header/Pad.h"
 
 int Game_Init();	 // アプリケーション初期化処理
 
@@ -24,13 +25,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
-	cSprite *sp = new cSprite[11];
 	cSprite spr;
-	for (int i = 0; i < 11; i++) {
-		sp[i].SetPosition(20.0 + 59.0 * i, 40.0 );
-		sp[i].MoveToPoint(20.0 + 59.0 * i, 420.0, 180, static_cast<eEasingType>(i));
-	}
-
 	spr.SetCollisionRange(30.0, 30.0);
 	spr.SetPosition(320.0, 240.0);
 	bool in = false;
@@ -44,39 +39,43 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	cTimer r(0, eCountMode_CountUp);
 	r.Start();
 
-	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
-		clsDx();
-		printfDx(_T("%X\n"), img.GetHandle());
-		printfDx(_T("%d\n"), GetASyncLoadNum());
-		if (CheckHandleASyncLoad(snd.GetHandle()) == FALSE && CheckSoundMem(snd.GetHandle()) == 0) {
-			PlaySoundMem(snd.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
-		}
-		if (GetASyncLoadNum() == 0) {
-			r.Update();
-		}
+	cPad p(DX_INPUT_PAD1);
 
-		if (GetMouseInput() & MOUSE_INPUT_LEFT) {
-			if (!in) {
-				int tX, tY;
-				GetMousePoint(&tX, &tY);
-				spr.MoveToPoint(tX, tY, 40, eEasing_Quart);
-				PlaySoundMem(se.GetHandle(), DX_PLAYTYPE_BACK, TRUE);
-			}
-			in = true;
-		}
-		else {
-			in = false;
-		}
-		if (GetMouseInput() & MOUSE_INPUT_RIGHT) {
-			//StopSoundMem(snd.GetHandle());
-			snd.SetVolume(128);
-		}
-		else {
-			snd.SetVolume(255);
-		}
-		spr.Update();
-		DrawRotaGraph(320, 240, 0.4, DEGREE_TO_RADIAN(static_cast<double>(r.GetValue())), img.GetHandle(), FALSE);
-		spr.Draw();
+	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
+		//clsDx();
+		//printfDx(_T("%X\n"), img.GetHandle());
+		//printfDx(_T("%d\n"), GetASyncLoadNum());
+		//if (CheckHandleASyncLoad(snd.GetHandle()) == FALSE && CheckSoundMem(snd.GetHandle()) == 0) {
+		//	PlaySoundMem(snd.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
+		//}
+		//if (GetASyncLoadNum() == 0) {
+		//	r.Update();
+		//}
+
+		//if (GetMouseInput() & MOUSE_INPUT_LEFT) {
+		//	if (!in) {
+		//		int tX, tY;
+		//		GetMousePoint(&tX, &tY);
+		//		spr.MoveToPoint(tX, tY, 40, eEasing_Quart);
+		//		PlaySoundMem(se.GetHandle(), DX_PLAYTYPE_BACK, TRUE);
+		//	}
+		//	in = true;
+		//}
+		//else {
+		//	in = false;
+		//}
+		//if (GetMouseInput() & MOUSE_INPUT_RIGHT) {
+		//	//StopSoundMem(snd.GetHandle());
+		//	snd.SetVolume(128);
+		//}
+		//else {
+		//	snd.SetVolume(255);
+		//}
+		//spr.Update();
+		//DrawRotaGraph(320, 240, 0.2, DEGREE_TO_RADIAN(static_cast<double>(r.GetValue())), img.GetHandle(), FALSE);
+		//spr.Draw();
+		p.Update();
+		p.Draw();
 		ScreenFlip();
 	}
 

@@ -67,26 +67,6 @@ package Vector {
 	Vector2D <|-- Vector3D
 }
 
-package Bezier {
-	class Bezier {
-		#Timer Timer
-		#unsigned short PascalTriangle[12][12]
-		#double ElementX
-		#double ElementY
-		+Bezier()
-		+Bezier(int Dimension)
-		+void Reset()
-		+void SetDimension(int Dimension)
-		+void GetElement(double *ElementX, double *ElementY)
-		+double GetElementX()
-		+double GetElementY()
-		+void Update() override
-		+void Draw() override
-	}
-
-	Activity <|-- Bezier
-}
-
 package Easing {
 	enum EasingFunction {
 		+easeIn
@@ -254,14 +234,25 @@ package Timer {
 	Timer <|-- SelectTimer
 }
 
-package Pad {
+package GamePad {
+	class GamePad {
+		+GamePad()
+		+~GamePad()
+		+void Initialize()
+		+void Finalize()
+	}
+
+	Initialization <|-- GamePad
+}
+
+package VirtualGamePad {
 	enum ButtonAssign {
 		+Shot
-		+Bomb
-		+Laser
 		+Possess
+		+Bomb
+		+FullAuto
 		+Pause
-		+Credit
+		+Coin
 		+Service
 		+TotalNum
 	}
@@ -295,7 +286,7 @@ package Pad {
 		+None
 	}
 
-	class Pad {
+	class VirtualGamePad {
 		#int PadNumber
 		#bool Vibration
 		#int KeyInputButtonAssign[ButtonAssign.TotalNum]
@@ -311,8 +302,8 @@ package Pad {
 		+void Draw()
 	}
 
-	Initialization <|--- Pad
-	Activity <|--- Pad
+	Initialization <|--- VirtualGamePad
+	Activity <|--- VirtualGamePad
 }
 
 package Player {

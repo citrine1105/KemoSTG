@@ -25,6 +25,7 @@ void cImageResource::Load(const TCHAR *FileName) {
 
 void cImageResource::Delete() {
 	DeleteGraph(mHandle);
+	mHandle = NULL;
 }
 
 void cImageResource::SetPath(const TCHAR *Path) {
