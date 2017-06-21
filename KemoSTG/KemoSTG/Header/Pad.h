@@ -1,26 +1,6 @@
 ﻿#pragma once
 #include "Include.h"
 
-//enum eButtonAssign {
-//	eButton_Shot,		// ショット
-//	eButton_Possess,		// 憑依
-//	eButton_Bomb,		// ボム
-//	eButton_FullAuto,	// 連射
-//	eButton_Pause,		// ポーズ
-//	eButton_Coin,		// コイン
-//	eButton_Service,		// サービス
-//	eButton_TotalNum		// 総要素数
-//};
-//
-//enum eDPadAssign {
-//	eDPad_Up,		// 上
-//	eDPad_Down,		// 下
-//	eDPad_Left,		// 左
-//	eDPad_Right,		// 右
-//	eDPad_TotalNum	// 総要素数
-//};
-
-
 enum eDirectInputAssign {
 	eDirectInputAssign_Button1,
 	eDirectInputAssign_Button2,

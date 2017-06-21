@@ -168,6 +168,7 @@
     <ClCompile Include="Source\StringResource.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Vector.cpp" />
+    <ClCompile Include="Source\VirtualPad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Header\StringResource.h" />
     <ClInclude Include="Header\Timer.h" />
     <ClInclude Include="Header\Vector.h" />
+    <ClInclude Include="Header\VirtualPad.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
