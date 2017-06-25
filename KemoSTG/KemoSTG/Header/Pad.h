@@ -88,6 +88,7 @@ public:
 
 	void SetJoyPadNum(const int PadNum);	// パッドの番号を指定する
 	int GetJoyPadNum();		// パッドの番号を取得
+	bool GetActiveFlag();	// パッドが接続されているか確認
 	std::tstring GetJoyPadInstanceName();	// パッドのインスタンス名を取得
 	std::tstring GetJoyPadProductName();		// パッドの製品名を取得
 	bool GetXInputFlag();	// XInput対応か調べる

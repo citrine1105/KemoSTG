@@ -27,6 +27,10 @@ int cPad::GetJoyPadNum() {
 	return mPadNumber;
 }
 
+bool cPad::GetActiveFlag() {
+	return DxLib::GetJoypadNum() >= mPadNumber ? true : false;
+}
+
 std::tstring cPad::GetJoyPadInstanceName() {
 	return mInstanceName;
 }
@@ -225,17 +229,22 @@ void cPad::Update() {
 }
 
 void cPad::Draw() {
-	if (this->GetXInputFlag()) {
-		for (int i = 0; i < static_cast<int>(eXInputAssign_TotalNum); i++) {
-			DrawFormatString(0, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eXInputAssign>(i)));
+	if (this->GetActiveFlag()) {
+		if (this->GetXInputFlag()) {
+			for (int i = 0; i < static_cast<int>(eXInputAssign_TotalNum); i++) {
+				DrawFormatString(0, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eXInputAssign>(i)));
+			}
 		}
+		else {
+			for (int i = 0; i < 22; i++) {
+				DrawFormatString(0, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eDirectInputAssign>(i)));
+				DrawFormatString(320, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eDirectInputAssign>(i + 22)));
+			}
+		}
+		DrawString(0, 0, this->GetJoyPadInstanceName().c_str(), GetColor(0xFF, 0x00, 0x00));
+		DrawString(0, 18, this->GetJoyPadProductName().c_str(), GetColor(0xFF, 0x00, 0x00));
 	}
 	else {
-		for (int i = 0; i < 22; i++) {
-			DrawFormatString(0, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eDirectInputAssign>(i)));
-			DrawFormatString(320, 18 * i + 36, GetColor(0xFF, 0xFF, 0xFF), _T("%d"), this->GetJoyPadInputState(static_cast<eDirectInputAssign>(i + 22)));
-		}
+		DrawString(0, 0, _T("N/A"), GetColor(0xFF, 0xFF, 0xFF));
 	}
-	DrawString(0, 0, this->GetJoyPadInstanceName().c_str(), GetColor(0xFF, 0x00, 0x00));
-	DrawString(0, 18, this->GetJoyPadProductName().c_str(), GetColor(0xFF, 0x00, 0x00));
 }

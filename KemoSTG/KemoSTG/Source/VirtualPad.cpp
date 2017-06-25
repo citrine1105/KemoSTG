@@ -61,14 +61,15 @@ void cVirtualPad::SetDefaultAssign(const int Type) {
 	mXInputAssign[eButton_Coin] = eXInputAssign_LeftStickButton;
 	mXInputAssign[eButton_Service] = eXInputAssign_RightStickButton;
 
-	mStickDeadZone = 0;
+	mStickDeadZone = 50;
+	fVibration = false;
 }
 
 void cVirtualPad::SetJoyPad(cPad *Pad) {
 	pPad = Pad;
 }
 
-void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const unsigned char Key) {
+void cVirtualPad::SetKeyAssign(const eButtonAssign Assign, const unsigned char Key) {
 	int i, j;
 	for (i = 0; i < eButton_TotalNum; i++) {
 		if (mKeyAssign[i] == Key) {	// 既に同じ割り当てのキーがあるか探索
@@ -87,6 +88,31 @@ void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const unsigned cha
 	else if (j < eDPad_TotalNum) {
 		mDPadKeyAssign[j] = mKeyAssign[Assign];	// 入れ替え
 		mKeyAssign[Assign] = Key;
+	}
+	else {						// ない場合
+		mKeyAssign[Assign] = Key;	// 設定
+	}
+}
+
+void cVirtualPad::SetKeyAssign(const eDPadAssign Assign, const unsigned char Key) {
+	int i, j;
+	for (i = 0; i < eButton_TotalNum; i++) {
+		if (mKeyAssign[i] == Key) {	// 既に同じ割り当てのキーがあるか探索
+			break;
+		}
+	}
+	for (j = 0; j < eDPad_TotalNum; j++) {
+		if (mDPadKeyAssign[j] == Key) {	// 既に同じ割り当てのキーがあるか探索
+			break;
+		}
+	}
+	if (i < eButton_TotalNum) {	// ある場合
+		mKeyAssign[i] = mDPadKeyAssign[Assign];	// 入れ替え
+		mDPadKeyAssign[Assign] = Key;
+	}
+	else if (j < eDPad_TotalNum) {
+		mDPadKeyAssign[j] = mDPadKeyAssign[Assign];	// 入れ替え
+		mDPadKeyAssign[Assign] = Key;
 	}
 	else {						// ない場合
 		mKeyAssign[Assign] = Key;	// 設定
@@ -125,29 +151,8 @@ void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eXInputAssig
 	}
 }
 
-void cVirtualPad::SetDPadAssign(const eDPadAssign Assign, const unsigned char Key) {
-	int i, j;
-	for (i = 0; i < eButton_TotalNum; i++) {
-		if (mKeyAssign[i] == Key) {	// 既に同じ割り当てのキーがあるか探索
-			break;
-		}
-	}
-	for (j = 0; j < eDPad_TotalNum; j++) {
-		if (mDPadKeyAssign[j] == Key) {	// 既に同じ割り当てのキーがあるか探索
-			break;
-		}
-	}
-	if (i < eButton_TotalNum) {	// ある場合
-		mKeyAssign[i] = mDPadKeyAssign[Assign];	// 入れ替え
-		mDPadKeyAssign[Assign] = Key;
-	}
-	else if (j < eDPad_TotalNum) {
-		mDPadKeyAssign[j] = mDPadKeyAssign[Assign];	// 入れ替え
-		mDPadKeyAssign[Assign] = Key;
-	}
-	else {						// ない場合
-		mKeyAssign[Assign] = Key;	// 設定
-	}
+void cVirtualPad::SetVibrationFlag(const bool Flag) {
+	fVibration = Flag;
 }
 
 cPad* cVirtualPad::GetJoyPad() {
@@ -162,6 +167,43 @@ unsigned AUTO_INT cVirtualPad::GetInputState(const eDPadAssign Button) {
 	return mDPadInputState[Button];
 }
 
+unsigned char cVirtualPad::GetKeyAssign(const eButtonAssign Assign) {
+	return mKeyAssign[Assign];
+}
+
+unsigned char cVirtualPad::GetKeyAssign(const eDPadAssign Assign) {
+	return mDPadKeyAssign[Assign];
+}
+
+eDirectInputAssign cVirtualPad::GetDirectInputAssign(const eButtonAssign Assign) {
+	return mDirectInputAssign[Assign];
+}
+
+eXInputAssign cVirtualPad::GetXInputAssign(const eButtonAssign Assign) {
+	return mXInputAssign[Assign];
+}
+
+bool cVirtualPad::GetVibrationFlag() {
+	if (pPad->GetActiveFlag() && pPad->GetXInputFlag()) {
+		return fVibration;
+	}
+	else {
+		return false;
+	}
+}
+
+void cVirtualPad::StartVibration(const int Power, const int Time) {
+	if (this->GetVibrationFlag()) {
+		StartJoypadVibration(this->GetJoyPad()->GetJoyPadNum(), Power, Time);
+	}
+}
+
+void cVirtualPad::StopVibration() {
+	if (pPad != nullptr) {
+		StopJoypadVibration(this->GetJoyPad()->GetJoyPadNum());
+	}
+}
+
 void cVirtualPad::ResetInputState() {
 	for (int i = 0; i < eButton_TotalNum; i++) {
 		mButtonInputState[i] = 0;
@@ -173,11 +215,13 @@ void cVirtualPad::ResetInputState() {
 
 void cVirtualPad::Initialize() {
 	pPad = nullptr;
+	this->StopVibration();
 	this->SetDefaultAssign();
 	this->ResetInputState();
 }
 
 void cVirtualPad::Finalize() {
+	this->StopVibration();
 	pPad = nullptr;
 	this->SetDefaultAssign();
 	this->ResetInputState();
