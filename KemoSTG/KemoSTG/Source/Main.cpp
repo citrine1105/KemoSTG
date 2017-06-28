@@ -1,6 +1,6 @@
 ﻿#include "../Header/Include.h"
 #include "../Header/StringResource.h"
-#include "../Header/VirtualPad.h"
+#include "../Header/SceneManager.h"
 
 int Game_Init();	 // アプリケーション初期化処理
 
@@ -22,34 +22,16 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetDrawMode(DX_DRAWMODE_BILINEAR);
 
-	cPad *p = new cPad[2];
-	cVirtualPad *vp = new cVirtualPad[2];
-	p[0].SetJoyPadNum(DX_INPUT_PAD1);
-	p[1].SetJoyPadNum(DX_INPUT_PAD3);
-	vp[0].SetJoyPad(&p[0]);
-	vp[1].SetJoyPad(&p[1]);
-	vp[0].SetDefaultAssign(0);
-	vp[1].SetDefaultAssign(1);
-	vp[0].SetVibrationFlag(true);
+	cSceneManager scene;
+	scene.Initialize();
 
 	while (ProcessMessage() == 0 && ClearDrawScreen() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0) {
-		vp[0].Update();
-		vp[1].Update();
-		if ((vp[0].GetJoyPad()->GetJoyPadInputState(eXInputAssign_LT) > 0 || vp[0].GetJoyPad()->GetJoyPadInputState(eXInputAssign_RT) > 0) && 
-			vp[0].GetVibrationFlag()) {
-			vp[0].StartVibration(static_cast<double>(vp[0].GetJoyPad()->GetJoyPadInputState(eXInputAssign_LT) + vp[0].GetJoyPad()->GetJoyPadInputState(eXInputAssign_RT)) * (1000.0 / 510.0), -1);
-		}
-		else {
-			vp[0].StopVibration();
-		}
-		if (CheckHitKey(KEY_INPUT_SPACE) != 0) {
-			vp[1].Draw();
-		}
-		else {
-			vp[0].Draw();
-		}
+		scene.Update();
+		scene.Draw();
 		ScreenFlip();
 	}
+
+	scene.Finalize();
 
 	DxLib_End();
 

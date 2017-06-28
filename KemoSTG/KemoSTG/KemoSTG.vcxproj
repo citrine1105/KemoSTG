@@ -163,6 +163,10 @@
     <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Pad.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
+    <ClCompile Include="Source\Scene\Game.cpp" />
+    <ClCompile Include="Source\Scene\Title.cpp" />
     <ClCompile Include="Source\SoundResource.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
@@ -182,7 +186,10 @@
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Pad.h" />
     <ClInclude Include="Header\Scene.h" />
+    <ClInclude Include="Header\SceneChanger.h" />
     <ClInclude Include="Header\SceneManager.h" />
+    <ClInclude Include="Header\Scene\Game.h" />
+    <ClInclude Include="Header\Scene\Title.h" />
     <ClInclude Include="Header\SoundResource.h" />
     <ClInclude Include="Header\Sprite.h" />
     <ClInclude Include="Header\StringResource.h" />
