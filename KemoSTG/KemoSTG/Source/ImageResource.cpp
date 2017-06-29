@@ -1,4 +1,4 @@
-#include "../Header/ImageResource.h"
+﻿#include "../Header/ImageResource.h"
 
 cImageResource::cImageResource() {
 	this->Initialize();

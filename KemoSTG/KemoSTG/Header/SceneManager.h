@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Include.h"
 #include "SceneChanger.h"
 #include "Scene.h"

@@ -30,6 +30,7 @@ public:
 	void MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);	// 指定の場所に移動
 	void SetPosition(const double PositionX, const double PositionY);	// 座標を指定
 	void SetCollisionRange(const double RangeX, const double RangeY, const eCollisionType CollisionType = eCollision_Rectangle);		// 衝突判定の大きさを設定
+	void GetPosition(double *PositionX, double *PositionY);	// 座標を取得
 	cVector2D* GetMoveVectorPointer();	// 移動用ベクトルのアドレスを取得
 	cVector2D* GetCollisionVectorPointer();	// 衝突判定用ベクトルのアドレスを取得
 	//bool GetCollisionFlag(cSprite Sprite);	// 他のスプライトと衝突したか調べる

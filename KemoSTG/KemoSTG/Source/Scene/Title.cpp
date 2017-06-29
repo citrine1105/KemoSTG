@@ -1,4 +1,4 @@
-#include "../../Header/Scene/Title.h"
+ï»¿#include "../../Header/Scene/Title.h"
 
 cTitleScene::cTitleScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
 
@@ -20,6 +20,6 @@ void cTitleScene::Update() {
 }
 
 void cTitleScene::Draw() {
-	DrawString(0, 0, _T("ƒ^ƒCƒgƒ‹‰æ–ÊÀŞÖ°"), GetColor(0xFF, 0xFF, 0xFF));
+	DrawString(0, 0, _T("ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ï¾€ï¾ï¾–ï½°"), GetColor(0xFF, 0xFF, 0xFF));
 	mVirtualPad[0].Draw();
 }

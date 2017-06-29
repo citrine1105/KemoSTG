@@ -39,6 +39,15 @@ void cSprite::SetCollisionRange(const double RangeX, const double RangeY, const 
 	mCollisionType = CollisionType;
 }
 
+void cSprite::GetPosition(double *PositionX, double *PositionY) {
+	if (PositionX != nullptr) {
+		*PositionX = mPositionX;
+	}
+	if (PositionY != nullptr) {
+		*PositionY = mPositionY;
+	}
+}
+
 cVector2D* cSprite::GetMoveVectorPointer() {
 	return &mMoveVector;
 }
