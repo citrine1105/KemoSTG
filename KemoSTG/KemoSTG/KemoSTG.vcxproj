@@ -162,8 +162,9 @@
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GameBaseScene.cpp" />
     <ClCompile Include="Source\GameSceneManager.cpp" />
-    <ClCompile Include="Source\GameScene\Logo.cpp" />
-    <ClCompile Include="Source\GameScene\Notice.cpp" />
+    <ClCompile Include="Source\GameScene\GameLogo.cpp" />
+    <ClCompile Include="Source\GameScene\GameNotice.cpp" />
+    <ClCompile Include="Source\GameScene\GameTitle.cpp" />
     <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Pad.cpp" />
@@ -186,8 +187,9 @@
     <ClInclude Include="Header\Easing.h" />
     <ClInclude Include="Header\GameBaseScene.h" />
     <ClInclude Include="Header\GameSceneManager.h" />
-    <ClInclude Include="Header\GameScene\Logo.h" />
-    <ClInclude Include="Header\GameScene\Notice.h" />
+    <ClInclude Include="Header\GameScene\GameLogo.h" />
+    <ClInclude Include="Header\GameScene\GameNotice.h" />
+    <ClInclude Include="Header\GameScene\GameTitle.h" />
     <ClInclude Include="Header\ImageResource.h" />
     <ClInclude Include="Header\Include.h" />
     <ClInclude Include="Header\Initialization.h" />

@@ -1,4 +1,4 @@
-﻿#include "../../Header/GameScene/Logo.h"
+﻿#include "../../Header/GameScene/GameLogo.h"
 
 cLogoGameScene::cLogoGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 
@@ -9,16 +9,15 @@ cLogoGameScene::~cLogoGameScene() {
 }
 
 void cLogoGameScene::Initialize() {
-	mLogoImage[0].SetPath(_T("./Data/Image/Game/Logo/am.png"));
-	mLogoImage[1].SetPath(_T("./Data/Image/Game/Logo/clab.png"));
-	mLogoImage[0].Load();
-	mLogoImage[1].Load();
+	mLogoImage.SetPath(_T("./Data/Image/Game/Logo/logo.png"));
+	mLogoImage.SetDivisionSize(2, 2, 1, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+	mLogoImage.Load();
 	mFade.SetPosition(0.0, 0.0);
 	mTimer.Start();
 }
 
 void cLogoGameScene::Finalize() {
-
+	//mLogoImage.Delete();
 }
 
 void cLogoGameScene::Update() {
@@ -39,21 +38,26 @@ void cLogoGameScene::Update() {
 		mTimer.Update();
 		mFade.Update();
 	}
+	if (mTimer.GetSecond() >= 10.0) {
+		pSceneChanger->ChangeScene(eGameScene_Title);
+	}
 }
 
 void cLogoGameScene::Draw() {
 	double tParam;	// フェードイン/アウト用
 	mFade.GetPosition(&tParam, nullptr);
+
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(tParam));
 	if (mTimer.GetSecond() < 5.0) {
-		DrawGraph(0, 0, mLogoImage[0].GetHandle(), FALSE);
+		DrawGraph(0, 0, mLogoImage.GetHandle(0), FALSE);
 	}
 	else {
-		DrawGraph(0, 0, mLogoImage[1].GetHandle(), FALSE);
+		DrawGraph(0, 0, mLogoImage.GetHandle(1), FALSE);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
 	if (mTimer.GetValue() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cGameBaseScene::mInformationFont) / 2, 24 * 15,
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cGameBaseScene::mInformationFont) / 2, 24 * 14 + 8,
 			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 	}
 }

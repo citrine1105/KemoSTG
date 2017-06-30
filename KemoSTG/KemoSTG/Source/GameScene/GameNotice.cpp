@@ -1,4 +1,4 @@
-﻿#include "../../Header/GameScene/Notice.h"
+﻿#include "../../Header/GameScene/GameNotice.h"
 
 cNoticeGameScene::cNoticeGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 
@@ -45,16 +45,16 @@ void cNoticeGameScene::Draw() {
 		"WILL BE PROSECUTED TO\n"
 		"THE FULL EXTENT OF THE JAM.");
 	tCopyright = _T("©2017 C-Lab All rights reserved.");
-	tVersion = _T("VERSION ");
+	tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tNotice.c_str(), tNotice.size(), cGameBaseScene::mInformationFont) / 2, 24 * 3,
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tNotice.c_str(), tNotice.size(), cGameBaseScene::mInformationFont) / 2, 24 * 3 + 8,
 		tNotice.c_str(), GetColor(0xFF, 0x00, 0x00), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), cGameBaseScene::mInformationFont) / 2, 24 * 6,
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), cGameBaseScene::mInformationFont) / 2, 24 * 6 + 8,
 		tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), cGameBaseScene::mInformationFont) / 2, 24 * 20,
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), cGameBaseScene::mInformationFont) / 2, 24 * 20 + 8,
 		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cGameBaseScene::mInformationFont) / 2, 24 * 22,
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cGameBaseScene::mInformationFont) / 2, 24 * 22 + 8,
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 
 	//DrawFormatStringToHandle(0, 0, GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont, _T("%d"), mTimer.GetValue());

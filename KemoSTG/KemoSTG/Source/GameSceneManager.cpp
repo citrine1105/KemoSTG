@@ -1,6 +1,7 @@
 ﻿#include "../Header/GameSceneManager.h"
-#include "../Header/GameScene/Notice.h"
-#include "../Header/GameScene/Logo.h"
+#include "../Header/GameScene/GameNotice.h"
+#include "../Header/GameScene/GameLogo.h"
+#include "../Header/GameScene/GameTitle.h"
 
 cGameSceneManager::cGameSceneManager() : mNextScene(eGameScene_Notice) {
 	pScene = static_cast<cGameBaseScene*>(new cNoticeGameScene(this));
@@ -26,6 +27,9 @@ void cGameSceneManager::Update() {
 			break;
 		case eGameScene_Logo:
 			pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
+			break;
+		case eGameScene_Title:
+			pScene = static_cast<cGameBaseScene*>(new cTitleGameScene(this));
 			break;
 		}
 		mNextScene = eGameScene_None;
