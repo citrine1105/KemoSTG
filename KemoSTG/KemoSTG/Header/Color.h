@@ -17,7 +17,7 @@ public:
 	cColor(cColor&&) = delete;
 	cColor& operator = (cColor&&) = delete;
 
-	static cColor& get_instance() {
+	static cColor& GetInstance() {
 		static cColor inst;
 		return inst;
 	}

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../GameBaseScene.h"
+#include "../Timer.h"
 
 class cNoticeGameScene : public cGameBaseScene {
 private:

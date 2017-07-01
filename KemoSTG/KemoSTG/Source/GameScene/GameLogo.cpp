@@ -9,19 +9,18 @@ cLogoGameScene::~cLogoGameScene() {
 }
 
 void cLogoGameScene::Initialize() {
-	mLogoImage.SetPath(_T("./Data/Image/Game/Logo/logo.png"));
-	mLogoImage.SetDivisionSize(2, 2, 1, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
-	mLogoImage.Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetPath(_T("./Data/Image/Game/Logo/logo.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetDivisionSize(2, 2, 1, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Load();
 	mFade.SetPosition(0.0, 0.0);
 	mTimer.Start();
 }
 
 void cLogoGameScene::Finalize() {
-	//mLogoImage.Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Delete();
 }
 
 void cLogoGameScene::Update() {
-	cGameBaseScene::Update();
 	if (GetASyncLoadNum() == 0) {
 		if (mTimer.GetValue() == 0) {
 			mFade.MoveToPoint(255.0, 0.0, 30);
@@ -49,10 +48,10 @@ void cLogoGameScene::Draw() {
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(tParam));
 	if (mTimer.GetSecond() < 5.0) {
-		DrawGraph(0, 0, mLogoImage.GetHandle(0), FALSE);
+		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(0), FALSE);
 	}
 	else {
-		DrawGraph(0, 0, mLogoImage.GetHandle(1), FALSE);
+		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(1), FALSE);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 

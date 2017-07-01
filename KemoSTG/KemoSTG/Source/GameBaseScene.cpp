@@ -27,6 +27,7 @@ void cGameBaseScene::Finalize() {
 	if (ppVirtualPad != nullptr) {
 		delete[] ppVirtualPad;
 	}
+	DeleteFontToHandle(mInformationFont);
 }
 
 void cGameBaseScene::Update() {

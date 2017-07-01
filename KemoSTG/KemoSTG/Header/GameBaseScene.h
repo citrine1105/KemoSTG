@@ -2,7 +2,6 @@
 #include "Include.h"
 #include "SceneChanger.h"
 #include "VirtualPad.h"
-#include "Timer.h"
 
 #define GAME_SCREEN_WIDTH 480	// ゲーム画面幅
 #define GAME_SCREEN_HEIGHT 640	// ゲーム画面高さ

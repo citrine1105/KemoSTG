@@ -20,7 +20,6 @@ void cNoticeGameScene::Finalize() {
 }
 
 void cNoticeGameScene::Update() {
-	cGameBaseScene::Update();
 	mTimer.Update();
 	if (mTimer.GetValue() <= 0) {
 		pSceneChanger->ChangeScene(eGameScene_Logo);
@@ -56,8 +55,6 @@ void cNoticeGameScene::Draw() {
 		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cGameBaseScene::mInformationFont) / 2, 24 * 22 + 8,
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-
-	//DrawFormatStringToHandle(0, 0, GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont, _T("%d"), mTimer.GetValue());
 
 	//if (cGameBaseScene::ppVirtualPad[0]->GetInputState(eButton_Shot) > 0) {
 	//	DrawString(0, 18, _T("5000兆円くれ"), GetColor(0xFF, 0xFF, 0x00));

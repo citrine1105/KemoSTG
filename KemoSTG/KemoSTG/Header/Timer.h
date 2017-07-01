@@ -44,8 +44,8 @@ public:
 	void Start();	// カウント開始
 	void Stop();	// カウント停止
 	void Reset();	// 値をデフォルト値に戻す
-	void Initialize() override;	// 初期化処理
-	void Finalize() override;	// 終了処理
-	void Update() override;	// 更新処理
+	virtual void Initialize() override;	// 初期化処理
+	virtual void Finalize() override;	// 終了処理
+	virtual void Update() override;	// 更新処理
 	virtual void Draw() override;	// 描画処理(ここでは未定義)
 };

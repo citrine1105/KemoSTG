@@ -20,7 +20,6 @@ void cTitleGameScene::Finalize() {
 }
 
 void cTitleGameScene::Update() {
-	cGameBaseScene::Update();
 	if (GetASyncLoadNum() == 0) {
 		if (mTimer.GetValue() == 0) {
 			mFade.MoveToPoint(255.0, 0.0, 60);

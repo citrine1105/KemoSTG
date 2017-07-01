@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include "../GameBaseScene.h"
-#include "../ImageResource.h"
+#include "../ImageResourceContainer.h"
 #include "../Sprite.h"
 
 class cLogoGameScene : public cGameBaseScene {
 private:
 	cTimer mTimer;
-	cImageResource mLogoImage;	// ロゴ画像(置き場所変えて)
+	//cImageResource mLogoImage;	// ロゴ画像(置き場所変えて)
 	cSprite mFade;	// フェードイン/アウト用
 public:
 	cLogoGameScene(iSceneChanger<eGameScene> *Changer);
