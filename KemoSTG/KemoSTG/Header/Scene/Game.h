@@ -1,11 +1,14 @@
 ﻿#pragma once
 #include "../Scene.h"
+#include "../Sprite.h"
 #include "../GameSceneManager.h"
 
 class cGameScene : public cScene {
 protected:
 	int mGameScreen;
 	cGameSceneManager mGame;
+
+	cSprite mFade;
 public:
 	cGameScene(iSceneChanger<eScene> *Changer);
 	~cGameScene();

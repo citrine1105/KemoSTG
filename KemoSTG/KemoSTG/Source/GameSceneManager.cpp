@@ -3,8 +3,8 @@
 #include "../Header/GameScene/GameLogo.h"
 #include "../Header/GameScene/GameTitle.h"
 
-cGameSceneManager::cGameSceneManager() : mNextScene(eGameScene_Notice) {
-	pScene = static_cast<cGameBaseScene*>(new cNoticeGameScene(this));
+cGameSceneManager::cGameSceneManager() : mNextScene(eGameScene_None) {
+	pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
 }
 
 void cGameSceneManager::Initialize() {

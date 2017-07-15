@@ -36,17 +36,9 @@ void cTitleGameScene::Update() {
 }
 
 void cTitleGameScene::Draw() {
-	std::tstring tRank;
-	std::tstring tExtend[3];
-	std::tstring tVersion;
-
-	tRank = _T("RANK: ");
-	tRank += _T("NORMAL");
-	tExtend[0] = _T("-EXTEND-");
-	tExtend[1] = _T("40,000,000PTS");
-	tExtend[2] = _T("100,000,000PTS");
-	tVersion = _T("VER. ");
-	tVersion += VERSION_STRING;
+	std::tstring tCopyright[2];
+	tCopyright[0] = _T("©2017 Amusement Makers");
+	tCopyright[1] = _T("Developed by C-Lab");
 
 	double tParam;	// フェードイン/アウト用
 	mFade.GetPosition(&tParam, nullptr);
@@ -54,25 +46,13 @@ void cTitleGameScene::Draw() {
 	DrawGraph(0, 0, mImage.GetHandle(), FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tRank.c_str(), tRank.size(), cGameBaseScene::mInformationFont) / 2, 24 * 18 + 8,
-		tRank.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tExtend[0].c_str(), tExtend[0].size(), cGameBaseScene::mInformationFont) / 2, 24 * 20 + 8,
-		tExtend[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawFormatStringToHandle(133, 24 * 21 + 8, GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont, _T("1ST"));
-	DrawFormatStringToHandle(133, 24 * 22 + 8, GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont, _T("2ND"));
-	DrawStringToHandle(GAME_SCREEN_WIDTH - 133 - GetDrawStringWidthToHandle(tExtend[1].c_str(), tExtend[1].size(), cGameBaseScene::mInformationFont), 24 * 21 + 8,
-		tExtend[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(GAME_SCREEN_WIDTH - 133 - GetDrawStringWidthToHandle(tExtend[2].c_str(), tExtend[2].size(), cGameBaseScene::mInformationFont), 24 * 22 + 8,
-		tExtend[2].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright[0].c_str(), tCopyright[0].size(), cGameBaseScene::mInformationFont) / 2, 24 * 22 + 8,
+		tCopyright[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright[1].c_str(), tCopyright[1].size(), cGameBaseScene::mInformationFont) / 2, 24 * 23 + 8,
+		tCopyright[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 
 	if (mTimer.GetValue() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("INSERT 2 COINS"), _tcsclen(_T("INSERT 2 COINS")), cGameBaseScene::mInformationFont) / 2, 24 * 14 + 8,
-			_T("INSERT 2 COINS"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-		//DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("CONTINUE REQUIRES"), _tcsclen(_T("CONTINUE REQUIRES")), cGameBaseScene::mInformationFont) / 2, 24 * 15 + 8,
-		//	_T("CONTINUE REQUIRES"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-		//DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("ONLY 1 COIN"), _tcsclen(_T("ONLY 1 COIN")), cGameBaseScene::mInformationFont) / 2, 24 * 16 + 8,
-		//	_T("ONLY 1 COIN"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cGameBaseScene::mInformationFont) / 2, 24 * 14 + 8,
+			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 	}
-	DrawStringToHandle(12, 24 * 0 + 8,
-		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 }

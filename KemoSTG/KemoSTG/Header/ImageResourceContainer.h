@@ -2,7 +2,10 @@
 #include "ImageResource.h"
 
 enum eImageIndex {
+	eImage_Title,
 	eImage_GameLogo,
+	eImage_GameTitle,
+	eImage_GameBackground,
 	eImage_SelectTimer,
 
 	eImage_None

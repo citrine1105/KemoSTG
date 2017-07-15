@@ -172,6 +172,7 @@
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\Game.cpp" />
+    <ClCompile Include="Source\Scene\Load.cpp" />
     <ClCompile Include="Source\Scene\Title.cpp" />
     <ClCompile Include="Source\SelectTimer.cpp" />
     <ClCompile Include="Source\SoundResource.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="Header\SceneChanger.h" />
     <ClInclude Include="Header\SceneManager.h" />
     <ClInclude Include="Header\Scene\Game.h" />
+    <ClInclude Include="Header\Scene\Load.h" />
     <ClInclude Include="Header\Scene\Title.h" />
     <ClInclude Include="Header\SelectTimer.h" />
     <ClInclude Include="Header\SoundResource.h" />

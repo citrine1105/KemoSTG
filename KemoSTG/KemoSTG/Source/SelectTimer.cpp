@@ -20,12 +20,14 @@ void cSelectTimer::Draw() {
 }
 
 void cSelectTimer::Draw(const int X, const int Y) {
-	int tX = 0, tY = -13;
+	int tX = 0, tY = -15;
 	tX -= GetDrawFormatStringWidthToHandle(mBigFont, _T("%d"), mValue / 60);
-	tX -= GetDrawFormatStringWidthToHandle(mBigFont, _T(".%d"), mValue % 60 / 6);
+	tX -= GetDrawFormatStringWidthToHandle(mSmallFont, _T(".%d"), mValue % 60 / 6);
 	tX /= 2;
 
-	DrawGraph(X, Y, cImageResourceContainer::GetInstance()->GetElement(eImage_SelectTimer)->GetHandle(mValue / 5 % 12), TRUE);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 8.0 / 10.0));
+	//DrawGraph(X - 32, Y - 16, cImageResourceContainer::GetInstance()->GetElement(eImage_SelectTimer)->GetHandle(mValue / 5 % 12), TRUE);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	DrawFormatStringToHandle(tX + X, tY + Y, GetColor(0xFF, 0xFF, 0xFF), mBigFont, _T("%d"), mValue / 60);
 	DrawFormatStringToHandle(tX + X + GetDrawFormatStringWidthToHandle(mBigFont, _T("%d"), mValue / 60), tY + Y + 8, GetColor(0xFF, 0xFF, 0xFF), mSmallFont, _T(".%d"), mValue % 60 / 6);
 }

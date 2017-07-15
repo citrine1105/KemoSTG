@@ -2,6 +2,7 @@
 #include "Include.h"
 #include "SceneChanger.h"
 #include "VirtualPad.h"
+#include "ImageResourceContainer.h"
 
 enum eScene {
 	eScene_Load,

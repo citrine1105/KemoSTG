@@ -55,6 +55,8 @@ void cNoticeGameScene::Draw() {
 		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cGameBaseScene::mInformationFont) / 2, 24 * 22 + 8,
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+	
+	//mTimer.Draw(240, 32);
 
 	//if (cGameBaseScene::ppVirtualPad[0]->GetInputState(eButton_Shot) > 0) {
 	//	DrawString(0, 18, _T("5000兆円くれ"), GetColor(0xFF, 0xFF, 0x00));
