@@ -25,6 +25,7 @@ void cSelectTimer::Draw(const int X, const int Y) {
 	tX -= GetDrawFormatStringWidthToHandle(mSmallFont, _T(".%d"), mValue % 60 / 6);
 	tX /= 2;
 
+	DrawGraph(X - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->GetSizeX() / 2, Y - 7 - 8 + tY, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->GetHandle(), TRUE);
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 8.0 / 10.0));
 	//DrawGraph(X - 32, Y - 16, cImageResourceContainer::GetInstance()->GetElement(eImage_SelectTimer)->GetHandle(mValue / 5 % 12), TRUE);
 	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);

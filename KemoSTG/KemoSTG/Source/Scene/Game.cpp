@@ -15,16 +15,34 @@ void cGameScene::Initialize() {
 
 	mFade.SetPosition(255.0, 0.0);
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackground)->SetPath(_T("./Data/Image/Game/Background/1.jpg"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->SetPath(_T("./Data/Image/Game/life.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->SetPath(_T("./Data/Image/Game/bomb.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->SetDivisionSize(4, 4, 1, 20, 20);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->SetPath(_T("./Data/Image/Game/Background/1.jpg"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->SetPath(_T("./Data/Image/Game/score_board.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->SetDivisionSize(2, 2, 1, 160, 56);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->SetPath(_T("./Data/Image/Game/rate_num.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->SetDivisionSize(11, 11, 1, 24, 36);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->SetPath(_T("./Data/Image/Game/gauge.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->SetDivisionSize(4, 4, 1, 16, 16);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->SetPath(_T("./Data/Image/Game/Caption/bomb.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->SetPath(_T("./Data/Image/Game/Caption/time.png"));
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackground)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->Load();
 }
 
 void cGameScene::Finalize() {
 	DeleteGraph(mGameScreen);
 	mGame.Finalize();
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackground)->Finalize();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->Finalize();
 }
 
 void cGameScene::Update() {
@@ -49,7 +67,7 @@ void cGameScene::Draw() {
 	mFade.GetPosition(&tPos, nullptr);
 
 	//mVirtualPad[0].Draw();
-	DrawRotaGraph(640 / 2, 480 / 2, 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackground)->GetHandle(), FALSE);
+	DrawRotaGraph(640 / 2, 480 / 2, 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->GetHandle(), FALSE);
 	if (CheckHandleASyncLoad(mGameScreen) == FALSE) {
 		if (tPos <= 0.0) {
 			SetDrawScreen(mGameScreen);

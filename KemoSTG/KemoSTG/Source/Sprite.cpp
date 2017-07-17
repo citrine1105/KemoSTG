@@ -26,6 +26,10 @@ void cSprite::MoveToPoint(const double PositionX, const double PositionY, const 
 	mDelayTimer.Start();
 }
 
+void cSprite::AddToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	this->MoveToPoint(mPositionX + PositionX, mPositionY + PositionY, MoveTime, MoveType, EasingFunction);
+}
+
 void cSprite::SetPosition(const double PositionX, const double PositionY) {
 	mPositionX = PositionX;
 	mPositionY = PositionY;
@@ -46,6 +50,18 @@ void cSprite::GetPosition(double *PositionX, double *PositionY) {
 	if (PositionY != nullptr) {
 		*PositionY = mPositionY;
 	}
+}
+
+double cSprite::GetPositionX() {
+	return mPositionX;
+}
+
+double cSprite::GetPositionY() {
+	return mPositionY;
+}
+
+double cSprite::GetAngleToSprite(cSprite *Sprite) {
+	return atan2(Sprite->GetPositionY() - mPositionY, Sprite->GetPositionX() - mPositionX);
 }
 
 cVector2D* cSprite::GetMoveVectorPointer() {

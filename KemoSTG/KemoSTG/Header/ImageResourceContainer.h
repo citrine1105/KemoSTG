@@ -5,8 +5,18 @@ enum eImageIndex {
 	eImage_Title,
 	eImage_GameLogo,
 	eImage_GameTitle,
-	eImage_GameBackground,
+	eImage_Background,
+
+	eImage_Life,
+	eImage_Bomb,
+	eImage_ScoreBoard,
+	eImage_RateNumber,
+	eImage_LifeGauge,
+	eImage_CaptionBomb,
+	eImage_CaptionTime,
 	eImage_SelectTimer,
+
+	eImage_GameBackGround,
 
 	eImage_None
 };

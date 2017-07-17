@@ -43,6 +43,7 @@ void cImageResource::Load(const TCHAR *FileName) {
 	mTotalNum = 1;
 	this->CreateHandle(1);
 	*pHandle = LoadGraph(FileName);
+	//GetGraphSize(*pHandle, &mSizeX, &mSizeY);
 }
 
 void cImageResource::Load(const TCHAR *FileName, const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY) {
@@ -92,6 +93,31 @@ int cImageResource::GetHandle(const int Num) {
 	else {
 		return -1;
 	}
+}
+
+void cImageResource::GetSize(int *SizeX, int *SizeY) {
+	int tSizeX, tSizeY;
+
+	GetGraphSize(pHandle[0], &tSizeX, &tSizeY);
+
+	if (SizeX != nullptr) {
+		*SizeX = tSizeX;
+	}
+	if (SizeY != nullptr) {
+		*SizeY = tSizeY;
+	}
+}
+
+int cImageResource::GetSizeX() {
+	int tSizeX;
+	this->GetSize(&tSizeX, nullptr);
+	return tSizeX;
+}
+
+int cImageResource::GetSizeY() {
+	int tSizeY;
+	this->GetSize(nullptr, &tSizeY);
+	return tSizeY;
 }
 
 void cImageResource::Initialize() {

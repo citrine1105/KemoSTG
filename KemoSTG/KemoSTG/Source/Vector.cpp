@@ -74,15 +74,6 @@ void cVector2D::AddMagnitude(const double Magnitude) {
 	this->SetPolarForm(tAngle, this->GetMagnitude() + Magnitude);
 }
 
-void cVector2D::GetElement(double *ElementX, double *ElementY) {
-	if (ElementX != NULL && ElementX != nullptr) {
-		*ElementX = mElementX;
-	}
-	if (ElementY != NULL && ElementY != nullptr) {
-		*ElementY = mElementY;
-	}
-}
-
 void cVector2D::GetStartPoint(double *StartX, double *StartY) {
 	if (StartX != NULL && StartX != nullptr) {
 		*StartX = mStartX;
@@ -92,6 +83,14 @@ void cVector2D::GetStartPoint(double *StartX, double *StartY) {
 	}
 }
 
+double cVector2D::GetStartPointX() {
+	return mStartX;
+}
+
+double cVector2D::GetStartPointY() {
+	return mStartY;
+}
+
 void cVector2D::GetEndPoint(double *EndX, double *EndY) {
 	if (EndX != NULL && EndX != nullptr) {
 		*EndX = mStartX + mElementX;
@@ -99,6 +98,31 @@ void cVector2D::GetEndPoint(double *EndX, double *EndY) {
 	if (EndY != NULL && EndY != nullptr) {
 		*EndY = mStartY + mElementY;
 	}
+}
+
+double cVector2D::GetEndPointX() {
+	return mStartX + mElementX;
+}
+
+double cVector2D::GetEndPointY() {
+	return mStartY + mElementY;
+}
+
+void cVector2D::GetElement(double *ElementX, double *ElementY) {
+	if (ElementX != NULL && ElementX != nullptr) {
+		*ElementX = mElementX;
+	}
+	if (ElementY != NULL && ElementY != nullptr) {
+		*ElementY = mElementY;
+	}
+}
+
+double cVector2D::GetElementX() {
+	return mElementX;
+}
+
+double cVector2D::GetElementY() {
+	return mElementY;
 }
 
 double cVector2D::GetAngle() {

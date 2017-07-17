@@ -2,6 +2,7 @@
 #include "../Header/GameScene/GameNotice.h"
 #include "../Header/GameScene/GameLogo.h"
 #include "../Header/GameScene/GameTitle.h"
+#include "../Header/GameScene/GameMain.h"
 
 cGameSceneManager::cGameSceneManager() : mNextScene(eGameScene_None) {
 	pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
@@ -30,6 +31,9 @@ void cGameSceneManager::Update() {
 			break;
 		case eGameScene_Title:
 			pScene = static_cast<cGameBaseScene*>(new cTitleGameScene(this));
+			break;
+		case eGameScene_Game:
+			pScene = static_cast<cGameBaseScene*>(new cMainGameScene(this));
 			break;
 		}
 		mNextScene = eGameScene_None;

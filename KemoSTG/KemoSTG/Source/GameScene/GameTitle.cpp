@@ -20,6 +20,10 @@ void cTitleGameScene::Finalize() {
 }
 
 void cTitleGameScene::Update() {
+	if (ppVirtualPad[0]->GetInputState(eButton_Pause) == 1) {
+		pSceneChanger->ChangeScene(eGameScene_Game);
+	}
+
 	if (GetASyncLoadNum() == 0) {
 		if (mTimer.GetValue() == 0) {
 			mFade.MoveToPoint(255.0, 0.0, 60);

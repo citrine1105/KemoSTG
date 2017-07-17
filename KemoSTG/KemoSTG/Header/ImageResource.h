@@ -25,6 +25,9 @@ public:
 	void SetPath(const TCHAR *Path);
 	void SetDivisionSize(const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY);
 	int GetHandle(const int Num = 0);
+	void GetSize(int *SizeX, int *SizeY);
+	int GetSizeX();
+	int GetSizeY();
 
 	void Initialize() override;
 	void Finalize() override;
