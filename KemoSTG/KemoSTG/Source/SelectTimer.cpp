@@ -22,7 +22,7 @@ void cSelectTimer::Draw() {
 void cSelectTimer::Draw(const int X, const int Y) {
 	int tX = 0, tY = -15;
 	tX -= GetDrawFormatStringWidthToHandle(mBigFont, _T("%d"), mValue / 60);
-	tX -= GetDrawFormatStringWidthToHandle(mSmallFont, _T(".%d"), mValue % 60 / 6);
+	tX -= GetDrawFormatStringWidthToHandle(mSmallFont, _T(".%d"), abs(mValue % 60 / 6));
 	tX /= 2;
 
 	DrawGraph(X - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->GetSizeX() / 2, Y - 7 - 8 + tY, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->GetHandle(), TRUE);

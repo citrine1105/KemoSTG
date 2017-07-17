@@ -129,6 +129,9 @@ void cTimer::Update() {
 			break;
 		case eCountMode_CountDown:
 			--mValue;
+			//if (mValue <= 0) {
+			//	this->Stop();
+			//}
 			break;
 		}
 	}
