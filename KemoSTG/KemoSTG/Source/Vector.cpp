@@ -15,7 +15,7 @@ void cVector2D::SetStartPoint(const double StartX, const double StartY) {
 
 void cVector2D::SetStartPoint(cVector2D Vector) {
 	double tEndX, tEndY;
-	Vector.GetEndPoint(&tEndX, &tEndY);
+	Vector.GetEndPoint(tEndX, tEndY);
 	this->SetStartPoint(tEndX, tEndY);
 }
 
@@ -26,7 +26,7 @@ void cVector2D::SetEndPoint(const double EndX, const double EndY) {
 
 void cVector2D::SetEndPoint(cVector2D Vector) {
 	double tStartX, tStartY;
-	Vector.GetStartPoint(&tStartX, &tStartY);
+	Vector.GetStartPoint(tStartX, tStartY);
 	this->SetEndPoint(tStartX, tStartY);
 }
 
@@ -74,13 +74,9 @@ void cVector2D::AddMagnitude(const double Magnitude) {
 	this->SetPolarForm(tAngle, this->GetMagnitude() + Magnitude);
 }
 
-void cVector2D::GetStartPoint(double *StartX, double *StartY) {
-	if (StartX != NULL && StartX != nullptr) {
-		*StartX = mStartX;
-	}
-	if (StartY != NULL && StartY != nullptr) {
-		*StartY = mStartY;
-	}
+void cVector2D::GetStartPoint(double &StartX, double &StartY) {
+	StartX = mStartX;
+	StartY = mStartY;
 }
 
 double cVector2D::GetStartPointX() {
@@ -91,13 +87,9 @@ double cVector2D::GetStartPointY() {
 	return mStartY;
 }
 
-void cVector2D::GetEndPoint(double *EndX, double *EndY) {
-	if (EndX != NULL && EndX != nullptr) {
-		*EndX = mStartX + mElementX;
-	}
-	if (EndY != NULL && EndY != nullptr) {
-		*EndY = mStartY + mElementY;
-	}
+void cVector2D::GetEndPoint(double &EndX, double &EndY) {
+	EndX = mStartX + mElementX;
+	EndY = mStartY + mElementY;
 }
 
 double cVector2D::GetEndPointX() {
@@ -108,13 +100,9 @@ double cVector2D::GetEndPointY() {
 	return mStartY + mElementY;
 }
 
-void cVector2D::GetElement(double *ElementX, double *ElementY) {
-	if (ElementX != NULL && ElementX != nullptr) {
-		*ElementX = mElementX;
-	}
-	if (ElementY != NULL && ElementY != nullptr) {
-		*ElementY = mElementY;
-	}
+void cVector2D::GetElement(double &ElementX, double &ElementY) {
+	ElementX = mElementX;
+	ElementY = mElementY;
 }
 
 double cVector2D::GetElementX() {
@@ -138,8 +126,8 @@ cVector2D cVector2D::GetVectorToVector(cVector2D Vector) {
 	double tEndX, tEndY;
 	cVector2D tResultVector;
 
-	Vector.GetStartPoint(&tEndX, &tEndY);
-	this->GetEndPoint(&tStartX, &tStartY);
+	Vector.GetStartPoint(tEndX, tEndY);
+	this->GetEndPoint(tStartX, tStartY);
 
 	tResultVector.SetStartPoint(tStartX, tStartY);
 	tResultVector.SetEndPoint(tEndX, tEndY);
@@ -152,8 +140,8 @@ cVector2D cVector2D::GetVectorStartPointToEndPoint(cVector2D Vector) {
 	double tEndX, tEndY;
 	cVector2D tResultVector;
 
-	Vector.GetStartPoint(&tEndX, &tEndY);
-	this->GetStartPoint(&tStartX, &tStartY);
+	Vector.GetStartPoint(tEndX, tEndY);
+	this->GetStartPoint(tStartX, tStartY);
 
 	tResultVector.SetStartPoint(tStartX, tStartY);
 	tResultVector.SetEndPoint(tEndX, tEndY);
@@ -166,8 +154,8 @@ cVector2D cVector2D::GetVectorEndPointToEndPoint(cVector2D Vector) {
 	double tEndX, tEndY;
 	cVector2D tResultVector;
 
-	Vector.GetEndPoint(&tEndX, &tEndY);
-	this->GetEndPoint(&tStartX, &tStartY);
+	Vector.GetEndPoint(tEndX, tEndY);
+	this->GetEndPoint(tStartX, tStartY);
 
 	tResultVector.SetStartPoint(tStartX, tStartY);
 	tResultVector.SetEndPoint(tEndX, tEndY);
@@ -179,7 +167,7 @@ cVector2D cVector2D::operator + (cVector2D Vector) {
 	double tElementX, tElementY;
 	cVector2D tResultVector;
 
-	Vector.GetElement(&tElementX, &tElementY);
+	Vector.GetElement(tElementX, tElementY);
 	tResultVector.SetStartPoint(mStartX, mStartY);
 	tResultVector.SetElement(mElementX + tElementX, mElementY + tElementY);
 
@@ -190,7 +178,7 @@ cVector2D cVector2D::operator - (cVector2D Vector) {
 	double tElementX, tElementY;
 	cVector2D tResultVector;
 
-	Vector.GetElement(&tElementX, &tElementY);
+	Vector.GetElement(tElementX, tElementY);
 	tResultVector.SetStartPoint(mStartX, mStartY);
 	tResultVector.SetElement(mElementX - tElementX, mElementY - tElementY);
 
@@ -217,14 +205,14 @@ cVector2D cVector2D::operator / (const double Value) {
 
 void cVector2D::operator += (cVector2D Vector) {
 	double tElementX, tElementY;
-	Vector.GetElement(&tElementX, &tElementY);
+	Vector.GetElement(tElementX, tElementY);
 	mElementX += tElementX;
 	mElementY += tElementY;
 }
 
 void cVector2D::operator -= (cVector2D Vector) {
 	double tElementX, tElementY;
-	Vector.GetElement(&tElementX, &tElementY);
+	Vector.GetElement(tElementX, tElementY);
 	mElementX -= tElementX;
 	mElementY -= tElementY;
 }

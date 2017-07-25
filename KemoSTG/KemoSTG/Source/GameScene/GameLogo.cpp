@@ -22,16 +22,16 @@ void cLogoGameScene::Finalize() {
 
 void cLogoGameScene::Update() {
 	if (GetASyncLoadNum() == 0) {
-		if (mTimer.GetValue() == 0) {
+		if (mTimer.GetTime() == 0) {
 			mFade.MoveToPoint(255.0, 0.0, 30);
 		}
-		else if (mTimer.GetValue() == 60 * 4 + 20) {
+		else if (mTimer.GetTime() == 60 * 4 + 20) {
 			mFade.MoveToPoint(0.0, 0.0, 30);
 		}
-		else if (mTimer.GetValue() == 60 * 5) {
+		else if (mTimer.GetTime() == 60 * 5) {
 			mFade.MoveToPoint(255.0, 0.0, 30);
 		}
-		else if (mTimer.GetValue() == 60 * 9 + 20) {
+		else if (mTimer.GetTime() == 60 * 9 + 20) {
 			mFade.MoveToPoint(0.0, 0.0, 30);
 		}
 		mTimer.Update();
@@ -43,10 +43,7 @@ void cLogoGameScene::Update() {
 }
 
 void cLogoGameScene::Draw() {
-	double tParam;	// フェードイン/アウト用
-	mFade.GetPosition(&tParam, nullptr);
-
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(tParam));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
 	if (mTimer.GetSecond() < 5.0) {
 		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(0), FALSE);
 	}
@@ -55,7 +52,7 @@ void cLogoGameScene::Draw() {
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
-	if (mTimer.GetValue() % 30 < 20) {
+	if (mTimer.GetTime() % 30 < 20) {
 		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cGameBaseScene::mInformationFont) / 2, 24 * 14 + 8,
 			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
 	}

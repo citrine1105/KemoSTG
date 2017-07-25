@@ -95,28 +95,28 @@ int cImageResource::GetHandle(const int Num) {
 	}
 }
 
-void cImageResource::GetSize(int *SizeX, int *SizeY) {
+int cImageResource::GetHandleNum() {
+	return mTotalNum;
+}
+
+void cImageResource::GetSize(int &SizeX, int &SizeY) {
 	int tSizeX, tSizeY;
 
 	GetGraphSize(pHandle[0], &tSizeX, &tSizeY);
 
-	if (SizeX != nullptr) {
-		*SizeX = tSizeX;
-	}
-	if (SizeY != nullptr) {
-		*SizeY = tSizeY;
-	}
+	SizeX = tSizeX;
+	SizeY = tSizeY;
 }
 
 int cImageResource::GetSizeX() {
-	int tSizeX;
-	this->GetSize(&tSizeX, nullptr);
+	int tSizeX, tSizeY;
+	this->GetSize(tSizeX, tSizeY);
 	return tSizeX;
 }
 
 int cImageResource::GetSizeY() {
-	int tSizeY;
-	this->GetSize(nullptr, &tSizeY);
+	int tSizeX, tSizeY;
+	this->GetSize(tSizeX, tSizeY);
 	return tSizeY;
 }
 

@@ -21,7 +21,7 @@ void cNoticeGameScene::Finalize() {
 
 void cNoticeGameScene::Update() {
 	mTimer.Update();
-	if (mTimer.GetValue() <= 0) {
+	if (mTimer.GetTime() <= 0) {
 		pSceneChanger->ChangeScene(eGameScene_Logo);
 	}
 }

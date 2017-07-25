@@ -95,8 +95,8 @@ cTimerDialog::~cTimerDialog() {
 }
 
 void cTimerDialog::SetHideTime(const int Value) {
-	mTimer.SetValue(Value);
-	mTimer.SetDefaultValue(Value);
+	mTimer.SetTime(Value);
+	mTimer.SetDefaultTime(Value);
 }
 
 void cTimerDialog::SetHideTime(const double Second) {
@@ -105,7 +105,7 @@ void cTimerDialog::SetHideTime(const double Second) {
 }
 
 void cTimerDialog::Show() {
-	mTimer.SetDefaultValue(10);	// test
+	mTimer.SetDefaultTime(10);	// test
 }
 
 void cTimerDialog::Initialize() {
@@ -123,7 +123,7 @@ void cTimerDialog::Update() {
 	if (fActive) {
 		cDialog::Update();
 		mTimer.Update();
-		if (mTimer.GetValue() <= 0) {
+		if (mTimer.GetTime() <= 0) {
 			this->Hide();
 		}
 	}

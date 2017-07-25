@@ -24,13 +24,13 @@ public:
 	void AddElement(const double ElementX, const double ElementY);		// 成分加算
 	void AddAngle(const double Angle);	// 角度加算
 	void AddMagnitude(const double Magnitude);	// 大きさ加算
-	void GetStartPoint(double *StartX, double *StartY);	// 始点取得
+	void GetStartPoint(double &StartX, double &StartY);	// 始点取得
 	double GetStartPointX();
 	double GetStartPointY();
-	void GetEndPoint(double *EndX, double *EndY);	// 終点取得
+	void GetEndPoint(double &EndX, double &EndY);	// 終点取得
 	double GetEndPointX();
 	double GetEndPointY();
-	void GetElement(double *ElementX, double *ElementY);		// 成分取得
+	void GetElement(double &ElementX, double &ElementY);		// 成分取得
 	double GetElementX();
 	double GetElementY();
 	double GetAngle();		// ベクトルの偏角

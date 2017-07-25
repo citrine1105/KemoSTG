@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
+#include <list>
+#include <climits>
 #include "DxLib.h"
 #include "Initialization.h"
 #include "Activity.h"

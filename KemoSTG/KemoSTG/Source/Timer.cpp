@@ -1,68 +1,88 @@
 ﻿#include "../Header/Timer.h"
 
-cTimer::cTimer() : mValue(0), mDefaultValue(0), 
-	mCountMode(eCountMode_CountUp), fActive(false) {
+cTimer::cTimer() : mTime(0), mDefaultTime(0), mMaxTime(AUTO_INT_MAX), 
+	mCountMode(eCountMode_CountUp), fActive(false), fLoop(false) {
 
 }
 
-cTimer::cTimer(const AUTO_INT Value) : mValue(Value), mDefaultValue(Value),
-	mCountMode(eCountMode_CountUp), fActive(false) {
+//cTimer::cTimer(const AUTO_INT Time) : mTime(Time), mDefaultTime(Time), mMaxTime(AUTO_INT_MAX),
+//mCountMode(eCountMode_CountUp), fActive(false), fLoop(false) {
+//
+//}
+//
+//cTimer::cTimer(const double Second) : mTime(static_cast<int>(Second * REFRESH_RATE)), mDefaultTime(0), mMaxTime(AUTO_INT_MAX),
+//mCountMode(eCountMode_CountUp), fActive(false), fLoop(false) {
+//
+//}
+//
+//cTimer::cTimer(const AUTO_INT Time, const eCountMode CountMode) : mTime(Time), mDefaultTime(Time),
+//	mCountMode(eCountMode_CountUp), fActive(false) {
+//
+//}
+//
+//cTimer::cTimer(const double Second, const eCountMode CountMode) : mTime(static_cast<AUTO_INT>(Second * REFRESH_RATE)), mDefaultTime(static_cast<AUTO_INT>(Second * REFRESH_RATE)),
+//	mCountMode(CountMode), fActive(false) {
+//
+//}
 
+cTimer::cTimer(const AUTO_INT Time, const AUTO_INT MaxTime, const eCountMode CountMode, const bool Loop) {
+	this->Initialize(Time, MaxTime, CountMode, Loop);
 }
 
-cTimer::cTimer(const double Second) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
-	mCountMode(eCountMode_CountUp), fActive(false) {
-
-}
-
-cTimer::cTimer(const AUTO_INT Value, const eCountMode CountMode) : mValue(Value), mDefaultValue(Value),
-	mCountMode(eCountMode_CountUp), fActive(false) {
-
-}
-
-cTimer::cTimer(const double Second, const eCountMode CountMode) : mValue(static_cast<AUTO_INT>(Second * 60.0)), mDefaultValue(static_cast<AUTO_INT>(Second * 60.0)),
-	mCountMode(CountMode), fActive(false) {
-
+cTimer::cTimer(const double Second, const double MaxSecond, const eCountMode CountMode, const bool Loop) {
+	this->Initialize(Second, MaxSecond, CountMode, Loop);
 }
 
 cTimer::~cTimer() {
 	this->Finalize();
 }
 
-void cTimer::SetValue(const AUTO_INT Value) {
-	mValue = Value;
+void cTimer::SetTime(const AUTO_INT Time) {
+	mTime = Time;
 }
 
 void cTimer::SetSecond(const double Second) {
-	mValue = static_cast<AUTO_INT>(Second * 60.0);
+	mTime = static_cast<AUTO_INT>(Second * REFRESH_RATE);
 }
 
-void cTimer::SetDefaultValue(const AUTO_INT Value) {
-	mDefaultValue = Value;
+void cTimer::SetDefaultTime(const AUTO_INT Time) {
+	mDefaultTime = Time;
 }
 
 void cTimer::SetDefaultSecond(const double Second) {
-	mDefaultValue = static_cast<AUTO_INT>(Second * 60.0);
+	mDefaultTime = static_cast<AUTO_INT>(Second * REFRESH_RATE);
+}
+
+void cTimer::SetMaxTime(const AUTO_INT MaxTime) {
+	mMaxTime = MaxTime;
+}
+
+void cTimer::SetMaxSecond(const double MaxSecond) {
+	mMaxTime = static_cast<AUTO_INT>(MaxSecond * REFRESH_RATE);
 }
 
 void cTimer::SetCountMode(const eCountMode Mode) {
 	mCountMode = Mode;
 }
 
-void cTimer::AddValue(const AUTO_INT Value) {
-	mValue += Value;
+void cTimer::SetLoopFlag(const bool Flag) {
+	fLoop = Flag;
+}
+
+void cTimer::AddTime(const AUTO_INT Time) {
+	mTime += Time;
 }
 
 void cTimer::AddSecond(const double Second) {
-	mValue += static_cast<AUTO_INT>(Second * 60.0);
+	mTime += static_cast<AUTO_INT>(Second * REFRESH_RATE);
 }
 
-AUTO_INT cTimer::GetValue() {
-	return mValue;
+AUTO_INT cTimer::GetTime() {
+	return mTime;
 }
 
 double cTimer::GetSecond() {
-	return static_cast<double>(mValue) / 60.0;
+	return static_cast<double>(mTime) / REFRESH_RATE;
 }
 
 eCountMode cTimer::GetCountMode() {
@@ -73,27 +93,27 @@ bool cTimer::GetActiveFlag() {
 	return fActive;
 }
 
-void cTimer::operator = (const AUTO_INT Value) {
-	this->SetValue(Value);
+void cTimer::operator=(const AUTO_INT Time) {
+	this->SetTime(Time);
 }
 
-void cTimer::operator = (const double Second) {
+void cTimer::operator=(const double Second) {
 	this->SetSecond(Second);
 }
 
-void cTimer::operator += (const AUTO_INT Value) {
-	this->AddValue(Value);
+void cTimer::operator+=(const AUTO_INT Time) {
+	this->AddTime(Time);
 }
 
-void cTimer::operator += (const double Second) {
+void cTimer::operator+=(const double Second) {
 	this->AddSecond(Second);
 }
 
-void cTimer::operator -= (const AUTO_INT Value) {
-	this->AddValue(-Value);
+void cTimer::operator-=(const AUTO_INT Time) {
+	this->AddTime(-Time);
 }
 
-void cTimer::operator -= (const double Second) {
+void cTimer::operator-=(const double Second) {
 	this->AddSecond(-Second);
 }
 
@@ -106,18 +126,38 @@ void cTimer::Stop() {
 }
 
 void cTimer::Reset() {
-	mValue = mDefaultValue;
+	mTime = mDefaultTime;
 }
 
 void cTimer::Initialize() {
-	mValue = 0;
-	mDefaultValue = 0;
+	mTime = 0;
+	mDefaultTime = 0;
+	mMaxTime = AUTO_INT_MAX;
 	mCountMode = eCountMode_CountUp;
 	fActive = false;
+	fLoop = false;
+}
+
+void cTimer::Initialize(const AUTO_INT Time, const AUTO_INT MaxTime, const eCountMode CountMode, const bool Loop) {
+	mTime = Time;
+	mDefaultTime = Time;
+	mMaxTime = MaxTime;
+	mCountMode = CountMode;
+	fActive = false;
+	fLoop = Loop;
+}
+
+void cTimer::Initialize(const double Second, const double MaxSecond, const eCountMode CountMode, const bool Loop) {
+	mTime = static_cast<AUTO_INT>(Second * REFRESH_RATE);
+	mDefaultTime = static_cast<AUTO_INT>(Second * REFRESH_RATE);
+	mMaxTime = static_cast<AUTO_INT>(MaxSecond * REFRESH_RATE);
+	mCountMode = CountMode;
+	fActive = false;
+	fLoop = Loop;
 }
 
 void cTimer::Finalize() {
-	mValue = 0;
+	mTime = 0;
 	fActive = false;
 }
 
@@ -125,13 +165,26 @@ void cTimer::Update() {
 	if (fActive) {
 		switch (mCountMode) {
 		case eCountMode_CountUp:
-			++mValue;
+			++mTime;
+			if (mTime >= mMaxTime) {
+				if (fLoop) {
+					mTime = 0;
+				}
+				else {
+					this->Stop();
+				}
+			}
 			break;
 		case eCountMode_CountDown:
-			--mValue;
-			//if (mValue <= 0) {
-			//	this->Stop();
-			//}
+			--mTime;
+			if (mTime <= 0) {
+				if (fLoop) {
+					mTime = mDefaultTime;
+				}
+				else {
+					this->Stop();
+				}
+			}
 			break;
 		}
 	}

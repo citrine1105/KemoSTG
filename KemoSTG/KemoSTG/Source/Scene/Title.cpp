@@ -21,9 +21,6 @@ void cTitleScene::Finalize() {
 }
 
 void cTitleScene::Update() {
-	double tPos;
-	mFade.GetPosition(&tPos, nullptr);
-
 	cScene::Update();
 	mMessageAnimation.Update();
 	if (GetASyncLoadNum() == 0) {
@@ -31,7 +28,7 @@ void cTitleScene::Update() {
 	}
 
 	if (fNext) {
-		if (tPos >= 255.0) {
+		if (mFade.GetPositionX() >= 255.0) {
 			pSceneChanger->ChangeScene(eScene_Game);
 		}
 	}
@@ -48,21 +45,18 @@ void cTitleScene::Update() {
 }
 
 void cTitleScene::Draw() {
-	double tFade;
-
-	mFade.GetPosition(&tFade, nullptr);
 	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->GetHandle(), FALSE);
 	if (fNext) {
-		if (mMessageAnimation.GetValue() % 12 < 6) {
+		if (mMessageAnimation.GetTime() % 12 < 6) {
 			DrawString(0, 0, _T("Press any button"), GetColor(0xFF, 0xFF, 0xFF));
 		}
 	}
 	else {
-		if (mMessageAnimation.GetValue() % 60 < 30) {
+		if (mMessageAnimation.GetTime() % 60 < 30) {
 			DrawString(0, 0, _T("Press any button"), GetColor(0xFF, 0xFF, 0xFF));
 		}
 	}
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, tFade);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, 640, 480, GetColor(0x00, 0x00, 0x00), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }

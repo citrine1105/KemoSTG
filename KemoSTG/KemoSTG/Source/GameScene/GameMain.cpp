@@ -15,8 +15,8 @@ void cMainGameScene::Initialize() {
 
 	mBackground.MoveToPoint(0.0, 1200.0, 90 * 60);
 
-	mBossTimer.SetSecond(120.0);
-	mBossTimer.SetCountMode(eCountMode_CountDown);
+	mTimer.Initialize(0, (cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandleNum() * 2 - 2) * 5, eCountMode_CountUp, true);
+	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
 	mTimer.Start();
 	mBossTimer.Start();
@@ -33,13 +33,11 @@ void cMainGameScene::Update() {
 }
 
 void cMainGameScene::Draw() {
-	double tPos;
 	std::tstring tScore[2];
-	tScore[0] = std::to_tstring(0);
+	tScore[0] = std::to_tstring(mTimer.GetTime() * 10);
 	tScore[1] = std::to_tstring(0);
 
-	mBackground.GetPosition(nullptr, &tPos);
-	DrawGraphF(0.0f, static_cast<float>(tPos) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
+	DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY()) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
 
 	// ボス体力ゲージ
 	DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
@@ -84,20 +82,20 @@ void cMainGameScene::Draw() {
 	// ボム
 	DrawGraph(12, 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
 	for (int i = 0; i < 3; i++) {
-		if (mTimer.GetValue() / 5 % 6 < 4) {
-			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetValue() / 5 % 6), TRUE);
+		if (mTimer.GetTime() / 5 % 6 < 4) {
+			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
 		}
 		else {
-			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetValue() / 5 % 6), TRUE);
+			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
 		}
 	}
 	DrawGraph(480 - 12 - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
 	for (int i = 0; i < 6; i++) {
-		if (mTimer.GetValue() / 5 % 6 < 4) {
-			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetValue() / 5 % 6), TRUE);
+		if (mTimer.GetTime() / 5 % 6 < 4) {
+			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
 		}
 		else {
-			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetValue() / 5 % 6), TRUE);
+			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
 		}
 	}
 }
