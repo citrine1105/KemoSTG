@@ -157,7 +157,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\CoinChute.cpp" />
+    <ClCompile Include="Source\Collider.cpp" />
+    <ClCompile Include="Source\Config.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
     <ClCompile Include="Source\GameBaseScene.cpp" />
@@ -170,6 +173,8 @@
     <ClCompile Include="Source\ImageResourceContainer.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Pad.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Point2D.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Scene\Game.cpp" />
@@ -185,10 +190,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
+    <ClInclude Include="Header\Bullet.h" />
     <ClInclude Include="Header\CoinChute.h" />
+    <ClInclude Include="Header\Collider.h" />
     <ClInclude Include="Header\Color.h" />
+    <ClInclude Include="Header\Config.h" />
     <ClInclude Include="Header\Dialog.h" />
     <ClInclude Include="Header\Easing.h" />
+    <ClInclude Include="Header\Enemy.h" />
     <ClInclude Include="Header\GameBaseScene.h" />
     <ClInclude Include="Header\GameSceneManager.h" />
     <ClInclude Include="Header\GameScene\GameLogo.h" />
@@ -201,6 +210,8 @@
     <ClInclude Include="Header\Initialization.h" />
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Pad.h" />
+    <ClInclude Include="Header\Player.h" />
+    <ClInclude Include="Header\Point2D.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneChanger.h" />
     <ClInclude Include="Header\SceneManager.h" />

@@ -1,6 +1,7 @@
 ﻿#include "../Header/Include.h"
 #include "../Header/StringResource.h"
 #include "../Header/SceneManager.h"
+#include "../Header/Config.h"
 
 int Game_Init();	 // アプリケーション初期化処理
 
@@ -35,10 +36,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 
 	DxLib_End();
 
+	cSystemConfig::GetInstance()->Write();
+
 	return 0;
 }
 
 int Game_Init() {
+	cSystemConfig::GetInstance()->Load();
 #ifdef _DEBUG
 	SetOutApplicationLogValidFlag(TRUE);		// デバッグモード時はログを出力
 #else
@@ -49,8 +53,8 @@ int Game_Init() {
 	SetDXArchiveKeyString(DX_ARCHIVE_KEY_STRING);	// DXアーカイブキー
 	SetMultiThreadFlag(TRUE);	// マルチスレッド動作有効
 	SetAlwaysRunFlag(TRUE);	// 非アクティブ時も動作
-	SetGraphMode(640, 480, 32);	// テスト
-	ChangeWindowMode(TRUE);	// テスト
+	SetGraphMode(DISPLAY_WIDTH, DISPLAY_HEIGHT, 32);	// 解像度設定
+	ChangeWindowMode(cSystemConfig::GetInstance()->GetConfig().fWindowMode);	// ウィンドウモード設定
 	SetMainWindowText(CAPTION_STRING);	// タイトルバー文字列を設定
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);		// フルスクリーン時の挙動を設定
 	SetUseDirect3DVersion(DX_DIRECT3D_9EX);	// Direct3D 9Exを使用する

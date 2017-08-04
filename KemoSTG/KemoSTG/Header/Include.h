@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <array>
 #include <climits>
 #include "DxLib.h"
 #include "Initialization.h"

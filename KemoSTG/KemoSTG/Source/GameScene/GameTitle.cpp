@@ -20,8 +20,10 @@ void cTitleGameScene::Finalize() {
 }
 
 void cTitleGameScene::Update() {
-	if (ppVirtualPad[0]->GetInputState(eButton_Pause) == 1) {
-		pSceneChanger->ChangeScene(eGameScene_Game);
+	for (int i = 0; i < 2; i++) {
+		if (ppVirtualPad[i]->GetInputState(eButton_Pause) == 1) {
+			pSceneChanger->ChangeScene(eGameScene_Game);
+		}
 	}
 
 	if (GetASyncLoadNum() == 0) {
@@ -36,6 +38,12 @@ void cTitleGameScene::Update() {
 		}
 		mTimer.Update();
 		mFade.Update();
+	}
+
+	for (int i = 0; i < 2; i++) {
+		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
+			pSceneChanger->ChangeScene(eGameScene_Logo);
+		}
 	}
 }
 

@@ -18,6 +18,9 @@ enum eImageIndex {
 
 	eImage_GameBackGround,
 
+	eImage_RectCollisionRange,
+	eImage_EllipseCollisionRange,
+
 	eImage_None
 };
 

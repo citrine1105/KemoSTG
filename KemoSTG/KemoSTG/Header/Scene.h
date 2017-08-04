@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Include.h"
 #include "SceneChanger.h"
+#include "Config.h"
 #include "VirtualPad.h"
 #include "ImageResourceContainer.h"
 

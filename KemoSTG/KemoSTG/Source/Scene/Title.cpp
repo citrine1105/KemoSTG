@@ -37,6 +37,7 @@ void cTitleScene::Update() {
 			if (mVirtualPad[0].GetInputState(static_cast<eButtonAssign>(i)) == 1) {
 				//pSceneChanger->ChangeScene(eScene_Game);
 				fNext = true;
+				mMessageAnimation.Reset();
 				mFade.MoveToPoint(255.0, 0.0, 60);
 				break;
 			}
@@ -52,11 +53,11 @@ void cTitleScene::Draw() {
 		}
 	}
 	else {
-		if (mMessageAnimation.GetTime() % 60 < 30) {
+		if (mMessageAnimation.GetTime() % 60 >= 30) {
 			DrawString(0, 0, _T("Press any button"), GetColor(0xFF, 0xFF, 0xFF));
 		}
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
-	DrawBox(0, 0, 640, 480, GetColor(0x00, 0x00, 0x00), TRUE);
+	DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }

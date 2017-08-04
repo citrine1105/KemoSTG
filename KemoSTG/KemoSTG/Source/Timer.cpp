@@ -85,6 +85,14 @@ double cTimer::GetSecond() {
 	return static_cast<double>(mTime) / REFRESH_RATE;
 }
 
+AUTO_INT cTimer::GetMaxTime() {
+	return mMaxTime;
+}
+
+double cTimer::GetMaxSecond() {
+	return static_cast<double>(mMaxTime) / REFRESH_RATE;
+}
+
 eCountMode cTimer::GetCountMode() {
 	return mCountMode;
 }
@@ -163,30 +171,35 @@ void cTimer::Finalize() {
 
 void cTimer::Update() {
 	if (fActive) {
-		switch (mCountMode) {
-		case eCountMode_CountUp:
-			++mTime;
-			if (mTime >= mMaxTime) {
-				if (fLoop) {
-					mTime = 0;
-				}
-				else {
-					this->Stop();
-				}
+	}
+	switch (mCountMode) {
+	case eCountMode_CountUp:
+		if (mTime >= mMaxTime) {
+			if (fLoop) {
+				mTime = 0;
 			}
-			break;
-		case eCountMode_CountDown:
-			--mTime;
-			if (mTime <= 0) {
-				if (fLoop) {
-					mTime = mDefaultTime;
-				}
-				else {
-					this->Stop();
-				}
+			else {
+				this->Stop();
+
 			}
-			break;
 		}
+		if (fActive) {
+			++mTime;
+		}
+		break;
+	case eCountMode_CountDown:
+		if (mTime <= 0) {
+			if (fLoop) {
+				mTime = mDefaultTime;
+			}
+			else {
+				this->Stop();
+			}
+		}
+		if (fActive) {
+			--mTime;
+		}
+		break;
 	}
 }
 

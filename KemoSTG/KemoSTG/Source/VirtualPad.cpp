@@ -25,8 +25,8 @@ void cVirtualPad::SetDefaultAssign(const int Type) {
 		mKeyAssign[eButton_Service] = KEY_INPUT_0;
 
 		mDPadKeyAssign[eDPad_Up] = KEY_INPUT_W;
-		mDPadKeyAssign[eDPad_Down] = KEY_INPUT_A;
-		mDPadKeyAssign[eDPad_Left] = KEY_INPUT_S;
+		mDPadKeyAssign[eDPad_Down] = KEY_INPUT_S;
+		mDPadKeyAssign[eDPad_Left] = KEY_INPUT_A;
 		mDPadKeyAssign[eDPad_Right] = KEY_INPUT_D;
 		break;
 	default:

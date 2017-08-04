@@ -12,10 +12,21 @@ package Interface {
 	}
 }
 
+package Point {
+	class Point2D {
+		#PointX
+		#PointY
+		+void SetPoint(const double PointX, const double PointY)
+		+void GetPoint(double &X, double &Y)
+		+double GetX()
+		+double GetY()
+		+void AddPoint(const double PointX, const double PointY)
+	}
+}
+
 package Vector {
 	class Vector2D {
-		#double StartX
-		#double StartY
+		#Point2D StartPoint
 		#double ElementX
 		#double ElementY
 		+Vector2D()
@@ -53,18 +64,8 @@ package Vector {
 		+virtual void Draw()
 	}
 
-	class Vector3D {
-		#double StartZ
-		#double ElementZ
-		+void SetVectorElement(double ElementX, double ElementY, double ElementZ)
-		+Vector3D GetTargetPointVector(Vector3D Vector)
-		+void GetVectorElement(double *ElementX, double *ElementY, double *ElementZ)
-		+void GetStartPoint(double *StartX, double *StartY, double *StartZ);
-		+void Draw()
-	}
-
 	Activity <|-up-- Vector2D
-	Vector2D <|-- Vector3D
+	Point2D *-- Vector2D
 }
 
 package Easing {
@@ -97,15 +98,19 @@ package Easing {
 
 package Sprite {
 	class Sprite {
-		#double PositionX
-		#double PositionY
+		#Point2D Position
 		#Vector2D MoveVector
+		#std::vector<Collider> Collider
 		#Timer DelayTimer
 		#EasingFunction EaseFunc
 		#EasingType
 		+void Move()
 		+void MoveToPoint(double X, double Y, int DelayTime, EasingType Type, EasingFunction EasingFunction)
+		+void MoveToPoint(const Point2D Point, int DelayTime, EasingType Type, EasingFunction EasingFunction)
+		+void AddToPoint(double X, double Y, int DelayTime, EasingType Type, EasingFunction EasingFunction)
 		+void Stop()
+
+		+Point2D GetPosition()
 		+Vector2D GetVector()
 		+virtual void Initialize()
 		+virtual void Finalize()
@@ -115,7 +120,7 @@ package Sprite {
 
 	Initialization <|--- Sprite
 	Activity <|--- Sprite
-	Easing *.. Sprite
+	Easing *-- Sprite
 }
 
 package Dialog {
@@ -186,33 +191,59 @@ package Dialog {
 	YesNoDialog <|-- ResolutionChangeDialog
 }
 
+package Collider {
+	enum CollisionType {
+		+Rectangle
+		+Ellipse
+	}
+
+	class Collider {
+		#Point2D Position
+		#double RangeX
+		#double RangeY
+		#CollisionType Type
+		+Point2D GetPosition()
+		+double GetPositionX()
+		+double GetPositionY()
+		+void SetPosition(Point2D &Point)
+		+void SetRange(const double RangeX, const double RangeY)
+		+void SetCollisionRangeType(CollisionType Type)
+		+bool GetCollision(Collider &Collider)
+		+void AddRange(const double RangeX, const double RangeY)
+	}
+
+	Point2D *-- Collider
+}
+
 package Timer {
 	enum CountMode {
 		+CountUp
 		+CountDown
-		+Loop
 	}
 
 	class Timer {
-		#int Value
-		#int DefaultValue
+		#int Time
+		#int DefaultTime
+		#int MaxTime
 		#bool Active
 		#bool CountDown
 		#bool Loop
 		+Timer()
-		+Timer(int Value)
+		+Timer(int Time)
 		+Timer(double Second)
-		+Timer(int Value, CountMode CountMode)
+		+Timer(int Time, CountMode CountMode)
 		+Timer(double Second, CountMode CountMode)
-		+void SetValue(int Value)
+		+void SetTime(int Time)
 		+void SetSecond(double Second)
-		+void SetDefaultValue(int Value)
+		+void SetDefaultTime(int Time)
 		+void SetCountMode(CountMode Mode)
 		+void EnableCountLoop(bool Flag)
-		+int GetValue()
+		+int GetTime()
 		+double GetSecond()
-		+int GetDefaultValue()
+		+int GetDefaultTime()
 		+bool GetActiveFlag()
+		+void AddTime(const int Time)
+		+void AddSecond(const double Second)
 		+void Start()
 		+void Stop()
 		+void Reset()
@@ -308,15 +339,34 @@ package VirtualGamePad {
 
 package Player {
 	enum PlayerCharacter {
-		+Power
-		+Maria
+		+Chara1
+		+Chara2
 		+None
 	}
 
+	enum PossessType {
+		+Half
+		+Full
+		+TotalNum
+	}
+
 	class Player {
+		#bool Entry
+		#bool Alive
 		#PlayerCharacter Character
+		#PossessType Type
 		#Timer InvincibleTime
+		#Timer PossessTime
+		#bool Possess
+		#Pad &InputPad
 		#char Life
+		#char Bomb
+		#unsigned char Continue
+		#unsigned int Score
+		#unsigned int ScoreRate
+		+void AddScore(const int Score)
+		+double GetPossessGauge()
+		+void Initialize()
 		+void Initialize()
 		+void Finalize()
 		+void Update()
@@ -324,6 +374,8 @@ package Player {
 	}
 
 	Sprite <|-- Player
+	PlayerCharacter *-- Player
+	PossessType *-- Player
 }
 
 package Enemy {
@@ -396,6 +448,40 @@ package SceneManager {
 	}
 }
 
+package Config {
+	interface Config {
+		+void Load() = 0
+		+void Write() = 0
+	}
+
+	class SystemConfig {
+
+	}
+
+	class GameConfig {
+
+	}
+
+	Config <|-- SystemConfig
+	Config <|-- GameConfig
+}
+
+package RankingData {
+	object ScoreData <<struct>> {
+		+std::string Name
+		+unsigned int Score
+		+unsigned char Continue
+		+unsigned int MaxRate
+		+PlayerCharacter Character
+		+PossessType Type
+		+bool operator < (const ScoreData &Data)
+	}
+
+	PlayerCharacter *-- ScoreData
+	PossessType *-- ScoreData
+	GameRank *-- ScoreData
+}
+
 package Game {
 	enum GameMode {
 		+Arcade
@@ -409,7 +495,7 @@ package Game {
 		+Normal
 		+Hard
 		+VeryHard
-		+Hell
+		+Nightmare
 	}
 
 	object ReplayHeader <<struct>> {

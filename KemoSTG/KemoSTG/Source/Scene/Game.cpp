@@ -59,8 +59,7 @@ void cGameScene::Update() {
 }
 
 void cGameScene::Draw() {
-	//mVirtualPad[0].Draw();
-	DrawRotaGraph(640 / 2, 480 / 2, 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->GetHandle(), FALSE);
+	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->GetHandle(), FALSE);
 	if (CheckHandleASyncLoad(mGameScreen) == FALSE) {
 		if (mFade.GetPositionX() <= 0.0) {
 			SetDrawScreen(mGameScreen);
@@ -68,13 +67,39 @@ void cGameScene::Draw() {
 			mGame.Draw();
 			SetDrawScreen(DX_SCREEN_BACK);
 		}
-		//DrawRotaGraph(320, 240, 1.0, TO_RADIAN(90.0), mGameScreen, FALSE);
-		DrawRotaGraph(320, 240, 0.75, TO_RADIAN(0.0), mGameScreen, FALSE);
+		switch (cSystemConfig::GetInstance()->GetConfig().mRotation) {
+		case eRotation_Horizontal:
+		case eRotation_Reverse:
+			if (DISPLAY_HEIGHT > DISPLAY_WIDTH * 4 / 3) {
+				DrawRotaGraph3(DISPLAY_WIDTH / 2 + cGameConfig::GetInstance()->GetConfig().mPositionX, DISPLAY_HEIGHT / 2 + cGameConfig::GetInstance()->GetConfig().mPositionY, GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2,
+					SCALE(DISPLAY_WIDTH, GAME_SCREEN_WIDTH) * (cGameConfig::GetInstance()->GetConfig().mZoomX / 100.0), SCALE(DISPLAY_WIDTH, GAME_SCREEN_WIDTH) * (cGameConfig::GetInstance()->GetConfig().mZoomY / 100.0),
+					TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mGameScreen, FALSE);
+			}
+			else {
+				DrawRotaGraph3(DISPLAY_WIDTH / 2 + cGameConfig::GetInstance()->GetConfig().mPositionX, DISPLAY_HEIGHT / 2 + cGameConfig::GetInstance()->GetConfig().mPositionY, GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2,
+					SCALE(DISPLAY_HEIGHT, GAME_SCREEN_HEIGHT) * (cGameConfig::GetInstance()->GetConfig().mZoomX / 100.0), SCALE(DISPLAY_HEIGHT, GAME_SCREEN_HEIGHT) * (cGameConfig::GetInstance()->GetConfig().mZoomY / 100.0),
+					TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mGameScreen, FALSE);
+			}
+			break;
+		case eRotation_LeftRoll:
+		case eRotation_RightRoll:
+			if (DISPLAY_WIDTH > DISPLAY_HEIGHT * 4 / 3) {
+				DrawRotaGraph3(DISPLAY_WIDTH / 2 + cGameConfig::GetInstance()->GetConfig().mPositionX, DISPLAY_HEIGHT / 2 + cGameConfig::GetInstance()->GetConfig().mPositionY, GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2,
+					SCALE(DISPLAY_HEIGHT, GAME_SCREEN_WIDTH) * (cGameConfig::GetInstance()->GetConfig().mZoomX / 100.0), SCALE(DISPLAY_HEIGHT, GAME_SCREEN_WIDTH) * (cGameConfig::GetInstance()->GetConfig().mZoomY / 100.0),
+					TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mGameScreen, FALSE);
+			}
+			else {
+				DrawRotaGraph3(DISPLAY_WIDTH / 2 + cGameConfig::GetInstance()->GetConfig().mPositionX, DISPLAY_HEIGHT / 2 + cGameConfig::GetInstance()->GetConfig().mPositionY, GAME_SCREEN_WIDTH / 2, GAME_SCREEN_HEIGHT / 2,
+					SCALE(DISPLAY_WIDTH, GAME_SCREEN_HEIGHT) * (cGameConfig::GetInstance()->GetConfig().mZoomX / 100.0), SCALE(DISPLAY_WIDTH, GAME_SCREEN_HEIGHT) * (cGameConfig::GetInstance()->GetConfig().mZoomY / 100.0),
+					TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mGameScreen, FALSE);
+			}
+			break;
+		}
 	}
 
 	if (mFade.GetPositionX() > 0.0) {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
-		DrawBox(0, 0, 640, 480, GetColor(0x00, 0x00, 0x00), TRUE);
+		DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
 }

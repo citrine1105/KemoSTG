@@ -5,7 +5,8 @@ cLoadScene::cLoadScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
 }
 
 void cLoadScene::Initialize() {
-	//cImageResourceContainer::GetInstance()->GetElement(eImage_None)->SetPath(_T("./Data/Image/hoge.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/rect.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
 }
 
 void cLoadScene::Finalize() {

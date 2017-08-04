@@ -21,6 +21,12 @@ void cLogoGameScene::Finalize() {
 }
 
 void cLogoGameScene::Update() {
+	for (int i = 0; i < 2; i++) {
+		if (ppVirtualPad[i]->GetInputState(eButton_Pause) == 1) {
+			pSceneChanger->ChangeScene(eGameScene_Game);
+		}
+	}
+
 	if (GetASyncLoadNum() == 0) {
 		if (mTimer.GetTime() == 0) {
 			mFade.MoveToPoint(255.0, 0.0, 30);
@@ -36,6 +42,12 @@ void cLogoGameScene::Update() {
 		}
 		mTimer.Update();
 		mFade.Update();
+	}
+
+	for (int i = 0; i < 2; i++) {
+		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
+			pSceneChanger->ChangeScene(eGameScene_Title);
+		}
 	}
 	if (mTimer.GetSecond() >= 10.0) {
 		pSceneChanger->ChangeScene(eGameScene_Title);

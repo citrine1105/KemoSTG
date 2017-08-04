@@ -13,6 +13,9 @@ void cMainGameScene::Initialize() {
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Load();
 
+	mPlayer.at(0).SetInputPad(ppVirtualPad[0]);
+	mPlayer.at(1).SetInputPad(ppVirtualPad[1]);
+
 	mBackground.MoveToPoint(0.0, 1200.0, 90 * 60);
 
 	mTimer.Initialize(0, (cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandleNum() * 2 - 2) * 5, eCountMode_CountUp, true);
@@ -30,14 +33,51 @@ void cMainGameScene::Update() {
 	mTimer.Update();
 	mBossTimer.Update();
 	mBackground.Update();
+
+	if (ppVirtualPad[0]->GetInputState(eButton_FullAuto) % 4 == 1) {
+		cPoint2D tPoint;
+		cVector2D tVector;
+		cBullet tBullet;
+		for (int i = 0; i < 5; i++) {
+			tPoint.SetPoint(mPlayer.at(0).GetPositionX(), mPlayer.at(0).GetPositionY());
+			tVector.SetPolarForm(TO_RADIAN(270.0 + 12.0 * (i - 2)), 18.0);
+			tBullet.Initialize(tPoint, tVector);
+			mBullet.push_back(tBullet);
+		}
+	}
+
+	for (auto &i : mPlayer) {
+		i.Update();
+	}
+	for (auto &i : mEnemy) {
+		i.Update();
+	}
+	for (auto &i : mBullet) {
+		i.Update();
+		if (mBulletOutCollider.GetCollisionFlag(i)) {
+
+		}
+	}
 }
 
 void cMainGameScene::Draw() {
 	std::tstring tScore[2];
-	tScore[0] = std::to_tstring(mTimer.GetTime() * 10);
-	tScore[1] = std::to_tstring(0);
+	tScore[0] = std::to_tstring(mPlayer.at(0).GetScore().mScore);
+	tScore[1] = std::to_tstring(mPlayer.at(1).GetScore().mScore);
 
 	DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY()) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
+
+	for (auto &i : mEnemy) {
+		i.Draw();
+	}
+
+	for (auto &i : mPlayer) {
+		i.Draw();
+	}
+
+	for (auto &i : mBullet) {
+		i.Draw();
+	}
 
 	// ボス体力ゲージ
 	DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
@@ -72,16 +112,16 @@ void cMainGameScene::Draw() {
 	DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 1, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(1), TRUE);
 
 	// ライフ
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < mPlayer.at(0).GetLife(); i++) {
 		DrawGraph(12 + 24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
 	}
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < mPlayer.at(1).GetLife(); i++) {
 		DrawGraph(480 - 12 - 20 + -24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
 	}
 
 	// ボム
 	DrawGraph(12, 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < mPlayer.at(0).GetBomb(); i++) {
 		if (mTimer.GetTime() / 5 % 6 < 4) {
 			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
 		}
@@ -90,7 +130,7 @@ void cMainGameScene::Draw() {
 		}
 	}
 	DrawGraph(480 - 12 - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
 		if (mTimer.GetTime() / 5 % 6 < 4) {
 			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
 		}
