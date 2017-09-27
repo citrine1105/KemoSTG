@@ -18,7 +18,7 @@ void cSprite::MoveToPoint(const double PositionX, const double PositionY, const 
 	mMoveTime = MoveTime > 0 ? MoveTime : 1;
 	mMoveType = MoveType;
 	mEaseFunc = EasingFunction;
-	mDelayTimer.Initialize(mMoveTime, AUTO_INT_MAX, eCountMode_CountDown);
+	mDelayTimer.Initialize(mMoveTime , AUTO_INT_MAX, eCountMode_CountDown);
 	//mDelayTimer.SetTime(mMoveTime);
 	//mDelayTimer.SetCountMode(eCountMode_CountDown);
 	mDelayTimer.Start();
@@ -103,7 +103,7 @@ void cSprite::Finalize() {
 
 void cSprite::Update() {
 	mDelayTimer.Update();
-	if (mDelayTimer.GetActiveFlag()) {
+	if (mDelayTimer.GetTime() > 0) {
 		cVector2D tVector = mMoveVector;
 		tVector *= cEasing::GetInstance()->GetEase(mEaseFunc, mMoveType, 1.0 - static_cast<double>(mDelayTimer.GetTime() - 1) / static_cast<double>(mMoveTime), 1.0);
 		mPosition = tVector.GetEndPoint();

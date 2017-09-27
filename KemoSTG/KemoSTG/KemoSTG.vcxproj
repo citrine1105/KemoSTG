@@ -163,6 +163,7 @@
     <ClCompile Include="Source\Config.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
+    <ClCompile Include="Source\FontContainer.cpp" />
     <ClCompile Include="Source\GameBaseScene.cpp" />
     <ClCompile Include="Source\GameSceneManager.cpp" />
     <ClCompile Include="Source\GameScene\GameLogo.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Header\Dialog.h" />
     <ClInclude Include="Header\Easing.h" />
     <ClInclude Include="Header\Enemy.h" />
+    <ClInclude Include="Header\FontContainer.h" />
     <ClInclude Include="Header\GameBaseScene.h" />
     <ClInclude Include="Header\GameSceneManager.h" />
     <ClInclude Include="Header\GameScene\GameLogo.h" />

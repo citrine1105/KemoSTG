@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../GameBaseScene.h"
-#include "../ImageResourceContainer.h"
 #include "../Player.h"
 #include "../Enemy.h"
 #include "../Bullet.h"

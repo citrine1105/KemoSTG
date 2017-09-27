@@ -65,7 +65,7 @@ void cLogoGameScene::Draw() {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	if (mTimer.GetTime() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cGameBaseScene::mInformationFont) / 2, 24 * 14 + 8,
-			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
+			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}
 }

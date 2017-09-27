@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "VirtualPad.h"
 #include "ImageResourceContainer.h"
+#include "FontContainer.h"
 
 enum eScene {
 	eScene_Load,

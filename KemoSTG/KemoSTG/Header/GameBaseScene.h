@@ -2,6 +2,9 @@
 #include "Include.h"
 #include "SceneChanger.h"
 #include "VirtualPad.h"
+#include "Config.h"
+#include "ImageResourceContainer.h"
+#include "FontContainer.h"
 
 #define GAME_SCREEN_WIDTH 480	// ゲーム画面幅
 #define GAME_SCREEN_HEIGHT 640	// ゲーム画面高さ
@@ -25,7 +28,7 @@ protected:
 
 	static cVirtualPad **ppVirtualPad;
 
-	static int mInformationFont;	// 情報表示用フォント
+	//static int mInformationFont;	// 情報表示用フォント
 public:
 	cGameBaseScene(iSceneChanger<eGameScene> *Changer);
 	virtual ~cGameBaseScene();

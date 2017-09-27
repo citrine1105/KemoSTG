@@ -62,7 +62,7 @@ void cVirtualPad::SetDefaultAssign(const int Type) {
 	mXInputAssign[eButton_Service] = eXInputAssign_RightStickButton;
 
 	mStickDeadZone = 50;
-	fVibration = false;
+	fVibration = true;
 }
 
 void cVirtualPad::SetJoyPad(cPad *Pad) {
@@ -240,6 +240,7 @@ void cVirtualPad::Update() {
 					++mButtonInputState[i];
 		}
 		else if (pPad->GetXInputFlag() &&
+			mXInputAssign[i] != eXInputAssign_LT && mXInputAssign[i] != eXInputAssign_RT &&
 			pPad->GetJoyPadInputState(mXInputAssign[i]) != 0) {		// XInput入力
 				++mButtonInputState[i];
 		}

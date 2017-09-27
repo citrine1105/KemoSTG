@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../GameBaseScene.h"
-#include "../ImageResourceContainer.h"
 #include "../Sprite.h"
 
 class cLogoGameScene : public cGameBaseScene {

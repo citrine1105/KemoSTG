@@ -91,10 +91,10 @@ void cMainGameScene::Draw() {
 	// スコア
 	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
 	DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
-	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cGameBaseScene::mInformationFont) - GetDrawStringWidthToHandle(tScore[0].c_str(), tScore[0].size(), cGameBaseScene::mInformationFont), 24,
-		tScore[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
-	DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore[1].c_str(), tScore[1].size(), cGameBaseScene::mInformationFont), 24,
-		tScore[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cGameBaseScene::mInformationFont);
+	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore[0].c_str(), tScore[0].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+		tScore[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore[1].c_str(), tScore[1].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+		tScore[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 	// スコアレート
 	DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
@@ -138,4 +138,6 @@ void cMainGameScene::Draw() {
 			DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
 		}
 	}
+
+	//ppVirtualPad[0]->Draw();
 }

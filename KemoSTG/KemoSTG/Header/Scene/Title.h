@@ -4,7 +4,8 @@
 
 class cTitleScene : public cScene {
 protected:
-	cTimer mMessageAnimation;
+	cTimer mMessageFlash;
+	cSprite mMessageFade;
 	cSprite mFade;
 	bool fNext;
 public:

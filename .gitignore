@@ -262,5 +262,6 @@ __pycache__/
 
 DxLib/
 Log.txt
+config.json
 クラス図.png
 ヘッダー呼び出し図.png
