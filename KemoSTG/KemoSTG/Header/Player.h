@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Sprite.h"
+#include "BulletGenerator.h"
 #include "VirtualPad.h"
 #include "Scene/Game.h"
 
@@ -50,6 +51,7 @@ protected:
 	unsigned char mBomb;		// ボム
 	unsigned int mScoreRate;	// スコア倍率
 	sScoreData mScore;		// スコア
+	std::list<cBulletGenerator> mBulletGenerator;	// 弾発射機構
 public:
 	cPlayer();
 	~cPlayer();

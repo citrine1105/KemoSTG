@@ -61,9 +61,24 @@ void cMainGameScene::Update() {
 }
 
 void cMainGameScene::Draw() {
-	std::tstring tScore[2];
-	tScore[0] = std::to_tstring(mPlayer.at(0).GetScore().mScore);
-	tScore[1] = std::to_tstring(mPlayer.at(1).GetScore().mScore);
+	std::array<std::tstring, 2> tScore;
+	std::array<unsigned int, 2> tDispScoreRate;	// 表示用スコアレート
+	std::array<int, 2> tScoreRateDigit;	// スコアレート桁数
+
+	tScore.at(0) = std::to_tstring(mPlayer.at(0).GetScore().mScore);
+	tScore.at(1) = std::to_tstring(mPlayer.at(1).GetScore().mScore);
+
+	tDispScoreRate.at(0) = mPlayer.at(0).GetScoreRate();
+	tDispScoreRate.at(1) = mPlayer.at(1).GetScoreRate();
+
+	for (auto &i : tDispScoreRate) {
+		if (i > 999999) {
+			i = 999999;
+		}
+	}
+
+	tScoreRateDigit.at(0) = static_cast<int>(floor(log10(tDispScoreRate.at(0)))) + 1;
+	tScoreRateDigit.at(1) = static_cast<int>(floor(log10(tDispScoreRate.at(1)))) + 1;
 
 	DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY()) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
 
@@ -91,25 +106,26 @@ void cMainGameScene::Draw() {
 	// スコア
 	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
 	DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
-	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore[0].c_str(), tScore[0].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-		tScore[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore[1].c_str(), tScore[1].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-		tScore[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+		tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+		tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 	// スコアレート
+	// 1P
 	DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
-	DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 1, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(1), TRUE);
-	//DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 2, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(1), TRUE);
-	//DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 3, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(4), TRUE);
-	//DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 4, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(9), TRUE);
-	//DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 5, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(9), TRUE);
-
-	//DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 6, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
-	//DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 5, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(9), TRUE);
-	//DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 4, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(9), TRUE);
-	//DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 3, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(5), TRUE);
-	DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 2, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
-	DrawGraph(480 - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 1, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(1), TRUE);
+	for (int i = 0; i < tScoreRateDigit.at(0); i++) {
+		DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (tScoreRateDigit.at(0) - i), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(0) / static_cast<int>(pow(10, i)) % 10), TRUE);
+	}
+	// 2P
+	for (int i = 0; i <= tScoreRateDigit.at(1); i++) {
+		if (i == tScoreRateDigit.at(1)) {
+			DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
+		}
+		else {
+			DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
+		}
+	}
 
 	// ライフ
 	for (int i = 0; i < mPlayer.at(0).GetLife(); i++) {

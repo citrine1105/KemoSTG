@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Bullet.cpp" />
+    <ClCompile Include="Source\BulletGenerator.cpp" />
     <ClCompile Include="Source\CoinChute.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\Config.cpp" />
@@ -192,6 +193,7 @@
   <ItemGroup>
     <ClInclude Include="Header\Activity.h" />
     <ClInclude Include="Header\Bullet.h" />
+    <ClInclude Include="Header\BulletGenerator.h" />
     <ClInclude Include="Header\CoinChute.h" />
     <ClInclude Include="Header\Collider.h" />
     <ClInclude Include="Header\Color.h" />
