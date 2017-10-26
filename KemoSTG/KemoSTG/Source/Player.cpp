@@ -90,7 +90,7 @@ void cPlayer::Update() {
 
 	if (mMoveVector.GetElementX() != 0.0 ||
 		mMoveVector.GetElementY() != 0.0) {
-		mMoveVector.SetMagnitude(4.4);
+		mMoveVector.SetMagnitude(6.6);
 		this->Move();
 	}
 

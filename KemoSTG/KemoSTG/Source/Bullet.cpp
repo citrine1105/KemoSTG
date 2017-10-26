@@ -1,5 +1,13 @@
 ﻿#include "../Header/Bullet.h"
 
+void cBullet::Erase() {
+	fActive = false;
+}
+
+bool cBullet::GetActiveFlag() {
+	return fActive;
+}
+
 void cBullet::Initialize() {
 
 }
