@@ -8,6 +8,10 @@ cMainGameScene::~cMainGameScene() {
 
 }
 
+std::list<cPlayerBullet>* cMainGameScene::GetPlayerBullet() {
+	return &mPlayerBullet;
+}
+
 void cMainGameScene::Initialize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/test.png"));
 
@@ -34,17 +38,17 @@ void cMainGameScene::Update() {
 	mBossTimer.Update();
 	mBackground.Update();
 
-	if (ppVirtualPad[0]->GetInputState(eButton_FullAuto) % 4 == 1) {
-		cPoint2D tPoint;
-		cVector2D tVector;
-		cBullet tBullet;
-		for (int i = 0; i < 5; i++) {
-			tPoint.SetPoint(mPlayer.at(0).GetPositionX(), mPlayer.at(0).GetPositionY());
-			tVector.SetPolarForm(TO_RADIAN(270.0 + 12.0 * (i - 2)), 18.0);
-			tBullet.Initialize(tPoint, tVector);
-			mBullet.push_back(tBullet);
-		}
-	}
+	//if (ppVirtualPad[0]->GetInputState(eButton_FullAuto) % 4 == 1) {
+	//	cPoint2D tPoint;
+	//	cVector2D tVector;
+	//	cBullet tBullet;
+	//	for (int i = 0; i < 5; i++) {
+	//		tPoint.SetPoint(mPlayer.at(0).GetPositionX(), mPlayer.at(0).GetPositionY());
+	//		tVector.SetPolarForm(TO_RADIAN(270.0 + 12.0 * (i - 2)), 18.0);
+	//		tBullet.Initialize(tPoint, tVector);
+	//		mBullet.push_back(tBullet);
+	//	}
+	//}
 
 	for (auto &i : mPlayer) {
 		i.Update();
@@ -90,7 +94,7 @@ void cMainGameScene::Draw() {
 		i.Draw();
 	}
 
-	for (auto &i : mBullet) {
+	for (auto &i : mPlayerBullet) {
 		i.Draw();
 	}
 

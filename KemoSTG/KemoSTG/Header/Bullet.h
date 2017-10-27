@@ -9,6 +9,6 @@ public:
 	bool GetActiveFlag();
 
 	void Initialize() override;
-	void Initialize(cPoint2D &Position, cVector2D &MoveVector);
-	void Update() override;
+	void Initialize(cVector2D &MoveVector);
+	virtual void Update() override;
 };

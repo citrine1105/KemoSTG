@@ -158,7 +158,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Bullet.cpp" />
-    <ClCompile Include="Source\BulletGenerator.cpp" />
     <ClCompile Include="Source\CoinChute.cpp" />
     <ClCompile Include="Source\Collider.cpp" />
     <ClCompile Include="Source\Config.cpp" />
@@ -178,6 +177,7 @@
     <ClCompile Include="Source\Pad.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerBullet.cpp" />
+    <ClCompile Include="Source\PlayerBulletGenerator.cpp" />
     <ClCompile Include="Source\Point2D.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
@@ -219,6 +219,7 @@
     <ClInclude Include="Header\Pad.h" />
     <ClInclude Include="Header\Player.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
+    <ClInclude Include="Header\PlayerBulletGenerator.h" />
     <ClInclude Include="Header\Point2D.h" />
     <ClInclude Include="Header\Scene.h" />
     <ClInclude Include="Header\SceneChanger.h" />

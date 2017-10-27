@@ -12,8 +12,7 @@ void cBullet::Initialize() {
 
 }
 
-void cBullet::Initialize(cPoint2D &Position, cVector2D &MoveVector) {
-	mPosition = Position;
+void cBullet::Initialize(cVector2D &MoveVector) {
 	mMoveVector = MoveVector;
 }
 

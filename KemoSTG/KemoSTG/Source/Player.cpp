@@ -108,6 +108,18 @@ void cPlayer::Update() {
 	else if (mPosition.GetY() >= GAME_SCREEN_HEIGHT - 64.0) {
 		mPosition.SetPoint(mPosition.GetX(), GAME_SCREEN_HEIGHT - 64.0);
 	}
+
+	if (pInputPad->GetInputState(eButton_FullAuto) % 4 == 1) {
+		for (auto &i : mBulletGenerator) {
+			cPlayerBullet tBullet;	// 弾
+			cVector2D tMoveVector;	// 弾移動速度
+			tMoveVector.SetPolarForm(TO_RADIAN(-90.0), 18.0);
+			tBullet.Initialize(tMoveVector, mScore.mCharacter);
+			
+			i.AddBullet(tBullet);
+			i.Generate();
+		}
+	}
 }
 
 void cPlayer::Draw() {

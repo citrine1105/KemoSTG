@@ -1,8 +1,9 @@
 ﻿#include "../Header/PlayerBullet.h"
 
-void cPlayerBullet::Initialize(cPoint2D &Position, cVector2D &MoveVector, const ePlayerCharacter Type) {
-	cBullet::Initialize(Position, MoveVector);
+void cPlayerBullet::Initialize(cVector2D &MoveVector, const ePlayerCharacter Type) {
+	cBullet::Initialize(MoveVector);
 	mType = Type;
+	fActive = true;
 }
 
 void cPlayerBullet::Update() {
@@ -10,4 +11,8 @@ void cPlayerBullet::Update() {
 		mMoveVector.SetAngle(this->GetAngleToSprite(*pTargetEnemy));	// その敵を追尾する
 	}
 	cBullet::Update();
+}
+
+void cPlayerBullet::Draw() {
+	cSprite::Draw();	// テスト
 }

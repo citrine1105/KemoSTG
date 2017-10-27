@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include "Sprite.h"
-#include "BulletGenerator.h"
+#include "PlayerBulletGenerator.h"
 #include "VirtualPad.h"
 #include "Scene/Game.h"
 
 enum ePlayerCharacter {
-	ePlayer_1,
-	ePlayer_2,
+	ePlayer_Rin,
+	ePlayer_Boy,
 
 	ePlayer_TotalNum
 };
@@ -51,7 +51,7 @@ protected:
 	unsigned char mBomb;		// ボム
 	unsigned int mScoreRate;	// スコア倍率
 	sScoreData mScore;		// スコア
-	std::list<cBulletGenerator> mBulletGenerator;	// 弾発射機構
+	std::list<cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
 public:
 	cPlayer();
 	~cPlayer();

@@ -2,7 +2,7 @@
 #include "../GameBaseScene.h"
 #include "../Player.h"
 #include "../Enemy.h"
-#include "../Bullet.h"
+#include "../PlayerBullet.h"
 #include "../SelectTimer.h"
 
 class cMainGameScene : public cGameBaseScene {
@@ -15,10 +15,12 @@ private:
 
 	std::array<cPlayer, 2> mPlayer;
 	std::list<cEnemy> mEnemy;
-	std::list<cBullet> mBullet;
+	std::list<cPlayerBullet> mPlayerBullet;
 public:
 	cMainGameScene(iSceneChanger<eGameScene> *Changer);
 	~cMainGameScene();
+
+	std::list<cPlayerBullet>* GetPlayerBullet();
 
 	void Initialize() override;
 	void Finalize() override;

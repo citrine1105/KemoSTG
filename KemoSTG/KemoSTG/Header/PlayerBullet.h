@@ -1,13 +1,14 @@
 ﻿#pragma once
 #include "Bullet.h"
-#include "Player.h"
+//#include "Player.h"
 #include "Enemy.h"
 
 class cPlayerBullet : public cBullet {
 protected:
-	ePlayerCharacter mType;
+	enum ePlayerCharacter mType;
 	cEnemy *pTargetEnemy;
 public:
-	void Initialize(cPoint2D &Position, cVector2D &MoveVector, const ePlayerCharacter Type);
+	void Initialize(cVector2D &MoveVector, const enum ePlayerCharacter Type);
 	void Update() override;
+	void Draw() override;
 };
