@@ -8,6 +8,8 @@ protected:
 	enum ePlayerCharacter mType;
 	cEnemy *pTargetEnemy;
 public:
+	cPlayerBullet();
+
 	void Initialize(cVector2D &MoveVector, const enum ePlayerCharacter Type);
 	void Update() override;
 	void Draw() override;

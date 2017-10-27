@@ -15,6 +15,12 @@ void cPlayer::SetInputPad(cVirtualPad *Pad) {
 	pInputPad = Pad;
 }
 
+void cPlayer::SetBulletGenerateTarget(std::list<cPlayerBullet> *Container) {
+	for (auto &i : mBulletGenerator) {
+		i.SetOutputTarget(Container);	// 弾の出力先を設定
+	}
+}
+
 bool cPlayer::GetEntryFlag() {
 	return fEntry;
 }
@@ -50,6 +56,7 @@ void cPlayer::Initialize() {
 	mScore.mMaxRate = 1U;
 	mScore.mCharacter = ePlayer_TotalNum;
 	mScore.mType = ePossess_None;
+	mBulletGenerator.resize(3);
 }
 
 void cPlayer::Update() {
@@ -109,11 +116,16 @@ void cPlayer::Update() {
 		mPosition.SetPoint(mPosition.GetX(), GAME_SCREEN_HEIGHT - 64.0);
 	}
 
+	// 弾源
+	mBulletGenerator.at(0).SetPosition(mPosition.GetX() - 16, mPosition.GetY());
+	mBulletGenerator.at(1).SetPosition(mPosition.GetX(), mPosition.GetY());
+	mBulletGenerator.at(2).SetPosition(mPosition.GetX() + 16, mPosition.GetY());
+
 	if (pInputPad->GetInputState(eButton_FullAuto) % 4 == 1) {
 		for (auto &i : mBulletGenerator) {
 			cPlayerBullet tBullet;	// 弾
 			cVector2D tMoveVector;	// 弾移動速度
-			tMoveVector.SetPolarForm(TO_RADIAN(-90.0), 18.0);
+			tMoveVector.SetPolarForm(TO_RADIAN(-90.0), 1.0);
 			tBullet.Initialize(tMoveVector, mScore.mCharacter);
 			
 			i.AddBullet(tBullet);

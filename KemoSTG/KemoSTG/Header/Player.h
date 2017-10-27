@@ -5,8 +5,8 @@
 #include "Scene/Game.h"
 
 enum ePlayerCharacter {
-	ePlayer_Rin,
-	ePlayer_Boy,
+	ePlayer_Rin,	// 神谷倫
+	ePlayer_Boy,	// 2人目
 
 	ePlayer_TotalNum
 };
@@ -51,12 +51,13 @@ protected:
 	unsigned char mBomb;		// ボム
 	unsigned int mScoreRate;	// スコア倍率
 	sScoreData mScore;		// スコア
-	std::list<cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
+	std::vector<cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
 public:
 	cPlayer();
 	~cPlayer();
 
 	void SetInputPad(cVirtualPad *Pad);
+	void SetBulletGenerateTarget(std::list<cPlayerBullet> *Container);	// 弾の出力先を指定
 	bool GetEntryFlag();
 	bool GetAliveFlag();
 	double GetPossessGauge();

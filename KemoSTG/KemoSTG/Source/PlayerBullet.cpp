@@ -1,5 +1,9 @@
 ﻿#include "../Header/PlayerBullet.h"
 
+cPlayerBullet::cPlayerBullet() : pTargetEnemy(nullptr) {
+
+}
+
 void cPlayerBullet::Initialize(cVector2D &MoveVector, const ePlayerCharacter Type) {
 	cBullet::Initialize(MoveVector);
 	mType = Type;

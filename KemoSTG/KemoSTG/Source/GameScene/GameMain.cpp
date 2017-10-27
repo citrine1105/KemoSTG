@@ -19,6 +19,9 @@ void cMainGameScene::Initialize() {
 
 	mPlayer.at(0).SetInputPad(ppVirtualPad[0]);
 	mPlayer.at(1).SetInputPad(ppVirtualPad[1]);
+	for (auto &i : mPlayer) {
+		i.SetBulletGenerateTarget(&mPlayerBullet);
+	}
 
 	mBackground.MoveToPoint(0.0, 1200.0, 90 * 60);
 
@@ -56,7 +59,7 @@ void cMainGameScene::Update() {
 	for (auto &i : mEnemy) {
 		i.Update();
 	}
-	for (auto &i : mBullet) {
+	for (auto &i : mPlayerBullet) {
 		i.Update();
 		if (mBulletOutCollider.GetCollisionFlag(i)) {
 
@@ -96,6 +99,7 @@ void cMainGameScene::Draw() {
 
 	for (auto &i : mPlayerBullet) {
 		i.Draw();
+		//DrawPixel(i.GetPositionX(), i.GetPositionY(), GetColor(0xFF, 0xFF, 0xFF));
 	}
 
 	// ボス体力ゲージ
@@ -160,4 +164,6 @@ void cMainGameScene::Draw() {
 	}
 
 	//ppVirtualPad[0]->Draw();
+	clsDx();
+	printfDx(_T("%d\n"), mPlayerBullet.size());
 }
