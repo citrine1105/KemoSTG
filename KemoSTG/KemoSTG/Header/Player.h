@@ -44,14 +44,18 @@ class cPlayer : public cSprite {
 protected:
 	bool fEntry;		// エントリーフラグ
 	bool fAlive;		// 生存フラグ
+	bool fSlowMove;		// 低速移動フラグ
 	cTimer mInvincibleTime;	// 無敵時間
 	cTimer mPossessTime;		// 残り憑依時間
 	cVirtualPad *pInputPad;	// 入力処理用パッド
+	double mMoveSpeed;		// 移動速度
 	unsigned char mLife;		// 体力
 	unsigned char mBomb;		// ボム
 	unsigned int mScoreRate;	// スコア倍率
 	sScoreData mScore;		// スコア
+	cTimer mAnimeTimer;	// アニメーション用タイマー
 	std::vector<cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
+	std::vector<cVector2D> mBulletGeneratorVector;	// 弾源移動制御用ベクトル
 public:
 	cPlayer();
 	~cPlayer();

@@ -22,11 +22,13 @@ public:
 	void Move();		// ベクトルに準じて移動
 	void MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);	// 指定の場所に移動
 	void AddToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);
-	void SetPosition(const double PositionX, const double PositionY);	// 座標を指定
+	void SetPosition(cPoint2D &Point);	// 座標を指定
+	void SetPosition(const double PositionX, const double PositionY);	// 座標を指定(数値指定版)
 	void SetCollisionRange(const int Num, const double RangeX, const double RangeY, const eCollisionType CollisionType = eCollision_Rectangle);		// 衝突判定の大きさを設定
-	void GetPosition(double &PositionX, double &PositionY);	// 座標を取得
-	double GetPositionX();	// 座標取得
-	double GetPositionY();
+	//void GetPosition(double &PositionX, double &PositionY);	// 座標を取得
+	cPoint2D GetPosition();	// 座標を取得
+	double GetPositionX();	// X座標を取得
+	double GetPositionY();	// Y座標を取得
 	double GetAngleToSprite(cSprite &Sprite);
 	std::vector<cCollider> GetCollider();
 	cVector2D* GetMoveVectorPointer();	// 移動用ベクトルのアドレスを取得

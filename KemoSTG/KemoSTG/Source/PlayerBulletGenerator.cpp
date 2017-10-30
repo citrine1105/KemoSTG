@@ -20,11 +20,13 @@ void cPlayerBulletGenerator::AddBullet(cPlayerBullet &Bullet) {
 
 void cPlayerBulletGenerator::Generate() {
 	for (auto &i : mBuffer) {
-		i.SetPosition(mPosition.GetX(), mPosition.GetY());	// À•WÝ’è
+		i.SetPosition(mPosition.GetX(), mPosition.GetY());	// À•WÝ’è(‰ö‚µ‚¢)
+		//printfDx(_T("X:%.1f Y:%.1f\nAngle:%.1f\n"), mPosition.GetX(), mPosition.GetY(), i.GetMoveVectorPointer()->GetAngle());
 	}
 	if (pTargetContainer != nullptr) {
 		for (auto &i : mBuffer) {
 			pTargetContainer->push_back(i);	// o—Í
+			//printfDx(_T("%f %f\n"), i.GetMoveVectorPointer()->GetMagnitude(), i.GetMoveVectorPointer()->GetAngle());
 		}
 		mBuffer.clear();
 	}

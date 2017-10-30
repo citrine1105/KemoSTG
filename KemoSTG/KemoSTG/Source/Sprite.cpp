@@ -9,7 +9,7 @@ cSprite::~cSprite() {
 }
 
 void cSprite::Move() {
-	mPosition.AddPosition(mMoveVector.GetEndPoint().GetX(), mMoveVector.GetEndPoint().GetY());
+	mPosition.AddPosition(mMoveVector.GetElementX(), mMoveVector.GetElementY());
 }
 
 void cSprite::MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
@@ -28,6 +28,10 @@ void cSprite::AddToPoint(const double PositionX, const double PositionY, const i
 	this->MoveToPoint(mPosition.GetX() + PositionX, mPosition.GetY() + PositionY, MoveTime, MoveType, EasingFunction);
 }
 
+void cSprite::SetPosition(cPoint2D &Point) {
+	mPosition = Point;
+}
+
 void cSprite::SetPosition(const double PositionX, const double PositionY) {
 	mPosition.SetPoint(PositionX, PositionY);
 	mMoveVector.SetStartPoint(mPosition.GetX(), mPosition.GetY());
@@ -39,9 +43,8 @@ void cSprite::SetCollisionRange(const int Num, const double RangeX, const double
 	mCollider.at(Num).SetCollisionType(CollisionType);
 }
 
-void cSprite::GetPosition(double &PositionX, double &PositionY) {
-	PositionX = mPosition.GetX();
-	PositionY = mPosition.GetY();
+cPoint2D cSprite::GetPosition() {
+	return mPosition;
 }
 
 double cSprite::GetPositionX() {

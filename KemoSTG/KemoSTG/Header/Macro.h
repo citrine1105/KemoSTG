@@ -28,11 +28,15 @@
 #ifdef _UNICODE
 #define tstring wstring	// Unicode対応の場合、ワイド文字列クラスを使用
 #define to_tstring to_wstring
+#define tistream wistream
+#define tostream wostream
 #define tifstream wifstream
 #define tofstream wofstream
 #else
 #define tstring string	// Unicode非対応の場合、通常文字列クラスを使用
 #define to_tstring to_string
+#define tistream istream
+#define tostream ostream
 #define tifstream ifstream
 #define tofstream ofstream
 #endif	// _UNICODE

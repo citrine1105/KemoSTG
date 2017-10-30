@@ -8,6 +8,7 @@
 class cMainGameScene : public cGameBaseScene {
 private:
 	cTimer mTimer;
+	cTimer mBombAnimeTimer;
 	cSprite mBackground;
 	cSelectTimer mBossTimer;
 

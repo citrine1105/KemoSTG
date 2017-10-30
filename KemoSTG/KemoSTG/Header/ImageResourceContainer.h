@@ -18,6 +18,11 @@ enum eImageIndex {
 
 	eImage_GameBackGround,
 
+	eImage_PlayerRin,
+
+	eImage_PlayerBullet,
+	eImage_EnemyBullet,
+
 	eImage_RectCollisionRange,
 	eImage_EllipseCollisionRange,
 
