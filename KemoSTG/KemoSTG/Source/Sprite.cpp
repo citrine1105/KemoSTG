@@ -18,9 +18,7 @@ void cSprite::MoveToPoint(const double PositionX, const double PositionY, const 
 	mMoveTime = MoveTime > 0 ? MoveTime : 1;
 	mMoveType = MoveType;
 	mEaseFunc = EasingFunction;
-	mDelayTimer.Initialize(mMoveTime , AUTO_INT_MAX, eCountMode_CountDown);
-	//mDelayTimer.SetTime(mMoveTime);
-	//mDelayTimer.SetCountMode(eCountMode_CountDown);
+	mDelayTimer.Initialize(mMoveTime, AUTO_INT_MAX, eCountMode_CountDown);
 	mDelayTimer.Start();
 }
 
@@ -35,7 +33,6 @@ void cSprite::SetPosition(cPoint2D &Point) {
 void cSprite::SetPosition(const double PositionX, const double PositionY) {
 	mPosition.SetPoint(PositionX, PositionY);
 	mMoveVector.SetStartPoint(mPosition.GetX(), mPosition.GetY());
-	//mCollisionVector.SetStartPoint(mPosition.GetX(), mPosition.GetY());
 }
 
 void cSprite::SetCollisionRange(const int Num, const double RangeX, const double RangeY, const eCollisionType CollisionType) {

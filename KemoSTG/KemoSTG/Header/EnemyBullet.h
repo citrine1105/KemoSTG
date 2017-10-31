@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Bullet.h"
-#include "Enemy.h"
+//#include "Enemy.h"
 #include "Player.h"
 
 enum eBulletType {
@@ -12,9 +12,13 @@ enum eBulletType {
 
 class cEnemyBullet : public cBullet {
 protected:
-	eBulletType mType;
-	cPlayer *pTargetPlayer;
+	enum eBulletType mType;
+	class cSprite *pTarget;
 public:
-	void Initialize(cPoint2D &Position, cVector2D &MoveVector, const eBulletType Type);
+	cEnemyBullet();
+	~cEnemyBullet();
+
+	void Initialize(cVector2D &MoveVector, const enum eBulletType Type);
 	void Update() override;
+	void Draw() override;
 };

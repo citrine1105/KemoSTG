@@ -1,4 +1,4 @@
-#include "../Header/PlayerBulletGenerator.h"
+ï»¿#include "../Header/PlayerBulletGenerator.h"
 #include "../Header/GameScene/GameMain.h"
 
 cPlayerBulletGenerator::cPlayerBulletGenerator() 
@@ -18,15 +18,25 @@ void cPlayerBulletGenerator::AddBullet(cPlayerBullet &Bullet) {
 	mBuffer.push_back(Bullet);
 }
 
+void cPlayerBulletGenerator::AddBullet(std::list<cPlayerBullet> &Bullet) {
+	for (auto &i : Bullet) {
+		mBuffer.push_back(i);
+	}
+}
+
+void cPlayerBulletGenerator::AddBullet(std::vector<cPlayerBullet> &Bullet) {
+	for (auto &i : Bullet) {
+		mBuffer.push_back(i);
+	}
+}
+
 void cPlayerBulletGenerator::Generate() {
 	for (auto &i : mBuffer) {
-		i.SetPosition(mPosition.GetX(), mPosition.GetY());	// À•WÝ’è(‰ö‚µ‚¢)
-		//printfDx(_T("X:%.1f Y:%.1f\nAngle:%.1f\n"), mPosition.GetX(), mPosition.GetY(), i.GetMoveVectorPointer()->GetAngle());
+		i.SetPosition(mPosition.GetX(), mPosition.GetY());	// åº§æ¨™è¨­å®š
 	}
 	if (pTargetContainer != nullptr) {
 		for (auto &i : mBuffer) {
-			pTargetContainer->push_back(i);	// o—Í
-			//printfDx(_T("%f %f\n"), i.GetMoveVectorPointer()->GetMagnitude(), i.GetMoveVectorPointer()->GetAngle());
+			pTargetContainer->push_back(i);	// å‡ºåŠ›
 		}
 		mBuffer.clear();
 	}

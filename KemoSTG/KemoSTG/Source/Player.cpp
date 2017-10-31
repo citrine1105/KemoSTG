@@ -11,6 +11,31 @@ cPlayer::~cPlayer() {
 
 }
 
+void cPlayer::Bomb() {
+	if (mBomb > 0) {
+		mBomb--;
+		// TODO: ボム発動処理もここに書く
+	}
+}
+
+void cPlayer::Damage() {
+	if (mLife > 0) {
+		mLife--;
+	}
+	mInvincibleTime.Reset();
+}
+
+void cPlayer::Continue() {
+	//mScore.mScore = ++mScore.mContinue >= 9 ? 9 : mScore.mContinue;
+	mScore.mScore++;
+	if (mScore.mContinue >= 9) {
+		mScore.mScore = 9;	// 9回以上
+	}
+	else {
+		mScore.mScore = mScore.mContinue;	// それ以外
+	}
+}
+
 void cPlayer::SetInputPad(cVirtualPad *Pad) {
 	pInputPad = Pad;
 }
@@ -49,6 +74,10 @@ const sScoreData cPlayer::GetScore() {
 	return mScore;
 }
 
+void cPlayer::AddScore(const unsigned int Score) {
+	mScore.mScore += Score;
+}
+
 void cPlayer::Initialize() {
 	mScore.mName.clear();
 	mMoveSpeed = 7.2;	// TODO: キャラごとに速度を変えるようにする
@@ -58,6 +87,7 @@ void cPlayer::Initialize() {
 	mScore.mCharacter = ePlayer_TotalNum;
 	mScore.mType = ePossess_None;
 	mPosition.SetPoint(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT * 4.0 / 5.0);	// 初期位置
+	mInvincibleTime.Start();
 	mAnimeTimer.Initialize(0, 15 * 3 - 1, eCountMode_CountUp, true);
 	mAnimeTimer.Start();
 	mBulletGenerator.resize(4);
@@ -149,15 +179,6 @@ void cPlayer::Update() {
 	}
 
 	if ((pInputPad->GetInputState(eButton_Shot) < 4 * 3 && pInputPad->GetInputState(eButton_Shot) % 4 == 1) || pInputPad->GetInputState(eButton_FullAuto) % 4 == 1) {
-		//for (auto &i : mBulletGenerator) {
-		//	cPlayerBullet tBullet;	// 弾
-		//	cVector2D tMoveVector;	// 弾移動速度
-		//	tMoveVector.SetPolarForm(TO_RADIAN(-90.0), 20.0);
-		//	tBullet.Initialize(tMoveVector, mScore.mCharacter);
-		//	
-		//	i.AddBullet(tBullet);
-		//	i.Generate();
-		//}
 		for (int i = 0; i < mBulletGenerator.size(); i++) {
 			cPlayerBullet tBullet;	// 弾
 			cVector2D tMoveVector;	// 弾移動速度
@@ -168,10 +189,14 @@ void cPlayer::Update() {
 			mBulletGenerator.at(i).Generate();
 		}
 	}
+
+	if (pInputPad->GetInputState(eButton_Bomb) == 1) {
+		this->Bomb();
+	}
 }
 
 void cPlayer::Draw() {
-	DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(mAnimeTimer.GetTime() / 15), TRUE);
+	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(mAnimeTimer.GetTime() / 15), TRUE);
 #ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {
 		DrawCircle(i.GetPositionX(), i.GetPositionY(), 3, GetColor(0xFF, 0xFF, 0xFF));

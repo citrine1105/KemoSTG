@@ -4,15 +4,16 @@
 
 class cPlayerBulletGenerator : public cSprite, iBulletGenerator {
 protected:
-	std::list<cPlayerBullet> mBuffer;
-	std::list<cPlayerBullet> *pTargetContainer;
+	std::list<class cPlayerBullet> mBuffer;
+	std::list<class cPlayerBullet> *pTargetContainer;
 public:
 	cPlayerBulletGenerator();
 	~cPlayerBulletGenerator();
 
-	void SetOutputTarget(std::list<cPlayerBullet> *Container);
-	void AddBullet(cPlayerBullet &Bullet);
-	// TODO: listやarrayで追加するメゾッドも作る
-	void Generate() override;
-	void Clear() override;
+	void SetOutputTarget(std::list<class cPlayerBullet> *Container);	// 自機弾の出力先を設定
+	void AddBullet(class cPlayerBullet &Bullet);	// バッファに弾を追加
+	void AddBullet(std::list<class cPlayerBullet> &Bullet);	// ↑のlist版
+	void AddBullet(std::vector<class cPlayerBullet> &Bullet);	// ↑のvector版
+	void Generate() override;	// 弾を生成
+	void Clear() override;	// バッファを消去
 };

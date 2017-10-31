@@ -163,7 +163,9 @@
     <ClCompile Include="Source\Config.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
+    <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBullet.cpp" />
+    <ClCompile Include="Source\EnemyBulletGenerator.cpp" />
     <ClCompile Include="Source\FontContainer.cpp" />
     <ClCompile Include="Source\GameBaseScene.cpp" />
     <ClCompile Include="Source\GameSceneManager.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="Header\Easing.h" />
     <ClInclude Include="Header\Enemy.h" />
     <ClInclude Include="Header\EnemyBullet.h" />
+    <ClInclude Include="Header\EnemyBulletGenerator.h" />
     <ClInclude Include="Header\FontContainer.h" />
     <ClInclude Include="Header\GameBaseScene.h" />
     <ClInclude Include="Header\GameSceneManager.h" />

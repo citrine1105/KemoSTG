@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Sprite.h"
+//#include "Sprite.h"
 #include "PlayerBulletGenerator.h"
 #include "VirtualPad.h"
 #include "Scene/Game.h"
@@ -54,14 +54,18 @@ protected:
 	unsigned int mScoreRate;	// スコア倍率
 	sScoreData mScore;		// スコア
 	cTimer mAnimeTimer;	// アニメーション用タイマー
-	std::vector<cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
+	std::vector<class cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
 	std::vector<cVector2D> mBulletGeneratorVector;	// 弾源移動制御用ベクトル
 public:
 	cPlayer();
 	~cPlayer();
 
+	void Bomb();	// ボム使用処理
+	void Damage();	// ダメージ処理
+	void Continue();	// コンティニュー処理
+
 	void SetInputPad(cVirtualPad *Pad);
-	void SetBulletGenerateTarget(std::list<cPlayerBullet> *Container);	// 弾の出力先を指定
+	void SetBulletGenerateTarget(std::list<class cPlayerBullet> *Container);	// 弾の出力先を指定
 	bool GetEntryFlag();
 	bool GetAliveFlag();
 	double GetPossessGauge();
@@ -69,6 +73,7 @@ public:
 	unsigned char GetBomb();
 	unsigned int GetScoreRate();
 	const sScoreData GetScore();
+	void AddScore(const unsigned int Score);
 
 	void Initialize() override;
 	void Update() override;

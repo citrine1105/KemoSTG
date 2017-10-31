@@ -6,7 +6,7 @@
 class cPlayerBullet : public cBullet {
 protected:
 	enum ePlayerCharacter mType;
-	cEnemy *pTargetEnemy;
+	class cEnemy *pTargetEnemy;
 public:
 	cPlayerBullet();
 

@@ -8,19 +8,17 @@ cMainGameScene::~cMainGameScene() {
 
 }
 
-std::list<cPlayerBullet>* cMainGameScene::GetPlayerBullet() {
-	return &mPlayerBullet;
-}
-
 void cMainGameScene::Initialize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/test.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetPath(_T("./Data/Image/Game/Player/test.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Load();
 
 	mPlayer.at(0).SetInputPad(ppVirtualPad[0]);
 	mPlayer.at(1).SetInputPad(ppVirtualPad[1]);
@@ -49,19 +47,20 @@ void cMainGameScene::Update() {
 	mBossTimer.Update();
 	mBackground.Update();
 
-	//if (ppVirtualPad[0]->GetInputState(eButton_FullAuto) % 4 == 1) {
-	//	cPoint2D tPoint;
-	//	cVector2D tVector;
-	//	cBullet tBullet;
-	//	for (int i = 0; i < 5; i++) {
-	//		tPoint.SetPoint(mPlayer.at(0).GetPositionX(), mPlayer.at(0).GetPositionY());
-	//		tVector.SetPolarForm(TO_RADIAN(270.0 + 12.0 * (i - 2)), 18.0);
-	//		tBullet.Initialize(tPoint, tVector);
-	//		mBullet.push_back(tBullet);
-	//	}
-	//}
+	if (mTimer.GetTime() == 60) {
+		cEnemy tEnemy;
+		tEnemy.SetPosition(240.0, 160.0);
+
+		mEnemy.push_back(tEnemy);
+	}
 
 	for (auto &i : mPlayerBullet) {
+		i.Update();
+		if (mBulletOutCollider.GetCollisionFlag(i)) {
+
+		}
+	}
+	for (auto &i : mEnemyBullet) {
 		i.Update();
 		if (mBulletOutCollider.GetCollisionFlag(i)) {
 
@@ -71,18 +70,9 @@ void cMainGameScene::Update() {
 		i.Update();
 	}
 	for (auto &i : mEnemy) {
+		i.SetBulletGenerateTarget(&mEnemyBullet);
 		i.Update();
 	}
-
-	// テスト
-	//if (mTimer.GetTime() % 60 == 0) {
-	//	cPlayerBullet tBullet;
-	//	cVector2D tVec;
-	//	tVec.SetPolarForm(TO_RADIAN(-60.0), 12.0);
-	//	tBullet.Initialize(tVec, ePlayer_Rin);
-	//	tBullet.SetPosition(240.0, 320.0);
-	//	mPlayerBullet.push_back(tBullet);
-	//}
 }
 
 void cMainGameScene::Draw() {
@@ -107,20 +97,28 @@ void cMainGameScene::Draw() {
 
 	DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY()) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
 
+	// 敵
 	for (auto &i : mEnemy) {
 		i.Draw();
 	}
 
+	// 自機弾
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 60.0 / 100.0));
 	for (auto &i : mPlayerBullet) {
 		i.Draw();
 	}
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
+	// 自機
 	//for (auto &i : mPlayer) {
 	//	i.Draw();
 	//}
 	mPlayer.at(0).Draw();
+
+	// 敵弾
+	for (auto &i : mEnemyBullet) {
+		i.Draw();
+	}
 
 	// ボス体力ゲージ
 	//DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
@@ -198,8 +196,6 @@ void cMainGameScene::Draw() {
 	//}
 
 	//ppVirtualPad[0]->Draw();
-	//clsDx();
-	//if (mPlayerBullet.size() > 0) {
-	//	printfDx(_T("X:%6.1f Y:%6.1f\n%4.1f %4.1f"), mPlayerBullet.rbegin()->GetPositionX(), mPlayerBullet.rbegin()->GetPositionY(), mPlayerBullet.rbegin()->GetMoveVectorPointer()->GetMagnitude(), mPlayerBullet.rbegin()->GetMoveVectorPointer()->GetAngle());
-	//}
+	clsDx();
+	printfDx(_T("%d"), mEnemyBullet.size());
 }
