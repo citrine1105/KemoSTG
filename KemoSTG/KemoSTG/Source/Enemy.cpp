@@ -19,12 +19,16 @@ unsigned int cEnemy::GetLife() {
 }
 
 void cEnemy::Initialize() {
+	mCollider.resize(1);
+	mCollider.at(0).SetRange(32.0, 32.0);
+	mCollider.at(0).SetCollisionType(eCollision_Rectangle);
 	mAnimeTimer.Start();
 	mBulletGenerator.resize(1);
 	mBulletGeneratorVector.resize(1);
 }
 
 void cEnemy::Update() {
+	cSprite::Update();
 	// 弾源
 	for (auto &i : mBulletGeneratorVector) {
 		i.SetStartPoint(mPosition);
@@ -38,9 +42,12 @@ void cEnemy::Update() {
 		cEnemyBullet tBullet;	// 弾
 		cVector2D tMoveVector;	// 弾移動速度
 		tMoveVector.SetPolarForm(TO_RADIAN(GetRand(360)), 3.2);
-		tBullet.Initialize(tMoveVector, eBullet_Normal);
+		for (int j = 0; j < 1; j++) {
+			tMoveVector.AddAngle(TO_RADIAN(360.0 / 1.0));
+			tBullet.Initialize(tMoveVector, eBullet_Normal);
+			mBulletGenerator.at(i).AddBullet(tBullet);
+		}
 
-		mBulletGenerator.at(i).AddBullet(tBullet);
 		mBulletGenerator.at(i).Generate();
 	}
 }

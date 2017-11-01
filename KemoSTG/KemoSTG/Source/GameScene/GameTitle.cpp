@@ -64,9 +64,9 @@ void cTitleGameScene::Draw() {
 	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright[1].c_str(), tCopyright[1].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 23 + 8,
 		tCopyright[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
-	if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
+	//if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
 		DrawStringToHandle(8, 8, tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	}
+	//}
 
 	if (mTimer.GetTime() % 30 < 20) {
 		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,

@@ -13,6 +13,8 @@ cPlayer::~cPlayer() {
 
 void cPlayer::Bomb() {
 	if (mBomb > 0) {
+		mInvincibleTime.SetSecond(8.0);
+		mInvincibleTime.Start();
 		mBomb--;
 		// TODO: ボム発動処理もここに書く
 	}
@@ -22,7 +24,21 @@ void cPlayer::Damage() {
 	if (mLife > 0) {
 		mLife--;
 	}
+	switch (mScore.mType) {
+	case ePossess_Half:
+		mScoreRate = static_cast<unsigned int>(ceil(mScoreRate / 2.0));
+		break;
+	case ePossess_Full:
+		mScoreRate = 1;
+		break;
+	default:
+		mScoreRate = 999;
+		break;
+	}
+	mPossessTime.Reset();
+	mPossessTime.Stop();
 	mInvincibleTime.Reset();
+	mInvincibleTime.Start();
 }
 
 void cPlayer::Continue() {
@@ -56,6 +72,7 @@ bool cPlayer::GetAliveFlag() {
 
 double cPlayer::GetPossessGauge() {
 	return static_cast<double>(mPossessTime.GetTime()) / static_cast<double>(mPossessTime.GetMaxTime()) * 100.0;
+	//return static_cast<double>(mPossessTime.GetTime());
 }
 
 unsigned char cPlayer::GetLife() {
@@ -74,18 +91,40 @@ const sScoreData cPlayer::GetScore() {
 	return mScore;
 }
 
+bool cPlayer::GetPossessFlag() {
+	return mPossessTime.GetActiveFlag();
+}
+
+bool cPlayer::GetInvincibleFlag() {
+	if (mInvincibleTime.GetTime() > 0) {
+		return true;
+	}
+	return false;
+}
+
 void cPlayer::AddScore(const unsigned int Score) {
-	mScore.mScore += Score;
+	if (Score > 0) {
+		mScore.mScore += Score;
+	}
+}
+
+void cPlayer::AddScoreRate(const unsigned int ScoreRate) {
+	if (ScoreRate > 0) {
+		mScoreRate += ScoreRate;
+	}
 }
 
 void cPlayer::Initialize() {
+	mCollider.resize(1);
+	mCollider.at(0).SetCollisionType(eCollision_Ellipse);
+	mCollider.at(0).SetRange(1.0, 1.0);
 	mScore.mName.clear();
 	mMoveSpeed = 7.2;	// TODO: キャラごとに速度を変えるようにする
 	mScore.mScore = 0U;
 	mScore.mContinue = 0;
 	mScore.mMaxRate = 1U;
 	mScore.mCharacter = ePlayer_TotalNum;
-	mScore.mType = ePossess_None;
+	mScore.mType = ePossess_Half;
 	mPosition.SetPoint(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT * 4.0 / 5.0);	// 初期位置
 	mInvincibleTime.Start();
 	mAnimeTimer.Initialize(0, 15 * 3 - 1, eCountMode_CountUp, true);
@@ -93,7 +132,7 @@ void cPlayer::Initialize() {
 	mBulletGenerator.resize(4);
 	mBulletGeneratorVector.resize(4);
 	for (auto &i : mBulletGeneratorVector) {
-		i.SetMagnitude(48.0);
+		i.SetMagnitude(1.0);
 	}
 	mBulletGeneratorVector.at(0).SetAngle(TO_RADIAN(0.0));
 	mBulletGeneratorVector.at(1).SetAngle(TO_RADIAN(90.0));
@@ -102,16 +141,21 @@ void cPlayer::Initialize() {
 }
 
 void cPlayer::Update() {
+	cSprite::Update();
 	mInvincibleTime.Update();	// 無敵時間カウント
 	mPossessTime.Update();	// 憑依時間カウント
 	mAnimeTimer.Update();
 
-	if (pInputPad->GetInputState(eButton_Possess) == 1) {	// 憑依
+	// 憑依
+	if (pInputPad->GetInputState(eButton_Possess) == 1) {
 		if (mPossessTime.GetActiveFlag()) {
 			mPossessTime.Stop();
 			mPossessTime.AddTime(-30);
+			if (mPossessTime.GetTime() < 0) {
+				mPossessTime.SetTime(0);
+			}
 		}
-		else {
+		else if (mPossessTime.GetTime() > 0) {
 			mPossessTime.Start();
 		}
 	}
@@ -164,12 +208,13 @@ void cPlayer::Update() {
 	if (mPosition.GetY() <= GAME_SCREEN_HEIGHT / 5.0) {
 		mPosition.SetPoint(mPosition.GetX(), GAME_SCREEN_HEIGHT / 5.0);
 	}
-	else if (mPosition.GetY() >= GAME_SCREEN_HEIGHT - 64.0) {
-		mPosition.SetPoint(mPosition.GetX(), GAME_SCREEN_HEIGHT - 64.0);
+	else if (mPosition.GetY() >= GAME_SCREEN_HEIGHT - 48.0) {
+		mPosition.SetPoint(mPosition.GetX(), GAME_SCREEN_HEIGHT - 48.0);
 	}
 
 	// 弾源
 	for (auto &i : mBulletGeneratorVector) {
+		i.SetMagnitude(fSlowMove ? 48.0 : 72.0);
 		i.SetStartPoint(mPosition);
 		i.AddAngle(TO_RADIAN(3.6));
 	}
@@ -196,7 +241,10 @@ void cPlayer::Update() {
 }
 
 void cPlayer::Draw() {
-	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(mAnimeTimer.GetTime() / 15), TRUE);
+	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 2 == 0)
+		|| mInvincibleTime.GetTime() <= 0) {
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(mAnimeTimer.GetTime() / 15), TRUE);
+	}
 #ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {
 		DrawCircle(i.GetPositionX(), i.GetPositionY(), 3, GetColor(0xFF, 0xFF, 0xFF));

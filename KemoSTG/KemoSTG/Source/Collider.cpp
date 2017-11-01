@@ -43,6 +43,45 @@ double cCollider::GetRangeY() {
 }
 
 bool cCollider::GetCollision(cCollider &Collider) {
+	// ŒX‚«‚Ì‚È‚¢‹éŒ`“¯m‚Ì”»’è‚¾‚¯À‘•
+	struct tsPoint {
+		double Top;
+		double Bottom;
+		double Left;
+		double Right;
+	};
+
+	std::array<tsPoint, 2> tPoint;
+	double tPosX, tPosY, tRangeX, tRangeY;
+	tPosX = Collider.GetPosition().GetX();
+	tPosY = Collider.GetPosition().GetY();
+	tRangeX = Collider.GetRangeX();
+	tRangeY = Collider.GetRangeY();
+
+	if (mRangeX <= 0.0 ||
+		mRangeY <= 0.0 ||
+		tRangeX <= 0.0 ||
+		tRangeY <= 0.0) {
+		return false;
+	}
+
+	tPoint.at(0).Top = mPosition.GetY() - mRangeY / 2.0;
+	tPoint.at(0).Bottom = mPosition.GetY() + mRangeY / 2.0;
+	tPoint.at(0).Left = mPosition.GetX() - mRangeX / 2.0;
+	tPoint.at(0).Right = mPosition.GetX() + mRangeX / 2.0;
+
+	tPoint.at(1).Top = tPosY - tRangeY / 2.0;
+	tPoint.at(1).Bottom = tPosY + tRangeY / 2.0;
+	tPoint.at(1).Left = tPosX - tRangeX / 2.0;
+	tPoint.at(1).Right = tPosX + tRangeX / 2.0;
+
+	if ((tPoint.at(0).Top <= tPoint.at(1).Bottom && tPoint.at(0).Bottom >= tPoint.at(1).Top) &&
+		(tPoint.at(0).Left <= tPoint.at(1).Right && tPoint.at(0).Right >= tPoint.at(1).Left)) {
+		return true;
+	}
+	else {
+		return false;
+	}
 	return false;	// ì‚ê
 }
 

@@ -30,7 +30,7 @@ public:
 	double GetPositionX();	// X座標を取得
 	double GetPositionY();	// Y座標を取得
 	double GetAngleToSprite(cSprite &Sprite);
-	std::vector<cCollider> GetCollider();
+	std::vector<cCollider>* GetColliderPointer();
 	cVector2D* GetMoveVectorPointer();	// 移動用ベクトルのアドレスを取得
 	//cVector2D* GetCollisionVectorPointer();	// 衝突判定用ベクトルのアドレスを取得
 	bool GetCollisionFlag(cSprite &Sprite);	// 他のスプライトと衝突したか調べる

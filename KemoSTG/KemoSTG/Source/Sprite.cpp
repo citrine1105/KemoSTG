@@ -56,8 +56,8 @@ double cSprite::GetAngleToSprite(cSprite &Sprite) {
 	return atan2(Sprite.GetPositionY() - mPosition.GetY(), Sprite.GetPositionX() - mPosition.GetX());
 }
 
-std::vector<cCollider> cSprite::GetCollider() {
-	return mCollider;
+std::vector<cCollider>* cSprite::GetColliderPointer() {
+	return &mCollider;
 }
 
 cVector2D* cSprite::GetMoveVectorPointer() {
@@ -70,7 +70,7 @@ cVector2D* cSprite::GetMoveVectorPointer() {
 
 bool cSprite::GetCollisionFlag(cSprite &Sprite) {
 	for (auto &i : mCollider) {
-		for (auto &j : Sprite.GetCollider()) {
+		for (auto &j : *Sprite.GetColliderPointer()) {
 			if (i.GetCollision(j)) {
 				return true;
 			}
@@ -107,6 +107,9 @@ void cSprite::Update() {
 		cVector2D tVector = mMoveVector;
 		tVector *= cEasing::GetInstance()->GetEase(mEaseFunc, mMoveType, 1.0 - static_cast<double>(mDelayTimer.GetTime() - 1) / static_cast<double>(mMoveTime), 1.0);
 		mPosition = tVector.GetEndPoint();
+	}
+	for (auto &i : mCollider) {
+		i.SetPosition(mPosition);
 	}
 	//if (mDelayTimer.GetTime() <= 0) {
 	//	mDelayTimer.Stop();

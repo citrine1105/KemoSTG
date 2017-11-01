@@ -18,5 +18,5 @@ void cBullet::Initialize(cVector2D &MoveVector) {
 
 void cBullet::Update() {
 	this->Move();
-	//cSprite::Update();
+	cSprite::Update();
 }

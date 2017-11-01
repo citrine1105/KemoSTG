@@ -73,7 +73,10 @@ public:
 	unsigned char GetBomb();
 	unsigned int GetScoreRate();
 	const sScoreData GetScore();
+	bool GetPossessFlag();
+	bool GetInvincibleFlag();
 	void AddScore(const unsigned int Score);
+	void AddScoreRate(const unsigned int ScoreRate);
 
 	void Initialize() override;
 	void Update() override;

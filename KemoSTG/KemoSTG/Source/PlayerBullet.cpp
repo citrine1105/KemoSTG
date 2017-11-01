@@ -8,6 +8,8 @@ void cPlayerBullet::Initialize(cVector2D &MoveVector, const ePlayerCharacter Typ
 	cBullet::Initialize(MoveVector);
 	mType = Type;
 	fActive = true;
+	mCollider.resize(1);
+	mCollider.at(0).SetRange(24.0, 48.0);
 }
 
 void cPlayerBullet::Update() {
