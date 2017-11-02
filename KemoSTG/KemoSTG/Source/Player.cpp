@@ -232,6 +232,7 @@ void cPlayer::Update() {
 										
 			mBulletGenerator.at(i).AddBullet(tBullet);
 			mBulletGenerator.at(i).Generate();
+			//PlaySoundMem(gSEContainer.GetElement(eSE_Shot)->GetHandle(), DX_PLAYTYPE_BACK);
 		}
 	}
 
@@ -243,7 +244,7 @@ void cPlayer::Update() {
 void cPlayer::Draw() {
 	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 2 == 0)
 		|| mInvincibleTime.GetTime() <= 0) {
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(mAnimeTimer.GetTime() / 15), TRUE);
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(), TRUE);
 	}
 #ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {

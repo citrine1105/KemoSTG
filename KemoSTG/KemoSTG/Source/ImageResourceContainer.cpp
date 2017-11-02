@@ -9,9 +9,6 @@ void cImageResourceContainer::Initialize() {
 }
 
 void cImageResourceContainer::Finalize() {
-	//for (int i = 0; i < eImageIndex::eImage_None; i++) {
-	//	mImageArray[i].Finalize();
-	//}
 	for (auto &i : mImageArray) {
 		i.Finalize();
 	}

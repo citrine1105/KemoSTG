@@ -188,6 +188,7 @@
     <ClCompile Include="Source\Scene\Title.cpp" />
     <ClCompile Include="Source\SelectTimer.cpp" />
     <ClCompile Include="Source\SoundResource.cpp" />
+    <ClCompile Include="Source\SoundResourceContainer.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\StringResource.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Header\Scene\Title.h" />
     <ClInclude Include="Header\SelectTimer.h" />
     <ClInclude Include="Header\SoundResource.h" />
+    <ClInclude Include="Header\SoundResourceContainer.h" />
     <ClInclude Include="Header\Sprite.h" />
     <ClInclude Include="Header\StringResource.h" />
     <ClInclude Include="Header\Timer.h" />

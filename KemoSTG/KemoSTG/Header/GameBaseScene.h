@@ -4,6 +4,7 @@
 #include "VirtualPad.h"
 #include "Config.h"
 #include "ImageResourceContainer.h"
+#include "SoundResourceContainer.h"
 #include "FontContainer.h"
 
 #define GAME_SCREEN_WIDTH 480	// ゲーム画面幅

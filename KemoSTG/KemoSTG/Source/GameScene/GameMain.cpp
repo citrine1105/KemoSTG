@@ -9,16 +9,24 @@ cMainGameScene::~cMainGameScene() {
 }
 
 void cMainGameScene::Initialize() {
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/test.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetPath(_T("./Data/Image/Game/Player/test.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/1.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
+
+	gBGMContainer.Initialize(eBGM_TotalNum);
+	gSEContainer.Initialize(eSE_TotalNum);
+
+	gSEContainer.GetElement(eSE_Shot)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
+	gSEContainer.GetElement(eSE_Shot)->SetBufferNum(1);
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Load();
+
+	gSEContainer.GetElement(eSE_Shot)->Load();
 
 	mBulletOutCollider.GetColliderPointer()->resize(1);
 	mBulletOutCollider.GetColliderPointer()->at(0).SetRange(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
@@ -30,7 +38,7 @@ void cMainGameScene::Initialize() {
 		i.SetBulletGenerateTarget(&mPlayerBullet);
 	}
 
-	mBackground.MoveToPoint(0.0, 1200.0, 90 * 60);
+	mBackground.GetMoveVectorPointer()->SetElement(0.0, 0.8);
 
 	mTimer.Initialize(0);
 	mBombAnimeTimer.Initialize(0, (cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandleNum() * 2 - 2) * 5, eCountMode_CountUp, true);
@@ -49,7 +57,7 @@ void cMainGameScene::Update() {
 	mTimer.Update();
 	mBombAnimeTimer.Update();
 	mBossTimer.Update();
-	mBackground.Update();
+	mBackground.Move();
 	mBulletOutCollider.Update();
 
 	if (mTimer.GetTime() == 60) {
@@ -135,7 +143,9 @@ void cMainGameScene::Draw() {
 	tScoreRateDigit.at(0) = static_cast<int>(floor(log10(tDispScoreRate.at(0)))) + 1;
 	tScoreRateDigit.at(1) = static_cast<int>(floor(log10(tDispScoreRate.at(1)))) + 1;
 
-	DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY()) - 640.0f, cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
+	for (int i = 0; i < 5; i++) {
+		DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetSizeY() * i), cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
+	}
 	for (auto &i : mPlayer) {
 		if (i.GetPossessFlag()) {
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 40.0 / 100.0));
