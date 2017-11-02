@@ -6,8 +6,6 @@ cSelectTimer::cSelectTimer() {
 
 cSelectTimer::~cSelectTimer() {
 	this->Finalize();
-	DeleteFontToHandle(cFontContainer::GetInstance()->GetElement(eFont_TimerFont));
-	DeleteFontToHandle(cFontContainer::GetInstance()->GetElement(eFont_MiniTimerFont));
 }
 
 void cSelectTimer::Draw() {

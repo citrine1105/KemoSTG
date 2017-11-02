@@ -19,7 +19,7 @@ enum ePossessType {
 };
 
 struct sScoreData {
-	std::string mName;
+	std::tstring mName;
 	unsigned int mScore;
 	unsigned char mContinue;
 	unsigned int mMaxRate;

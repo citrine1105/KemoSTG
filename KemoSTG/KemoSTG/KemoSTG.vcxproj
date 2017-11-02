@@ -172,6 +172,7 @@
     <ClCompile Include="Source\GameScene\GameLogo.cpp" />
     <ClCompile Include="Source\GameScene\GameMain.cpp" />
     <ClCompile Include="Source\GameScene\GameNotice.cpp" />
+    <ClCompile Include="Source\GameScene\GameRanking.cpp" />
     <ClCompile Include="Source\GameScene\GameTitle.cpp" />
     <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\ImageResourceContainer.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="Header\GameScene\GameLogo.h" />
     <ClInclude Include="Header\GameScene\GameMain.h" />
     <ClInclude Include="Header\GameScene\GameNotice.h" />
+    <ClInclude Include="Header\GameScene\GameRanking.h" />
     <ClInclude Include="Header\GameScene\GameTitle.h" />
     <ClInclude Include="Header\ImageResource.h" />
     <ClInclude Include="Header\ImageResourceContainer.h" />

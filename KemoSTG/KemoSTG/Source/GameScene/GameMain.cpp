@@ -62,6 +62,7 @@ void cMainGameScene::Finalize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Delete();
 }
 
 void cMainGameScene::Update() {
