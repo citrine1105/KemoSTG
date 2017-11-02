@@ -56,6 +56,8 @@ protected:
 	cTimer mAnimeTimer;	// アニメーション用タイマー
 	std::vector<class cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
 	std::vector<cVector2D> mBulletGeneratorVector;	// 弾源移動制御用ベクトル
+
+	int Sound;	// ショット音(削除して)
 public:
 	cPlayer();
 	~cPlayer();

@@ -5,7 +5,7 @@
 #define DISPLAY_HEIGHT cSystemConfig::GetInstance()->GetConfig().mDisplayHeight	// 画面の高さ
 
 #define CAPTION_STRING _T("朧の迷仔たち")	// キャプションテキスト
-#define VERSION_STRING _T("0.04")	// バージョン
+#define VERSION_STRING _T("0.10")	// バージョン
 #define DX_ARCHIVE_KEY_STRING _T("TestKey")	// DXアーカイブ展開キー
 
 #define TO_DEGREE(value) (PI / 180.0 * (value))	// 弧度法に変換
