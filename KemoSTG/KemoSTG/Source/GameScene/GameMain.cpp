@@ -12,6 +12,7 @@ void cMainGameScene::Initialize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/1.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
 	//cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
@@ -24,6 +25,7 @@ void cMainGameScene::Initialize() {
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Load();
@@ -51,6 +53,8 @@ void cMainGameScene::Initialize() {
 	mTimer.Start();
 	mBombAnimeTimer.Start();
 	mBossTimer.Start();
+
+	mPlayer.at(0).Entry();
 }
 
 void cMainGameScene::Finalize() {
@@ -60,6 +64,7 @@ void cMainGameScene::Finalize() {
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Delete();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Delete();
@@ -90,6 +95,9 @@ void cMainGameScene::Update() {
 				if (j.GetCollisionFlag(i)) {
 					//j.Damage(i.GetPower());
 					i.Erase();
+					if (mPlayer.at(0).GetPossessFlag()) {
+						mPlayer.at(0).AddScoreRate(1);
+					}
 					mPlayer.at(0).AddScore(10 * mPlayer.at(0).GetScoreRate());
 				}
 			}
@@ -118,10 +126,17 @@ void cMainGameScene::Update() {
 		i++;
 	}
 
-	//for (auto &i : mPlayer) {
-	//	i.Update();
-	//}
-	mPlayer.at(0).Update();
+	for (auto &i : mPlayer) {
+		if (i.GetAliveFlag()) {
+			i.Update();
+		}
+	}
+
+	if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % 60 * 3 == 0) {
+		for (auto &i : mEnemy) {
+			i.MoveToPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT), 120, eEasing_Quad, eEasingFunction_InOut);
+		}
+	}
 
 	for (auto &i : mEnemy) {
 		i.SetBulletGenerateTarget(&mEnemyBullet);
@@ -153,9 +168,14 @@ void cMainGameScene::Update() {
 }
 
 void cMainGameScene::Draw() {
+	std::array<std::tstring, 2> tInformation;
 	std::array<std::tstring, 2> tScore;
 	std::array<unsigned int, 2> tDispScoreRate;	// 表示用スコアレート
 	std::array<int, 2> tScoreRateDigit;	// スコアレート桁数
+	std::array<std::tstring, 2> tDispGauge; // 表示用残りゲージ
+
+	tInformation.at(0) = _T("GAME OVER");
+	tInformation.at(1) = _T("TRIAL VERSION");
 
 	tScore.at(0) = std::to_tstring(mPlayer.at(0).GetScore().mScore);
 	tScore.at(1) = std::to_tstring(mPlayer.at(1).GetScore().mScore);
@@ -172,7 +192,7 @@ void cMainGameScene::Draw() {
 	tScoreRateDigit.at(0) = static_cast<int>(floor(log10(tDispScoreRate.at(0)))) + 1;
 	tScoreRateDigit.at(1) = static_cast<int>(floor(log10(tDispScoreRate.at(1)))) + 1;
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = -1; i < 256; i++) {
 		DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetSizeY() * i), cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
 	}
 	for (auto &i : mPlayer) {
@@ -197,10 +217,11 @@ void cMainGameScene::Draw() {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 
 	// 自機
-	//for (auto &i : mPlayer) {
-	//	i.Draw();
-	//}
-	mPlayer.at(0).Draw();
+	for (auto &i : mPlayer) {
+		if (i.GetAliveFlag()) {
+			i.Draw();
+		}
+	}
 
 	// 敵弾
 	for (auto &i : mEnemyBullet) {
@@ -218,55 +239,69 @@ void cMainGameScene::Draw() {
 
 	// スコアレート
 	// 1P
-	DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
-	for (int i = 0; i < tScoreRateDigit.at(0); i++) {
-		DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (tScoreRateDigit.at(0) - i), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(0) / static_cast<int>(pow(10, i)) % 10), TRUE);
+	if (mPlayer.at(0).GetAliveFlag()) {
+		DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
+		for (int i = 0; i < tScoreRateDigit.at(0); i++) {
+			DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (tScoreRateDigit.at(0) - i), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(0) / static_cast<int>(pow(10, i)) % 10), TRUE);
+		}
 	}
 	// 2P
-	//for (int i = 0; i <= tScoreRateDigit.at(1); i++) {
-	//	if (i == tScoreRateDigit.at(1)) {
-	//		DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
-	//	}
-	//	else {
-	//		DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
-	//	}
-	//}
+	if (mPlayer.at(1).GetAliveFlag()) {
+		for (int i = 0; i <= tScoreRateDigit.at(1); i++) {
+			if (i == tScoreRateDigit.at(1)) {
+				DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
+			}
+			else {
+				DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
+			}
+		}
+	}
 
 	// 憑依ゲージ
 	// 1P
-	DrawFormatStringToHandle(12, 108 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), cFontContainer::GetInstance()->GetElement(eFont_TimerFont), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
+	if (mPlayer.at(0).GetAliveFlag()) {
+		DrawFormatStringToHandle(12, 108 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), cFontContainer::GetInstance()->GetElement(eFont_TimerFont), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
+	}
 
 	// ライフ
 	// 1P
-	for (int i = 0; i < mPlayer.at(0).GetLife(); i++) {
-		DrawGraph(12 + 24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
+	if (mPlayer.at(0).GetAliveFlag()) {
+		for (int i = 0; i < mPlayer.at(0).GetLife(); i++) {
+			DrawGraph(12 + 24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
+		}
 	}
 	// 2P
-	//for (int i = 0; i < mPlayer.at(1).GetLife(); i++) {
-	//	DrawGraph(480 - 12 - 20 + -24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
-	//}
+	if (mPlayer.at(1).GetAliveFlag()) {
+		for (int i = 0; i < mPlayer.at(1).GetLife(); i++) {
+			DrawGraph(480 - 12 - 20 + -24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
+		}
+	}
 
 	// ボム
 	// 1P
-	DrawGraph(12, 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
-	for (int i = 0; i < mPlayer.at(0).GetBomb(); i++) {
-		if (mTimer.GetTime() / 5 % 6 < 4) {
-			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
-		}
-		else {
-			DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+	if (mPlayer.at(0).GetAliveFlag()) {
+		DrawGraph(12, 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
+		for (int i = 0; i < mPlayer.at(0).GetBomb(); i++) {
+			if (mTimer.GetTime() / 5 % 6 < 4) {
+				DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
+			}
+			else {
+				DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+			}
 		}
 	}
 	// 2P
-	//DrawGraph(480 - 12 - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
-	//for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
-	//	if (mTimer.GetTime() / 5 % 6 < 4) {
-	//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
-	//	}
-	//	else {
-	//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
-	//	}
-	//}
+	if (mPlayer.at(1).GetAliveFlag()) {
+		DrawGraph(480 - 12 - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
+		for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
+			if (mTimer.GetTime() / 5 % 6 < 4) {
+				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
+			}
+			else {
+				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+			}
+		}
+	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
@@ -278,17 +313,27 @@ void cMainGameScene::Draw() {
 
 	// スコア
 	// 1P
-	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
-	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-		tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	if (mPlayer.at(0).GetAliveFlag()) {
+		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
+		DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+			tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	}
+	else {
+		DrawStringToHandle(GAME_SCREEN_WIDTH * 2 / 9 - GetDrawStringWidthToHandle(tInformation.at(0).c_str(), tInformation.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
+			tInformation.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	}
 	// 2P
-	//if (mTimer.GetTime() % 60 < 30) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(_T("TRIAL VERSION"), _tcsclen(_T("TRIAL VERSION")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
-			_T("TRIAL VERSION"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	//}
-	//DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
-	//DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-	//	tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	if (mPlayer.at(1).GetAliveFlag()) {
+		DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
+		DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+			tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	}
+	else {
+		//if (mTimer.GetTime() % 60 < 30) {
+		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(tInformation.at(1).c_str(), tInformation.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
+			tInformation.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		//}
+	}
 
 	//ppVirtualPad[0]->Draw();
 #ifdef _DEBUG

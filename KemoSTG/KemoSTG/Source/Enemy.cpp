@@ -66,5 +66,6 @@ void cEnemy::Update() {
 }
 
 void cEnemy::Draw() {
-	cSprite::Draw();
+	//cSprite::Draw();
+	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->GetHandle(), TRUE);
 }

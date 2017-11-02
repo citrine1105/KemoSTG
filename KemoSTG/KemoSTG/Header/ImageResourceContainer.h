@@ -20,6 +20,7 @@ enum eImageIndex {
 	eImage_GameOver,
 
 	eImage_PlayerRin,
+	eImage_Enemy,
 
 	eImage_PlayerBullet,
 	eImage_EnemyBullet,

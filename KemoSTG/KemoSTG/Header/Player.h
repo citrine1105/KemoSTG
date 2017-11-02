@@ -43,7 +43,7 @@ struct sScoreData {
 class cPlayer : public cSprite {
 protected:
 	bool fEntry;		// エントリーフラグ
-	bool fAlive;		// 生存フラグ
+	//bool fAlive;		// 生存フラグ
 	bool fSlowMove;		// 低速移動フラグ
 	cTimer mInvincibleTime;	// 無敵時間
 	cTimer mPossessTime;		// 残り憑依時間
@@ -60,6 +60,7 @@ public:
 	cPlayer();
 	~cPlayer();
 
+	void Entry();	// エントリー
 	void Bomb();	// ボム使用処理
 	void Damage();	// ダメージ処理
 	void Continue();	// コンティニュー処理

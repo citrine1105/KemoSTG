@@ -1,6 +1,6 @@
 ﻿#include "../Header/Player.h"
 
-cPlayer::cPlayer() : cSprite(), fEntry(false), fAlive(false),
+cPlayer::cPlayer() : cSprite(), fEntry(false), /*fAlive(false),*/
 	mInvincibleTime(60 * 5, 60 * 5, eCountMode_CountDown), mPossessTime(15.0, 30.0, eCountMode_CountDown),
 	pInputPad(nullptr), mMoveSpeed(1.0), mLife(3), mBomb(3),
 	mScoreRate(1) {
@@ -9,6 +9,10 @@ cPlayer::cPlayer() : cSprite(), fEntry(false), fAlive(false),
 
 cPlayer::~cPlayer() {
 
+}
+
+void cPlayer::Entry() {
+	fEntry = true;
 }
 
 void cPlayer::Bomb() {
@@ -67,7 +71,10 @@ bool cPlayer::GetEntryFlag() {
 }
 
 bool cPlayer::GetAliveFlag() {
-	return fAlive;
+	if (fEntry && mLife > 0) {
+		return true;
+	}
+	return false;
 }
 
 double cPlayer::GetPossessGauge() {
