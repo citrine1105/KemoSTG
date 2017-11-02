@@ -1,7 +1,22 @@
 ﻿#include "../Header/PlayerBullet.h"
 
-cPlayerBullet::cPlayerBullet() : pTargetEnemy(nullptr) {
+cPlayerBullet::cPlayerBullet() 
+	: pTargetEnemy(nullptr), mType(ePlayer_TotalNum) {
 
+}
+
+int cPlayerBullet::GetPower() {
+	switch (mType) {
+	case ePlayer_Rin:
+		return 5;
+		break;
+	case ePlayer_Boy:
+		return 3;
+		break;
+	default:
+		return 1;
+		break;
+	}
 }
 
 void cPlayerBullet::Initialize(cVector2D &MoveVector, const ePlayerCharacter Type) {

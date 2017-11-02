@@ -10,6 +10,8 @@ protected:
 public:
 	cPlayerBullet();
 
+	int GetPower();	// 攻撃力
+
 	void Initialize(cVector2D &MoveVector, const enum ePlayerCharacter Type);
 	void Update() override;
 	void Draw() override;

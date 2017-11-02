@@ -1,11 +1,17 @@
 ﻿#include "../Header/Enemy.h"
 
-cEnemy::cEnemy() {
+cEnemy::cEnemy() : mLife(50) {
 	this->Initialize();
 }
 
 cEnemy::~cEnemy() {
 
+}
+
+void cEnemy::Damage(const int Damage) {
+	if (Damage > 0) {
+		mLife -= Damage;
+	}
 }
 
 void cEnemy::SetBulletGenerateTarget(std::list<cEnemyBullet> *Container) {
@@ -14,8 +20,15 @@ void cEnemy::SetBulletGenerateTarget(std::list<cEnemyBullet> *Container) {
 	}
 }
 
-unsigned int cEnemy::GetLife() {
+int cEnemy::GetLife() {
 	return mLife;
+}
+
+bool cEnemy::GetAliveFlag() {
+	if (mLife <= 0) {
+		return false;
+	}
+	return true;
 }
 
 void cEnemy::Initialize() {

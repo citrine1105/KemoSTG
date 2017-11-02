@@ -55,6 +55,9 @@ void cLogoGameScene::Update() {
 }
 
 void cLogoGameScene::Draw() {
+	std::tstring tMessage;
+	tMessage = _T("PRESS [1] KEY");
+
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
 	if (mTimer.GetSecond() < 5.0) {
 		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(0), FALSE);
@@ -65,7 +68,7 @@ void cLogoGameScene::Draw() {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	if (mTimer.GetTime() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
-			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
+			tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}
 }

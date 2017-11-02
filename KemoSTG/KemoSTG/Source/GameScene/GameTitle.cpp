@@ -48,10 +48,13 @@ void cTitleGameScene::Update() {
 }
 
 void cTitleGameScene::Draw() {
-	std::tstring tCopyright[2];
+	std::tstring tMessage;
+	std::array<std::tstring, 2> tCopyright;
 	std::tstring tVersion;
-	tCopyright[0] = _T("©2017 Amusement Makers");
-	tCopyright[1] = _T("Developed by C-Lab");
+
+	tMessage = _T("PRESS [1] KEY");
+	tCopyright.at(0) = _T("©2017 Amusement Makers");
+	tCopyright.at(1) = _T("Developed by C-Lab");
 	tVersion = _T("Ver ");
 	tVersion += VERSION_STRING;
 
@@ -59,17 +62,17 @@ void cTitleGameScene::Draw() {
 	DrawGraph(0, 0, mImage.GetHandle(), FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright[0].c_str(), tCopyright[0].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 22 + 8,
-		tCopyright[0].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright[1].c_str(), tCopyright[1].size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 23 + 8,
-		tCopyright[1].c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.at(0).c_str(), tCopyright.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 22 + 8,
+		tCopyright.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.at(1).c_str(), tCopyright.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 23 + 8,
+		tCopyright.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 	//if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
 		DrawStringToHandle(8, 8, tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	//}
 
 	if (mTimer.GetTime() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(_T("PRESS START BUTTON"), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
-			_T("PRESS START BUTTON"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
+			tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}
 }

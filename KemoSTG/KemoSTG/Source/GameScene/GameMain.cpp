@@ -14,6 +14,7 @@ void cMainGameScene::Initialize() {
 	//cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
 
 	gBGMContainer.Initialize(eBGM_TotalNum);
 	gSEContainer.Initialize(eSE_TotalNum);
@@ -25,6 +26,7 @@ void cMainGameScene::Initialize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Load();
 	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Load();
 
 	gSEContainer.GetElement(eSE_Shot)->Load();
 
@@ -38,7 +40,9 @@ void cMainGameScene::Initialize() {
 		i.SetBulletGenerateTarget(&mPlayerBullet);
 	}
 
-	mBackground.GetMoveVectorPointer()->SetElement(0.0, 0.8);
+	mBackground.GetMoveVectorPointer()->SetElement(0.0, 0.7);
+
+	mFade.SetPosition(0.0, 0.0);
 
 	mTimer.Initialize(0);
 	mBombAnimeTimer.Initialize(0, (cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandleNum() * 2 - 2) * 5, eCountMode_CountUp, true);
@@ -50,7 +54,14 @@ void cMainGameScene::Initialize() {
 }
 
 void cMainGameScene::Finalize() {
+	mEnemy.clear();
+	mPlayerBullet.clear();
+	mEnemyBullet.clear();
 
+	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Delete();
 }
 
 void cMainGameScene::Update() {
@@ -59,8 +70,9 @@ void cMainGameScene::Update() {
 	mBossTimer.Update();
 	mBackground.Move();
 	mBulletOutCollider.Update();
+	mFade.Update();
 
-	if (mTimer.GetTime() == 60) {
+	if (mTimer.GetTime() == 120) {
 		cEnemy tEnemy;
 		tEnemy.SetPosition(240.0, 160.0);
 
@@ -75,6 +87,7 @@ void cMainGameScene::Update() {
 		else {
 			for (auto &j : mEnemy) {
 				if (j.GetCollisionFlag(i)) {
+					//j.Damage(i.GetPower());
 					i.Erase();
 					mPlayer.at(0).AddScore(10 * mPlayer.at(0).GetScoreRate());
 				}
@@ -113,6 +126,13 @@ void cMainGameScene::Update() {
 		i.SetBulletGenerateTarget(&mEnemyBullet);
 		i.Update();
 	}
+	for (auto i = mEnemy.begin(); i != mEnemy.end();) {
+		if (!i->GetAliveFlag()) {
+			i = mEnemy.erase(i);
+			continue;
+		}
+		i++;
+	}
 
 	for (auto &i : mPlayer) {
 		for (auto &j : mEnemyBullet) {
@@ -120,6 +140,14 @@ void cMainGameScene::Update() {
 				i.Damage();
 			}
 		}
+	}
+
+	if (mPlayer.at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
+		mFade.MoveToPoint(255.0, 0.0, 90);
+	}
+
+	if (mFade.GetPositionX() >= 255.0) {
+		pSceneChanger->ChangeScene(eGameScene_Logo);
 	}
 }
 
@@ -187,20 +215,6 @@ void cMainGameScene::Draw() {
 	//}
 	//mBossTimer.Draw(240, 110);
 
-	// スコア
-	// 1P
-	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
-	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-		tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	// 2P
-	//if (mTimer.GetTime() % 60 < 30) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(_T("TRIAL VERSION"), _tcsclen(_T("TRIAL VERSION")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
-			_T("TRIAL VERSION"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	//}
-	//DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
-	//DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-	//	tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-
 	// スコアレート
 	// 1P
 	DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
@@ -252,6 +266,28 @@ void cMainGameScene::Draw() {
 	//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
 	//	}
 	//}
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
+	DrawBox(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+
+	if (mPlayer.at(0).GetLife() <= 0) {
+		DrawGraph(GAME_SCREEN_WIDTH / 2 - cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->GetSizeX() / 2, GAME_SCREEN_HEIGHT * 2 / 5, cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->GetHandle(), TRUE);
+	}
+
+	// スコア
+	// 1P
+	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
+	DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+		tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	// 2P
+	//if (mTimer.GetTime() % 60 < 30) {
+		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(_T("TRIAL VERSION"), _tcsclen(_T("TRIAL VERSION")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
+			_T("TRIAL VERSION"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	//}
+	//DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
+	//DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
+	//	tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 	//ppVirtualPad[0]->Draw();
 #ifdef _DEBUG

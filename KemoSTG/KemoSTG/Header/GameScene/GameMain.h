@@ -11,6 +11,7 @@ private:
 	cTimer mTimer;			// 経過時間
 	cTimer mBombAnimeTimer;	// 残りボムのアニメーション用
 	cSprite mBackground;	// 背景
+	cSprite mFade;			// フェードアウト用
 	cSelectTimer mBossTimer;	// ボス戦残り時間
 
 	cSprite mBulletOutCollider;	// 弾画面外判定用

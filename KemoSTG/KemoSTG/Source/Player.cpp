@@ -112,6 +112,9 @@ void cPlayer::AddScoreRate(const unsigned int ScoreRate) {
 	if (ScoreRate > 0) {
 		mScoreRate += ScoreRate;
 	}
+	if (mScoreRate > mScore.mMaxRate) {
+		mScore.mMaxRate = mScoreRate;
+	}
 }
 
 void cPlayer::Initialize() {
@@ -123,7 +126,7 @@ void cPlayer::Initialize() {
 	mScore.mScore = 0U;
 	mScore.mContinue = 0;
 	mScore.mMaxRate = 1U;
-	mScore.mCharacter = ePlayer_TotalNum;
+	mScore.mCharacter = ePlayer_Rin;
 	mScore.mType = ePossess_Half;
 	mPosition.SetPoint(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT * 4.0 / 5.0);	// 初期位置
 	mInvincibleTime.Start();
@@ -238,6 +241,7 @@ void cPlayer::Update() {
 
 	if (pInputPad->GetInputState(eButton_Bomb) == 1) {
 		this->Bomb();
+		
 	}
 }
 
@@ -246,9 +250,10 @@ void cPlayer::Draw() {
 		|| mInvincibleTime.GetTime() <= 0) {
 		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(), TRUE);
 	}
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {
 		DrawCircle(i.GetPositionX(), i.GetPositionY(), 3, GetColor(0xFF, 0xFF, 0xFF));
 	}
-#endif
+//#endif
+	DrawCircleAA(mCollider.at(0).GetPosition().GetX(), mCollider.at(0).GetPosition().GetY(), 1, 8, GetColor(0xFF, 0xFF, 0xFF));
 }

@@ -17,6 +17,7 @@ enum eImageIndex {
 	eImage_SelectTimer,
 
 	eImage_GameBackGround,
+	eImage_GameOver,
 
 	eImage_PlayerRin,
 
