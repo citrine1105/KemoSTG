@@ -56,7 +56,7 @@ void cLogoGameScene::Update() {
 
 void cLogoGameScene::Draw() {
 	std::tstring tMessage;
-	tMessage = _T("PRESS [1] KEY");
+	tMessage = _T("PRESS START BUTTON");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
 	if (mTimer.GetSecond() < 5.0) {

@@ -261,6 +261,7 @@ __pycache__/
 *.pyc
 
 DxLib/
+ScreenShot/
 Log.txt
 config.json
 クラス図.png

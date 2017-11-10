@@ -42,7 +42,7 @@ void cTitleGameScene::Update() {
 
 	for (int i = 0; i < 2; i++) {
 		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
-			pSceneChanger->ChangeScene(eGameScene_Logo);
+			pSceneChanger->ChangeScene(eGameScene_Ranking);
 		}
 	}
 }
@@ -52,7 +52,7 @@ void cTitleGameScene::Draw() {
 	std::array<std::tstring, 2> tCopyright;
 	std::tstring tVersion;
 
-	tMessage = _T("PRESS [1] KEY");
+	tMessage = _T("PRESS START BUTTON");
 	tCopyright.at(0) = _T("©2017 Amusement Makers");
 	tCopyright.at(1) = _T("Developed by C-Lab");
 	tVersion = _T("Ver ");

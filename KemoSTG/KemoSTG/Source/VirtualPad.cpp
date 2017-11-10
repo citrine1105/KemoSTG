@@ -231,7 +231,7 @@ void cVirtualPad::Update() {
 	pPad->Update();
 
 	for (int i = 0; i < eButton_TotalNum; i++) {
-		if (CheckHitKey(mKeyAssign[i]) != 0) {	// キーボード入力
+		if (cKeyboard::GetInstance()->GetKeyPushState(mKeyAssign[i]) != 0) {	// キーボード入力
 			++mButtonInputState[i];
 		}
 		else if (pPad->GetXInputFlag() &&
@@ -256,7 +256,7 @@ void cVirtualPad::Update() {
 	for (int i = 0; i < eDPad_TotalNum; i++) {
 		switch (i) {
 		case eDPad_Up:
-			if (CheckHitKey(mDPadKeyAssign[i]) != 0) {
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
 				++mDPadInputState[i];
 			}
 			else if (pPad->GetXInputFlag() &&
@@ -276,7 +276,7 @@ void cVirtualPad::Update() {
 			}
 			break;
 		case eDPad_Down:
-			if (CheckHitKey(mDPadKeyAssign[i]) != 0) {
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
 				++mDPadInputState[i];
 			}
 			else if (pPad->GetXInputFlag() &&
@@ -296,7 +296,7 @@ void cVirtualPad::Update() {
 			}
 			break;
 		case eDPad_Left:
-			if (CheckHitKey(mDPadKeyAssign[i]) != 0) {
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
 				++mDPadInputState[i];
 			}
 			else if (pPad->GetXInputFlag() &&
@@ -316,7 +316,7 @@ void cVirtualPad::Update() {
 			}
 			break;
 		case eDPad_Right:
-			if (CheckHitKey(mDPadKeyAssign[i]) != 0) {
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
 				++mDPadInputState[i];
 			}
 			else if (pPad->GetXInputFlag() &&

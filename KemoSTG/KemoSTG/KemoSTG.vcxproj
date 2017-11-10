@@ -23,7 +23,7 @@
     <ProjectGuid>{143E4079-45EA-487E-A4D9-D4062DC9C94E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>KemoSTG</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -176,6 +176,7 @@
     <ClCompile Include="Source\GameScene\GameTitle.cpp" />
     <ClCompile Include="Source\ImageResource.cpp" />
     <ClCompile Include="Source\ImageResourceContainer.cpp" />
+    <ClCompile Include="Source\Keyboard.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Pad.cpp" />
     <ClCompile Include="Source\Player.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Header\ImageResourceContainer.h" />
     <ClInclude Include="Header\Include.h" />
     <ClInclude Include="Header\Initialization.h" />
+    <ClInclude Include="Header\Keyboard.h" />
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Pad.h" />
     <ClInclude Include="Header\Player.h" />

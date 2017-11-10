@@ -32,6 +32,8 @@
 #define tostream wostream
 #define tifstream wifstream
 #define tofstream wofstream
+#define tistringstream wistringstream
+#define tostringstream wostringstream
 #else
 #define tstring string	// Unicode非対応の場合、通常文字列クラスを使用
 #define to_tstring to_string
@@ -39,4 +41,6 @@
 #define tostream ostream
 #define tifstream ifstream
 #define tofstream ofstream
+#define tistringstream istringstream
+#define tostringstream ostringstream
 #endif	// _UNICODE

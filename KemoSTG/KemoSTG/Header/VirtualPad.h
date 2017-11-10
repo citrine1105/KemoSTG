@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Include.h"
+#include "Keyboard.h"
 #include "Pad.h"
 
 enum eButtonAssign {
