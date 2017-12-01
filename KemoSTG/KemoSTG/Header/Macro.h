@@ -3,6 +3,8 @@
 #define REFRESH_RATE 60.0	// リフレッシュレート
 #define DISPLAY_WIDTH cSystemConfig::GetInstance()->GetConfig().mDisplayWidth	// 画面の幅
 #define DISPLAY_HEIGHT cSystemConfig::GetInstance()->GetConfig().mDisplayHeight	// 画面の高さ
+#define DISPLAY_LONG (DISPLAY_WIDTH > DISPLAY_HEIGHT ? DISPLAY_WIDTH : DISPLAY_HEIGHT)	// 画面の長辺
+#define DISPLAY_SHORT (DISPLAY_WIDTH < DISPLAY_HEIGHT ? DISPLAY_WIDTH : DISPLAY_HEIGHT)	// 画面の短辺
 
 #define CAPTION_STRING _T("朧の迷仔たち")	// キャプションテキスト
 #define VERSION_STRING _T("0.10")	// バージョン
@@ -11,7 +13,7 @@
 #define TO_DEGREE(value) (PI / 180.0 * (value))	// 弧度法に変換
 #define TO_RADIAN(value) ((value) / 180.0 * PI)	// 度数法に変換
 
-#define SCALE(v1, v2) (static_cast<double>(v1) / static_cast<double>(v2))
+#define UPSCALE(value) (value * (DISPLAY_WIDTH > DISPLAY_HEIGHT ? DISPLAY_HEIGHT / 480.0 : DISPLAY_WIDTH / 480.0))
 
 #ifdef _WIN64
 #define AUTO_INT long long int	// 64ビットバイナリの場合、64ビット変数を使用

@@ -5,8 +5,21 @@
 #include "../Header/GameScene/GameMain.h"
 #include "../Header/GameScene/GameRanking.h"
 
-cGameSceneManager::cGameSceneManager() : mNextScene(eGameScene_None) {
+cGameSceneManager::cGameSceneManager() :  mNowScene(eGameScene_None), mNextScene(eGameScene_None), fPause(false) {
 	pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
+	mNowScene = eGameScene_Logo;
+}
+
+void cGameSceneManager::Pause() {
+	fPause = !fPause;
+}
+
+bool cGameSceneManager::GetPauseFlag() {
+	return fPause;
+}
+
+eGameScene cGameSceneManager::GetNowScene() {
+	return mNowScene;
 }
 
 void cGameSceneManager::Initialize() {
@@ -43,7 +56,9 @@ void cGameSceneManager::Update() {
 		mNextScene = eGameScene_None;
 		pScene->Initialize();
 	}
-	pScene->Update();
+	if (!fPause) {
+		pScene->Update();
+	}
 }
 
 void cGameSceneManager::Draw() {
@@ -55,5 +70,6 @@ void cGameSceneManager::SetVirtualPad(cVirtualPad Pad[2]) {
 }
 
 void cGameSceneManager::ChangeScene(eGameScene NextScene) {
+	mNowScene = NextScene;
 	mNextScene = NextScene;
 }

@@ -1,5 +1,7 @@
 ﻿#include "../../Header/Scene/Title.h"
 
+int cScene::mInterfaceScreen;
+
 cTitleScene::cTitleScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
 
 }
@@ -62,21 +64,28 @@ void cTitleScene::Draw() {
 
 	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->GetHandle(), FALSE);
 
-	DrawStringToHandle(cSystemConfig::GetInstance()->GetConfig().mDisplayWidth - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)), cSystemConfig::GetInstance()->GetConfig().mDisplayHeight - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)),
-		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+	SetDrawScreen(mInterfaceScreen);
+	ClearDrawScreen();
 
 	if (fNext) {
 		if (mMessageFlash.GetTime() % 12 < 6) {
-			DrawStringToHandle(cSystemConfig::GetInstance()->GetConfig().mDisplayWidth / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, cSystemConfig::GetInstance()->GetConfig().mDisplayHeight * 2 / 3 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont) / 2),
+			DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, DISPLAY_SHORT * 2 / 3 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont) / 2),
 				tMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
 		}
 	}
 	else {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mMessageFade.GetPositionX());
-		DrawStringToHandle(cSystemConfig::GetInstance()->GetConfig().mDisplayWidth / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, cSystemConfig::GetInstance()->GetConfig().mDisplayHeight * 2 / 3 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont) / 2),
+		DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, DISPLAY_SHORT * 2 / 3 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont) / 2),
 			tMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
+
+	DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(12), DISPLAY_HEIGHT - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(8),
+		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, TO_RADIAN(0.0), mInterfaceScreen, TRUE);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);

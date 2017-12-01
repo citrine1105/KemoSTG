@@ -20,6 +20,8 @@ class cScene : public iInitialization, iActivity {
 protected:
 	iSceneChanger<eScene> *pSceneChanger;	// シーン切り替えインターフェース
 
+	static int mInterfaceScreen;	// UI描画用スクリーン
+
 	static cPad mPad[2];
 	static cVirtualPad mVirtualPad[2];
 public:
