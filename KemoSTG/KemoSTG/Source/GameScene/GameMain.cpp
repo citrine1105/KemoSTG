@@ -132,7 +132,7 @@ void cMainGameScene::Update() {
 		}
 	}
 
-	if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % 60 * 3 == 0) {
+	if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % (60 * 3) == 0) {
 		for (auto &i : mEnemy) {
 			i.MoveToPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT), 120, eEasing_Quad, eEasingFunction_InOut);
 		}

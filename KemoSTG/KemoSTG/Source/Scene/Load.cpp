@@ -41,5 +41,17 @@ void cLoadScene::Update() {
 }
 
 void cLoadScene::Draw() {
-	DrawString(0, 0, _T("Loading"), GetColor(0xFF, 0xFF, 0xFF));
+	if (CheckHandleASyncLoad(mInterfaceScreen) == FALSE) {
+		SetDrawScreen(mInterfaceScreen);
+		ClearDrawScreen();
+		if (CheckHandleASyncLoad(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) == FALSE) {
+			DrawStringToHandle(0, DISPLAY_SHORT - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+		}
+	}
+
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
+	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mInterfaceScreen, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }

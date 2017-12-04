@@ -48,7 +48,7 @@ void cRankingGameScene::Update() {
 
 	for (int i = 0; i < mSprite.size(); i++) {
 		if (mTimer.GetTime() == 10 * (9 - i) + 30) {
-			mSprite.at(i).MoveToPoint(0, 24 * ((i + 2) * 2) + 8, 40, eEasing_Quint);
+			mSprite.at(i).MoveToPointX(0, 40, eEasing_Quint);
 		}
 		mSprite.at(i).Update();
 	}
@@ -72,20 +72,20 @@ void cRankingGameScene::Draw() {
 			tBuffer += _T("TH");
 			break;
 		}
-		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 2, 24 * ((i + 2) * 2) + 8, tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 2, mSprite.at(i).GetPositionY(), tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 		tBuffer = mScore.at(i).mName;
-		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 8, 24 * ((i + 2) * 2) + 8, tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 8, mSprite.at(i).GetPositionY(), tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 		tBuffer = std::to_tstring(mScore.at(i).mScore);
 		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 24 - GetDrawStringWidthToHandle(tBuffer.c_str(), tBuffer.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)),
-			24 * ((i + 2) * 2) + 8, tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+			mSprite.at(i).GetPositionY(), tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 		tBuffer = _T("MAX ");
-		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 28, 24 * ((i + 2) * 2) + 8, tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 28, mSprite.at(i).GetPositionY(), tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 
 		tBuffer = std::to_tstring(mScore.at(i).mMaxRate);
 		DrawStringToHandle(mSprite.at(i).GetPositionX() + 12 * 38 - GetDrawStringWidthToHandle(tBuffer.c_str(), tBuffer.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)),
-			24 * ((i + 2) * 2) + 8, tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+			mSprite.at(i).GetPositionY(), tBuffer.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}
 }

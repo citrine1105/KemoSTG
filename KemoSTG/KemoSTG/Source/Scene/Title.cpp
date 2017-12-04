@@ -39,7 +39,7 @@ void cTitleScene::Update() {
 	}
 	else {
 		if (mMessageFade.GetPositionX() >= 255.0) {
-			mMessageFade.MoveToPoint(0.0, 0.0, 40, eEasing_Sine);
+			mMessageFade.MoveToPoint(0.0, 0.0, 40, eEasing_Linear);
 		}
 		else if (mMessageFade.GetPositionX() <= 0.0) {
 			mMessageFade.MoveToPoint(255.0, 0.0, 40, eEasing_Sine);
@@ -85,7 +85,9 @@ void cTitleScene::Draw() {
 
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, TO_RADIAN(0.0), mInterfaceScreen, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
+	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mInterfaceScreen, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);

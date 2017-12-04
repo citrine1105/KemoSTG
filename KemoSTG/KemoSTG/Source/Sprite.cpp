@@ -13,17 +13,40 @@ void cSprite::Move() {
 }
 
 void cSprite::MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
-	mMoveVector.SetStartPoint(mPosition);
-	mMoveVector.SetEndPoint(PositionX, PositionY);
-	mMoveTime = MoveTime > 0 ? MoveTime : 1;
-	mMoveType = MoveType;
-	mEaseFunc = EasingFunction;
-	mDelayTimer.Initialize(mMoveTime, AUTO_INT_MAX, eCountMode_CountDown);
-	mDelayTimer.Start();
+	this->MoveToPointX(PositionX, MoveTime, MoveType, EasingFunction);
+	this->MoveToPointY(PositionY, MoveTime, MoveType, EasingFunction);
+}
+
+void cSprite::MoveToPointX(const double PositionX, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	mMoveVectorX.SetStartPoint(mPosition);
+	mMoveVectorX.SetEndPoint(PositionX, mPosition.GetY());
+	mMoveTimeX = MoveTime > 0 ? MoveTime : 1;
+	mMoveTypeX = MoveType;
+	mEaseFuncX = EasingFunction;
+	mDelayTimerX.Initialize(mMoveTimeX, AUTO_INT_MAX, eCountMode_CountDown);
+	mDelayTimerX.Start();
+}
+
+void cSprite::MoveToPointY(const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	mMoveVectorY.SetStartPoint(mPosition);
+	mMoveVectorY.SetEndPoint(mPosition.GetX(), PositionY);
+	mMoveTimeY = MoveTime > 0 ? MoveTime : 1;
+	mMoveTypeY = MoveType;
+	mEaseFuncY = EasingFunction;
+	mDelayTimerY.Initialize(mMoveTimeX, AUTO_INT_MAX, eCountMode_CountDown);
+	mDelayTimerY.Start();
 }
 
 void cSprite::AddToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
 	this->MoveToPoint(mPosition.GetX() + PositionX, mPosition.GetY() + PositionY, MoveTime, MoveType, EasingFunction);
+}
+
+void cSprite::AddToPointX(const double PositionX, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	this->MoveToPointX(mPosition.GetX() + PositionX, MoveTime, MoveType, EasingFunction);
+}
+
+void cSprite::AddToPointY(const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	this->MoveToPointY(mPosition.GetY() + PositionY, MoveTime, MoveType, EasingFunction);
 }
 
 void cSprite::SetPosition(cPoint2D &Point) {
@@ -64,10 +87,6 @@ cVector2D* cSprite::GetMoveVectorPointer() {
 	return &mMoveVector;
 }
 
-//cVector2D* cSprite::GetCollisionVectorPointer() {
-//	return &mCollisionVector;
-//}
-
 bool cSprite::GetCollisionFlag(cSprite &Sprite) {
 	for (auto &i : mCollider) {
 		for (auto &j : *Sprite.GetColliderPointer()) {
@@ -83,30 +102,42 @@ void cSprite::Initialize() {
 	this->SetPosition(0.0, 0.0);
 	mCollider.clear();
 	mMoveVector.SetPolarForm(0.0, 0.0);
-	//mCollisionVector.SetPolarForm(0.0, 1.0);
-	mDelayTimer.Initialize();
-	mEaseFunc = eEasingFunction_In;
-	mMoveType = eEasing_Linear;
-	mMoveTime = 0;
+	mDelayTimerX.Initialize();
+	mDelayTimerY.Initialize();
+	mEaseFuncX = eEasingFunction_In;
+	mEaseFuncY = eEasingFunction_In;
+	mMoveTypeX = eEasing_Linear;
+	mMoveTypeY = eEasing_Linear;
+	mMoveTimeX = 0;
+	mMoveTimeY = 0;
 }
 
 void cSprite::Finalize() {
 	this->SetPosition(0.0, 0.0);
 	mCollider.clear();
 	mMoveVector.SetPolarForm(0.0, 0.0);
-	//mCollisionVector.SetPolarForm(0.0, 1.0);
-	mDelayTimer.Finalize();
-	mEaseFunc = eEasingFunction_In;
-	mMoveType = eEasing_Linear;
-	mMoveTime = 0;
+	mDelayTimerX.Finalize();
+	mDelayTimerY.Finalize();
+	mEaseFuncX = eEasingFunction_In;
+	mEaseFuncY = eEasingFunction_In;
+	mMoveTypeX = eEasing_Linear;
+	mMoveTypeY = eEasing_Linear;
+	mMoveTimeX = 0;
+	mMoveTimeY = 0;
 }
 
 void cSprite::Update() {
-	mDelayTimer.Update();
-	if (mDelayTimer.GetTime() > 0) {
-		cVector2D tVector = mMoveVector;
-		tVector *= cEasing::GetInstance()->GetEase(mEaseFunc, mMoveType, 1.0 - static_cast<double>(mDelayTimer.GetTime() - 1) / static_cast<double>(mMoveTime), 1.0);
-		mPosition = tVector.GetEndPoint();
+	mDelayTimerX.Update();
+	mDelayTimerY.Update();
+	if (mDelayTimerX.GetTime() > 0) {
+		cVector2D tVector = mMoveVectorX;
+		tVector *= cEasing::GetInstance()->GetEase(mEaseFuncX, mMoveTypeX, 1.0 - static_cast<double>(mDelayTimerX.GetTime() - 1) / static_cast<double>(mMoveTimeX), 1.0);
+		mPosition.SetPoint(tVector.GetEndPoint().GetX(), mPosition.GetY());
+	}
+	if (mDelayTimerY.GetTime() > 0) {
+		cVector2D tVector = mMoveVectorY;
+		tVector *= cEasing::GetInstance()->GetEase(mEaseFuncY, mMoveTypeY, 1.0 - static_cast<double>(mDelayTimerY.GetTime() - 1) / static_cast<double>(mMoveTimeY), 1.0);
+		mPosition.SetPoint(mPosition.GetX(), tVector.GetEndPoint().GetY());
 	}
 	for (auto &i : mCollider) {
 		i.SetPosition(mPosition);
