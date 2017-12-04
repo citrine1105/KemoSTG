@@ -3,6 +3,7 @@
 
 enum eImageIndex {
 	eImage_Title,
+	eImage_TitleLogo,
 	eImage_GameLogo,
 	eImage_GameTitle,
 	eImage_Background,

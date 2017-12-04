@@ -16,12 +16,16 @@ void cTitleScene::Initialize() {
 	mFade.MoveToPoint(0.0, 0.0, 60);
 
 	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->SetPath(_T("./Data/Image/Title/back.jpg"));
-	
+	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->SetPath(_T("./Data/Image/Title/logo.png"));
+
 	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->Load();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->Load();
+	//GraphFilter(cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetHandle(), DX_GRAPH_FILTER_DOWN_SCALE, 4);
 }
 
 void cTitleScene::Finalize() {
 	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->Delete();
+	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->Delete();
 }
 
 void cTitleScene::Update() {
@@ -63,6 +67,9 @@ void cTitleScene::Draw() {
 	tVersion += VERSION_STRING;
 
 	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->GetHandle(), FALSE);
+	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2,
+		static_cast<float>(DISPLAY_SHORT) / static_cast<float>(cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetSizeY()), TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)),
+		cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetHandle(), TRUE);
 
 	SetDrawScreen(mInterfaceScreen);
 	ClearDrawScreen();
