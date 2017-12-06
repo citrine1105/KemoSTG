@@ -1,5 +1,7 @@
 ﻿#include "../Header/Player.h"
 
+cImageResourceContainer gPlayerImageContainer;
+
 cPlayer::cPlayer() : cSprite(), fEntry(false), /*fAlive(false),*/
 	mInvincibleTime(60 * 5, 60 * 5, eCountMode_CountDown), mPossessTime(15.0, 30.0, eCountMode_CountDown),
 	pInputPad(nullptr), mMoveSpeed(1.0), mLife(3), mBomb(3),
@@ -156,7 +158,6 @@ void cPlayer::Update() {
 		ChangeVolumeSoundMem(128, Sound);
 	}
 
-	cSprite::Update();
 	mInvincibleTime.Update();	// 無敵時間カウント
 	mPossessTime.Update();	// 憑依時間カウント
 	mAnimeTimer.Update();
@@ -256,12 +257,14 @@ void cPlayer::Update() {
 		this->Bomb();
 		
 	}
+
+	cSprite::Update();
 }
 
 void cPlayer::Draw() {
 	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 2 == 0)
 		|| mInvincibleTime.GetTime() <= 0) {
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->GetHandle(), TRUE);
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(), TRUE);
 	}
 //#ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {

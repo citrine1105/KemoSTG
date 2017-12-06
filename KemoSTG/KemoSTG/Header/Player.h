@@ -6,7 +6,8 @@
 
 enum ePlayerCharacter {
 	ePlayer_Rin,	// 神谷倫
-	ePlayer_Boy,	// 2人目
+	ePlayer_Kakeru,	// 風巻翔
+	ePlayer_3rd,	// 3人目
 
 	ePlayer_TotalNum
 };
@@ -39,6 +40,8 @@ struct sScoreData {
 		}
 	}
 };
+
+extern cImageResourceContainer gPlayerImageContainer;
 
 class cPlayer : public cSprite {
 protected:

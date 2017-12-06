@@ -1,5 +1,7 @@
 ﻿#include "../../Header/GameScene/GameMain.h"
 
+cImageResourceContainer gGameUIImageContainer;
+
 cMainGameScene::cMainGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 
 }
@@ -9,13 +11,11 @@ cMainGameScene::~cMainGameScene() {
 }
 
 void cMainGameScene::Initialize() {
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/1.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
-	//cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->SetDivisionSize(12, 3, 4, 64, 64);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
+	//gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/1.png"));
+	//gGameUIImageContainer.GetElement(eGameUI_Enemy)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
+	//gGameUIImageContainer.GetElement(eGameUI_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
+	//gGameUIImageContainer.GetElement(eGameUI_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
+	//gGameUIImageContainer.GetElement(eGameUI_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
 
 	gBGMContainer.Initialize(eBGM_TotalNum);
 	gSEContainer.Initialize(eSE_TotalNum);
@@ -23,12 +23,11 @@ void cMainGameScene::Initialize() {
 	gSEContainer.GetElement(eSE_Shot)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
 	gSEContainer.GetElement(eSE_Shot)->SetBufferNum(1);
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Load();
+	//gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->Load();
+	//gGameUIImageContainer.GetElement(eGameUI_Enemy)->Load();
+	//gGameUIImageContainer.GetElement(eGameUI_PlayerBullet)->Load();
+	//gGameUIImageContainer.GetElement(eGameUI_EnemyBullet)->Load();
+	//gGameUIImageContainer.GetElement(eGameUI_GameOver)->Load();
 
 	gSEContainer.GetElement(eSE_Shot)->Load();
 
@@ -47,7 +46,6 @@ void cMainGameScene::Initialize() {
 	mFade.SetPosition(0.0, 0.0);
 
 	mTimer.Initialize(0);
-	mBombAnimeTimer.Initialize(0, (cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandleNum() * 2 - 2) * 5, eCountMode_CountUp, true);
 	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
 	mTimer.Start();
@@ -61,13 +59,6 @@ void cMainGameScene::Finalize() {
 	mEnemy.clear();
 	mPlayerBullet.clear();
 	mEnemyBullet.clear();
-
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerRin)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->Delete();
 }
 
 void cMainGameScene::Update() {
@@ -193,7 +184,7 @@ void cMainGameScene::Draw() {
 	tScoreRateDigit.at(1) = static_cast<int>(floor(log10(tDispScoreRate.at(1)))) + 1;
 
 	for (int i = -1; i < 256; i++) {
-		DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetSizeY() * i), cImageResourceContainer::GetInstance()->GetElement(eImage_GameBackGround)->GetHandle(), FALSE);
+		//DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->GetSizeY() * i), gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->GetHandle(), FALSE);
 	}
 	for (auto &i : mPlayer) {
 		if (i.GetPossessFlag()) {
@@ -229,30 +220,30 @@ void cMainGameScene::Draw() {
 	}
 
 	// ボス体力ゲージ
-	//DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
-	//DrawGraph(12, 56, cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->GetHandle(0), TRUE);
-	//DrawGraph(480 - 12 - 16, 56, cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->GetHandle(2), TRUE);
-	//for (int i = 12 + 16; i < 480 - 12 - 16; i += 16) {
-	//	DrawGraph(i, 56, cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->GetHandle(1), TRUE);
-	//}
-	//mBossTimer.Draw(240, 110);
+	DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
+	DrawGraph(12, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(0), TRUE);
+	DrawGraph(480 - 12 - 16, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(2), TRUE);
+	for (int i = 12 + 16; i < 480 - 12 - 16; i += 16) {
+		DrawGraph(i, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(1), TRUE);
+	}
+	mBossTimer.Draw(240, 110);
 
 	// スコアレート
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * 0, 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
+		DrawGraph(12 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * 0, 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(10), TRUE);
 		for (int i = 0; i < tScoreRateDigit.at(0); i++) {
-			DrawGraph(12 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (tScoreRateDigit.at(0) - i), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(0) / static_cast<int>(pow(10, i)) % 10), TRUE);
+			DrawGraph(12 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (tScoreRateDigit.at(0) - i), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(tDispScoreRate.at(0) / static_cast<int>(pow(10, i)) % 10), TRUE);
 		}
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
 		for (int i = 0; i <= tScoreRateDigit.at(1); i++) {
 			if (i == tScoreRateDigit.at(1)) {
-				DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(10), TRUE);
+				//DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(10), TRUE);
 			}
 			else {
-				DrawGraph(GAME_SCREEN_WIDTH - 12 + -cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeX() * (i + 1), 108, cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
+				//DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
 			}
 		}
 	}
@@ -260,47 +251,47 @@ void cMainGameScene::Draw() {
 	// 憑依ゲージ
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawFormatStringToHandle(12, 108 + cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), cFontContainer::GetInstance()->GetElement(eFont_TimerFont), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
+		DrawFormatStringToHandle(12, 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), cFontContainer::GetInstance()->GetElement(eFont_TimerFont), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
 	}
 
 	// ライフ
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
 		for (int i = 0; i < mPlayer.at(0).GetLife(); i++) {
-			DrawGraph(12 + 24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
+			DrawGraph(12 + 24 * i, 80, gGameUIImageContainer.GetElement(eGameUI_Life)->GetHandle(), TRUE);
 		}
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
 		for (int i = 0; i < mPlayer.at(1).GetLife(); i++) {
-			DrawGraph(480 - 12 - 20 + -24 * i, 80, cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->GetHandle(), TRUE);
+			//DrawGraph(480 - 12 - 20 + -24 * i, 80, gGameUIImageContainer.GetElement(eGameUI_Life)->GetHandle(), TRUE);
 		}
 	}
 
 	// ボム
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawGraph(12, 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
+		DrawGraph(12, 640 - 8 - 20 - 8 - 14, gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetHandle(), TRUE);
 		for (int i = 0; i < mPlayer.at(0).GetBomb(); i++) {
 			if (mTimer.GetTime() / 5 % 6 < 4) {
-				DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
+				DrawGraph(12 + 24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
 			}
 			else {
-				DrawGraph(12 + 24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+				DrawGraph(12 + 24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
 			}
 		}
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
-		DrawGraph(480 - 12 - cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->GetHandle(), TRUE);
-		for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
-			if (mTimer.GetTime() / 5 % 6 < 4) {
-				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
-			}
-			else {
-				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
-			}
-		}
+		//DrawGraph(480 - 12 - gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetHandle(), TRUE);
+		//for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
+		//	if (mTimer.GetTime() / 5 % 6 < 4) {
+		//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
+		//	}
+		//	else {
+		//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+		//	}
+		//}
 	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
@@ -308,13 +299,13 @@ void cMainGameScene::Draw() {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	if (mPlayer.at(0).GetLife() <= 0) {
-		DrawGraph(GAME_SCREEN_WIDTH / 2 - cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->GetSizeX() / 2, GAME_SCREEN_HEIGHT * 2 / 5, cImageResourceContainer::GetInstance()->GetElement(eImage_GameOver)->GetHandle(), TRUE);
+		DrawGraph(GAME_SCREEN_WIDTH / 2 - gGameUIImageContainer.GetElement(eGameUI_GameOver)->GetSizeX() / 2, GAME_SCREEN_HEIGHT * 2 / 5, gGameUIImageContainer.GetElement(eGameUI_GameOver)->GetHandle(), TRUE);
 	}
 
 	// スコア
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(0), TRUE);
+		DrawGraph(0, 0, gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->GetHandle(0), TRUE);
 		DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
 			tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}
@@ -324,7 +315,7 @@ void cMainGameScene::Draw() {
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
-		DrawGraph(480 - 160, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->GetHandle(1), TRUE);
+		//DrawGraph(480 - 160, 0, gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->GetHandle(1), TRUE);
 		DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
 			tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
 	}

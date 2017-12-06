@@ -8,6 +8,8 @@ protected:
 	int mGameScreen;
 	cGameSceneManager mGame;
 
+	cImageResource mBackgroundImage;
+
 	cSprite mFade;
 public:
 	cGameScene(iSceneChanger<eScene> *Changer);

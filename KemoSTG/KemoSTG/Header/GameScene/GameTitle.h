@@ -3,10 +3,18 @@
 #include "../ImageResource.h"
 #include "../Sprite.h"
 
+enum eGameTitleIndex {
+	eGameTitle_Logo,
+	eGameTitle_Background,
+
+	eGameTitle_TotalNum
+};
+
+extern cImageResourceContainer gGameTitleImageContainer;
+
 class cTitleGameScene : public cGameBaseScene {
 private:
 	cTimer mTimer;
-	cImageResource mImage;	// タイトル画像(置き場所変えて)
 	cSprite mFade;	// フェードイン/アウト用
 public: 
 	cTitleGameScene(iSceneChanger<eGameScene> *Changer);

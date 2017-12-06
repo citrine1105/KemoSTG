@@ -25,8 +25,8 @@ void cLoadScene::Initialize() {
 	cFontContainer::GetInstance()->SetElement(eFont_TimerFont, CreateFontToHandle(_T("Palatino Linotype"), 26, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
 	cFontContainer::GetInstance()->SetElement(eFont_MiniTimerFont, CreateFontToHandle(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/rect.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/rect.png"));
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
 }
 
 void cLoadScene::Finalize() {

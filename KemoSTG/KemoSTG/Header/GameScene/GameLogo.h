@@ -2,10 +2,18 @@
 #include "../GameBaseScene.h"
 #include "../Sprite.h"
 
+extern cImageResourceContainer gLogoImageContainer;
+
+enum eLogoIndex {
+	eLogo_AM,
+	eLogo_CLab,
+
+	eLogo_TotalNum
+};
+
 class cLogoGameScene : public cGameBaseScene {
 private:
 	cTimer mTimer;
-	//cImageResource mLogoImage;	// ロゴ画像(置き場所変えて)
 	cSprite mFade;	// フェードイン/アウト用
 public:
 	cLogoGameScene(iSceneChanger<eGameScene> *Changer);

@@ -33,25 +33,19 @@ enum eImageIndex {
 };
 
 class cImageResourceContainer : public iInitialization {
-private:
-	cImageResourceContainer() {
-		this->Initialize();
-	}
-	cImageResourceContainer(const cImageResourceContainer& r) {}
-	cImageResourceContainer& operator=(const cImageResourceContainer& r) {}
-	~cImageResourceContainer() {
-		this->Finalize();
-	}
 protected:
 	std::vector<cImageResource> mImageArray;
 public:
-	static cImageResourceContainer* GetInstance() {
-		static cImageResourceContainer inst;
-		return &inst;
-	}
+	cImageResourceContainer();
+	~cImageResourceContainer();
 
-	cImageResource* GetElement(eImageIndex Imdex);
+	void Load();
+	void Delete();
+
+	unsigned int GetResourceCount();
+	cImageResource* GetElement(const unsigned int Index);
 
 	void Initialize() override;
+	void Initialize(const unsigned int Num);
 	void Finalize() override;
 };

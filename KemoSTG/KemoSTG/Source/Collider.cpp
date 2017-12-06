@@ -88,16 +88,16 @@ bool cCollider::GetCollision(cCollider &Collider) {
 void cCollider::Draw() {
 	switch (mType) {
 	case eCollision_Rectangle:
-		DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
-			cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->GetHandle(), TRUE);
+		//DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
+		//	cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->GetHandle(), TRUE);
 		break;
 	case eCollision_Ellipse:
-		DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
-			cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->GetHandle(), TRUE);
+		//DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
+		//	cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->GetHandle(), TRUE);
 		break;
 	default:
-		DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
-			cImageResourceContainer::GetInstance()->GetElement(eImage_None)->GetHandle(), TRUE);
+		//DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
+		//	cImageResourceContainer::GetInstance()->GetElement(eImage_None)->GetHandle(), TRUE);
 		break;
 	}
 }

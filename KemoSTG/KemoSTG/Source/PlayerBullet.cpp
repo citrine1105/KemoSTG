@@ -1,5 +1,7 @@
 ﻿#include "../Header/PlayerBullet.h"
 
+cImageResourceContainer gPlayerBulletImageContainer;
+
 cPlayerBullet::cPlayerBullet() 
 	: pTargetEnemy(nullptr), mType(ePlayer_TotalNum) {
 
@@ -10,7 +12,7 @@ int cPlayerBullet::GetPower() {
 	case ePlayer_Rin:
 		return 5;
 		break;
-	case ePlayer_Boy:
+	case ePlayer_Kakeru:
 		return 3;
 		break;
 	default:
@@ -35,9 +37,5 @@ void cPlayerBullet::Update() {
 }
 
 void cPlayerBullet::Draw() {
-	switch (mType) {
-	default:
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, mMoveVector.GetAngle(), cImageResourceContainer::GetInstance()->GetElement(eImage_PlayerBullet)->GetHandle(), TRUE);
-		break;
-	}
+	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, mMoveVector.GetAngle(), gPlayerBulletImageContainer.GetElement(mType)->GetHandle(), TRUE);
 }

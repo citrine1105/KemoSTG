@@ -1,5 +1,6 @@
 ﻿#include "../../Header/Scene/Title.h"
 
+cImageResourceContainer gTitleImageContainer;
 int cScene::mInterfaceScreen;
 
 cTitleScene::cTitleScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
@@ -15,17 +16,16 @@ void cTitleScene::Initialize() {
 	mFade.SetPosition(255.0, 0.0);
 	mFade.MoveToPoint(0.0, 0.0, 60);
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->SetPath(_T("./Data/Image/Title/back.jpg"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->SetPath(_T("./Data/Image/Title/logo.png"));
+	gTitleImageContainer.Initialize(eTitle_TotalNum);
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->Load();
-	//GraphFilter(cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetHandle(), DX_GRAPH_FILTER_DOWN_SCALE, 4);
+	gTitleImageContainer.GetElement(eTitle_Logo)->SetPath(_T("./Data/Image/Title/logo.png"));
+	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.jpg"));
+
+	gTitleImageContainer.Load();
 }
 
 void cTitleScene::Finalize() {
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->Delete();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->Delete();
+	gTitleImageContainer.Finalize();
 }
 
 void cTitleScene::Update() {
@@ -66,10 +66,10 @@ void cTitleScene::Draw() {
 	std::tstring tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
-	DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_Title)->GetHandle(), FALSE);
+	DrawGraph(0, 0, gTitleImageContainer.GetElement(eTitle_Back)->GetHandle(), FALSE);
 	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2,
-		static_cast<float>(DISPLAY_SHORT) / static_cast<float>(cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetSizeY()), TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)),
-		cImageResourceContainer::GetInstance()->GetElement(eImage_TitleLogo)->GetHandle(), TRUE);
+		static_cast<float>(DISPLAY_SHORT) / static_cast<float>(gTitleImageContainer.GetElement(eTitle_Logo)->GetSizeY()), TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)),
+		gTitleImageContainer.GetElement(eTitle_Logo)->GetHandle(), TRUE);
 
 	SetDrawScreen(mInterfaceScreen);
 	ClearDrawScreen();

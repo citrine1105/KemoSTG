@@ -1,5 +1,7 @@
 ﻿#include "../../Header/GameScene/GameLogo.h"
 
+cImageResourceContainer gLogoImageContainer;	// ロゴ画面で使う画像データコンテナ
+
 cLogoGameScene::cLogoGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 
 }
@@ -9,15 +11,15 @@ cLogoGameScene::~cLogoGameScene() {
 }
 
 void cLogoGameScene::Initialize() {
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetPath(_T("./Data/Image/Game/Logo/logo.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetDivisionSize(2, 2, 1, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Load();
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetPath(_T("./Data/Image/Game/Logo/logo.png"));
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->SetDivisionSize(2, 2, 1, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Load();
 	mFade.SetPosition(0.0, 0.0);
 	mTimer.Start();
 }
 
 void cLogoGameScene::Finalize() {
-	cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Delete();
+	//cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->Delete();
 }
 
 void cLogoGameScene::Update() {
@@ -28,17 +30,25 @@ void cLogoGameScene::Update() {
 	}
 
 	if (GetASyncLoadNum() == 0) {
-		if (mTimer.GetTime() == 0) {
-			mFade.MoveToPoint(255.0, 0.0, 30);
-		}
-		else if (mTimer.GetTime() == 60 * 4 + 20) {
-			mFade.MoveToPoint(0.0, 0.0, 30);
-		}
-		else if (mTimer.GetTime() == 60 * 5) {
-			mFade.MoveToPoint(255.0, 0.0, 30);
-		}
-		else if (mTimer.GetTime() == 60 * 9 + 20) {
-			mFade.MoveToPoint(0.0, 0.0, 30);
+		//if (mTimer.GetTime() == 0) {
+		//	mFade.MoveToPoint(255.0, 0.0, 30);
+		//}
+		//else if (mTimer.GetTime() == 60 * 4 + 20) {
+		//	mFade.MoveToPoint(0.0, 0.0, 30);
+		//}
+		//else if (mTimer.GetTime() == 60 * 5) {
+		//	mFade.MoveToPoint(255.0, 0.0, 30);
+		//}
+		//else if (mTimer.GetTime() == 60 * 9 + 20) {
+		//	mFade.MoveToPoint(0.0, 0.0, 30);
+		//}
+		for (int i = 0; i < gLogoImageContainer.GetResourceCount(); i++) {
+			if (mTimer.GetTime() == 60 * 5 * i) {
+				mFade.MoveToPointX(255.0, 30);
+			}
+			else if (mTimer.GetTime() == 60 * 5 * (i + 1) - 40) {
+				mFade.MoveToPointX(0.0, 30);
+			}
 		}
 		mTimer.Update();
 		mFade.Update();
@@ -49,7 +59,7 @@ void cLogoGameScene::Update() {
 			pSceneChanger->ChangeScene(eGameScene_Title);
 		}
 	}
-	if (mTimer.GetSecond() >= 10.0) {
+	if (mTimer.GetTime() >= 60 * 5 * gLogoImageContainer.GetResourceCount() - 1) {
 		pSceneChanger->ChangeScene(eGameScene_Title);
 	}
 }
@@ -59,12 +69,7 @@ void cLogoGameScene::Draw() {
 	tMessage = _T("PRESS START BUTTON");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
-	if (mTimer.GetSecond() < 5.0) {
-		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(0), FALSE);
-	}
-	else {
-		DrawGraph(0, 0, cImageResourceContainer::GetInstance()->GetElement(eImage_GameLogo)->GetHandle(1), FALSE);
-	}
+	DrawGraph(0, 0, gLogoImageContainer.GetElement(mTimer.GetTime() / (60 * 5))->GetHandle(), FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	if (mTimer.GetTime() % 30 < 20) {

@@ -6,6 +6,21 @@
 #include "../EnemyBullet.h"
 #include "../SelectTimer.h"
 
+extern cImageResourceContainer gGameUIImageContainer;
+
+enum eGameUIIndex {
+	eGameUI_Life,
+	eGameUI_Bomb,
+	eGameUI_ScoreBoard,
+	eGameUI_RateNumber,
+	eGameUI_LifeGauge,
+	eGameUI_CaptionBomb,
+	eGameUI_CaptionTime,
+	eGameUI_GameOver,
+
+	eGameUI_TotalNum
+};
+
 class cMainGameScene : public cGameBaseScene {
 private:
 	cTimer mTimer;			// 経過時間

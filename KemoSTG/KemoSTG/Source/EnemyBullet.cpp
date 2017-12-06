@@ -1,5 +1,7 @@
 #include "../Header/EnemyBullet.h"
 
+cImageResourceContainer gEnemyBulletImageContainer;
+
 cEnemyBullet::cEnemyBullet() 
 	: pTarget(nullptr) {
 	mCollider.resize(1);
@@ -20,7 +22,7 @@ void cEnemyBullet::Initialize(cVector2D &MoveVector, const eBulletType Type) {
 		break;
 	default:
 		mCollider.at(0).SetCollisionType(eCollision_Ellipse);
-		mCollider.at(0).SetRange(200.0, 200.0);
+		mCollider.at(0).SetRange(20.0, 10.0);
 		break;
 	}
 }
@@ -34,8 +36,14 @@ void cEnemyBullet::Update() {
 
 void cEnemyBullet::Draw() {
 	switch (mType) {
+	case eBullet_Normal:
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyBulletImageContainer.GetElement(mType)->GetHandle(), TRUE);
+		break;
+	case eBullet_Arrow:
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, mMoveVector.GetAngle(), gEnemyBulletImageContainer.GetElement(mType)->GetHandle(), TRUE);
+		break;
 	default:
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_EnemyBullet)->GetHandle(), TRUE);
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyBulletImageContainer.GetElement(eBullet_Normal)->GetHandle(), TRUE);
 		break;
 	}
 }

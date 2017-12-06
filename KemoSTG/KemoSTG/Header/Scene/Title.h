@@ -2,6 +2,15 @@
 #include "../Scene.h"
 #include "../Sprite.h"
 
+enum eTitleIndex {
+	eTitle_Logo,
+	eTitle_Back,
+
+	eTitle_TotalNum
+};
+
+extern cImageResourceContainer gTitleImageContainer;
+
 class cTitleScene : public cScene {
 protected:
 	cTimer mMessageFlash;

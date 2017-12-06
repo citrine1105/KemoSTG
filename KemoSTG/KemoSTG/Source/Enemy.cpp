@@ -1,5 +1,7 @@
 ﻿#include "../Header/Enemy.h"
 
+cImageResourceContainer gEnemyImageContainer;
+
 cEnemy::cEnemy() : mLife(50) {
 	this->Initialize();
 }
@@ -66,6 +68,5 @@ void cEnemy::Update() {
 }
 
 void cEnemy::Draw() {
-	//cSprite::Draw();
-	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Enemy)->GetHandle(), TRUE);
+	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyImageContainer.GetElement(eEnemy_Zako)->GetHandle(), TRUE);
 }

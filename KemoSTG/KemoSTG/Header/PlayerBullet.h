@@ -3,6 +3,8 @@
 //#include "Player.h"
 #include "Enemy.h"
 
+extern cImageResourceContainer gPlayerBulletImageContainer;
+
 class cPlayerBullet : public cBullet {
 protected:
 	enum ePlayerCharacter mType;

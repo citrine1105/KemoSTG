@@ -1,4 +1,8 @@
 ﻿#include "../../Header/Scene/Game.h"
+#include "../../Header/GameScene/GameLogo.h"
+#include "../../Header/GameScene/GameTitle.h"
+#include "../../Header/GameScene/GameMain.h"
+#include "../../Header/Player.h"
 
 cGameScene::cGameScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
 	
@@ -15,34 +19,70 @@ void cGameScene::Initialize() {
 
 	mFade.SetPosition(255.0, 0.0);
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->SetPath(_T("./Data/Image/Game/life.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->SetPath(_T("./Data/Image/Game/bomb.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->SetDivisionSize(4, 4, 1, 20, 20);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->SetPath(_T("./Data/Image/Game/Background/1.jpg"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->SetPath(_T("./Data/Image/Game/score_board.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->SetDivisionSize(2, 2, 1, 160, 56);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->SetPath(_T("./Data/Image/Game/rate_num.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->SetDivisionSize(11, 11, 1, 24, 36);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->SetPath(_T("./Data/Image/Game/gauge.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->SetDivisionSize(4, 4, 1, 16, 16);
-	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->SetPath(_T("./Data/Image/Game/Caption/bomb.png"));
-	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->SetPath(_T("./Data/Image/Game/Caption/time.png"));
+	mBackgroundImage.SetPath(_T("./Data/Image/Game/Background/1.jpg"));
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Life)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Bomb)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_ScoreBoard)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_RateNumber)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_LifeGauge)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionBomb)->Load();
-	cImageResourceContainer::GetInstance()->GetElement(eImage_CaptionTime)->Load();
+	gLogoImageContainer.Initialize(eLogo_TotalNum);
+	gGameTitleImageContainer.Initialize(eGameTitle_TotalNum);
+	gGameUIImageContainer.Initialize(eGameUI_TotalNum);
+	gPlayerImageContainer.Initialize(ePlayer_TotalNum);
+	gPlayerBulletImageContainer.Initialize(ePlayer_TotalNum);
+	gEnemyImageContainer.Initialize(eEnemy_TotalNum);
+	gEnemyBulletImageContainer.Initialize(eBullet_TotalNum);
+
+	gLogoImageContainer.GetElement(eLogo_AM)->SetPath(_T("./Data/Image/Game/Logo/am.png"));
+	gLogoImageContainer.GetElement(eLogo_CLab)->SetPath(_T("./Data/Image/Game/Logo/clab.png"));
+
+	gGameTitleImageContainer.GetElement(eGameTitle_Logo)->SetPath(_T("./Data/Image/Game/Title/title.png"));
+
+	gGameUIImageContainer.GetElement(eGameUI_Life)->SetPath(_T("./Data/Image/Game/life.png"));
+	gGameUIImageContainer.GetElement(eGameUI_Bomb)->SetPath(_T("./Data/Image/Game/bomb.png"));
+	gGameUIImageContainer.GetElement(eGameUI_Bomb)->SetDivisionSize(4, 4, 1, 20, 20);
+	gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->SetPath(_T("./Data/Image/Game/score_board.png"));
+	gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->SetDivisionSize(2, 2, 1, 160, 56);
+	gGameUIImageContainer.GetElement(eGameUI_RateNumber)->SetPath(_T("./Data/Image/Game/rate_num.png"));
+	gGameUIImageContainer.GetElement(eGameUI_RateNumber)->SetDivisionSize(11, 11, 1, 24, 36);
+	gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->SetPath(_T("./Data/Image/Game/gauge.png"));
+	gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->SetDivisionSize(4, 4, 1, 16, 16);
+	gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->SetPath(_T("./Data/Image/Game/Caption/bomb.png"));
+	gGameUIImageContainer.GetElement(eGameUI_CaptionTime)->SetPath(_T("./Data/Image/Game/Caption/time.png"));
+	gGameUIImageContainer.GetElement(eGameUI_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
+
+	gPlayerImageContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
+	gPlayerImageContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Image/Game/Player/kakeru.png"));
+	gPlayerImageContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Image/Game/Player/3.png"));
+
+
+	gPlayerBulletImageContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
+	gPlayerBulletImageContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Image/Game/Bullet/Player/kakeru.png"));
+	gPlayerBulletImageContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Image/Game/Bullet/Player/3rd.png"));
+
+	gEnemyImageContainer.GetElement(eEnemy_Zako)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
+
+	gEnemyBulletImageContainer.GetElement(eBullet_Normal)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
+	gEnemyBulletImageContainer.GetElement(eBullet_Arrow)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/arrow.png"));
+
+	mBackgroundImage.Load();
+	gLogoImageContainer.Load();
+	gGameTitleImageContainer.Load();
+	gGameUIImageContainer.Load();
+	gPlayerImageContainer.Load();
+	gPlayerBulletImageContainer.Load();
+	gEnemyImageContainer.Load();
+	gEnemyBulletImageContainer.Load();
 }
 
 void cGameScene::Finalize() {
 	DeleteGraph(mGameScreen);
 	mGame.Finalize();
 
-	cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->Finalize();
+	mBackgroundImage.Finalize();
+	gLogoImageContainer.Finalize();
+	gGameTitleImageContainer.Finalize();
+	gGameUIImageContainer.Finalize();
+	gPlayerImageContainer.Finalize();
+	gPlayerBulletImageContainer.Finalize();
+	gEnemyImageContainer.Finalize();
+	gEnemyBulletImageContainer.Finalize();
 }
 
 void cGameScene::Update() {
@@ -66,7 +106,7 @@ void cGameScene::Update() {
 }
 
 void cGameScene::Draw() {
-	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, 0.0, cImageResourceContainer::GetInstance()->GetElement(eImage_Background)->GetHandle(), FALSE);
+	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, 0.0, mBackgroundImage.GetHandle(), FALSE);
 	if (CheckHandleASyncLoad(mGameScreen) == FALSE) {
 		if (mFade.GetPositionX() <= 0.0) {
 			SetDrawScreen(mGameScreen);

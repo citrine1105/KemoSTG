@@ -10,6 +10,8 @@ enum eBulletType {
 	eBullet_TotalNum	// 総要素数
 };
 
+extern cImageResourceContainer gEnemyBulletImageContainer;
+
 class cEnemyBullet : public cBullet {
 protected:
 	enum eBulletType mType;

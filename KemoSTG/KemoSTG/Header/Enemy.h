@@ -2,6 +2,14 @@
 //#include "Sprite.h"
 #include "EnemyBulletGenerator.h"
 
+extern cImageResourceContainer gEnemyImageContainer;
+
+enum eEnemyType {
+	eEnemy_Zako,
+
+	eEnemy_TotalNum
+};
+
 class cEnemy : public cSprite {
 protected:
 	int mLife;	// ‘Ì—Í
