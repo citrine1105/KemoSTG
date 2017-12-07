@@ -20,6 +20,10 @@ void cImageResourceContainer::Delete() {
 	}
 }
 
+void cImageResourceContainer::Resize(const unsigned int Num) {
+	mImageArray.resize(Num);
+}
+
 unsigned int cImageResourceContainer::GetResourceCount() {
 	return mImageArray.size();
 }
@@ -29,6 +33,9 @@ cImageResource* cImageResourceContainer::GetElement(const unsigned int Index) {
 }
 
 void cImageResourceContainer::Initialize() {
+	for (auto &i : mImageArray) {
+		i.Delete();
+	}
 	mImageArray.clear();
 }
 
@@ -37,7 +44,7 @@ void cImageResourceContainer::Initialize(const unsigned int Num) {
 		i.Delete();
 	}
 	mImageArray.clear();
-	mImageArray.resize(Num);
+	this->Resize(Num);
 }
 
 void cImageResourceContainer::Finalize() {

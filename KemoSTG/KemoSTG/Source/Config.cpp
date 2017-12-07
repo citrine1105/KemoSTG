@@ -5,6 +5,8 @@ void cSystemConfig::SetDefault() {
 	mConfig.mDisplayWidth = 640;
 	mConfig.mDisplayHeight = 480;
 	mConfig.mRotation = eRotation_Horizontal;
+	mConfig.mBGMVolume = 100;
+	mConfig.mSEVolume = 100;
 }
 
 const sSystemConfig cSystemConfig::GetConfig() {
@@ -32,11 +34,21 @@ int cSystemConfig::Load() {
 		static_cast<int>(tInputData.get<picojson::object>()["Display"].get<picojson::object>()["Rotation"].get<double>()) % eRotation_None
 		);
 
+	mConfig.mBGMVolume = static_cast<unsigned char>(tInputData.get<picojson::object>()["Audio"].get<picojson::object>()["BGMVolume"].get<double>());
+	mConfig.mSEVolume = static_cast<unsigned char>(tInputData.get<picojson::object>()["Audio"].get<picojson::object>()["SEVolume"].get<double>());
+
 	if (mConfig.mDisplayWidth < 480) {
 		mConfig.mDisplayWidth = 480;
 	}
 	if (mConfig.mDisplayHeight < 480) {
 		mConfig.mDisplayHeight = 480;
+	}
+
+	if (mConfig.mBGMVolume > 100) {
+		mConfig.mBGMVolume = 100;
+	}
+	if (mConfig.mSEVolume > 100) {
+		mConfig.mSEVolume = 100;
 	}
 
 	tFile.close();
@@ -55,14 +67,18 @@ int cSystemConfig::Write() {
 		return -1;
 	}
 
-	picojson::object tAllObject, tDisplay;
+	picojson::object tAllObject, tDisplay, tAudio;
 
 	tDisplay.emplace(std::make_pair("Window", mConfig.fWindowMode));
 	tDisplay.emplace(std::make_pair("ResolutionX", static_cast<double>(mConfig.mDisplayWidth)));
 	tDisplay.emplace(std::make_pair("ResolutionY", static_cast<double>(mConfig.mDisplayHeight)));
 	tDisplay.emplace(std::make_pair("Rotation", static_cast<double>(mConfig.mRotation)));
 
+	tAudio.emplace(std::make_pair("BGMVolume", static_cast<double>(mConfig.mBGMVolume)));
+	tAudio.emplace(std::make_pair("SEVolume", static_cast<double>(mConfig.mSEVolume)));
+
 	tAllObject.emplace(std::make_pair("Display", tDisplay));
+	tAllObject.emplace(std::make_pair("Audio", tAudio));
 
 	picojson::value tOutputData(tAllObject);
 

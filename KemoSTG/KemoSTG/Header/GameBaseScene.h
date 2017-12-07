@@ -28,8 +28,6 @@ protected:
 	iSceneChanger<eGameScene> *pSceneChanger;	// シーン切り替えインターフェース
 
 	static cVirtualPad **ppVirtualPad;
-
-	//static int mInformationFont;	// 情報表示用フォント
 public:
 	cGameBaseScene(iSceneChanger<eGameScene> *Changer);
 	virtual ~cGameBaseScene();

@@ -167,6 +167,7 @@
     <ClCompile Include="Source\EnemyBullet.cpp" />
     <ClCompile Include="Source\EnemyBulletGenerator.cpp" />
     <ClCompile Include="Source\FontContainer.cpp" />
+    <ClCompile Include="Source\FontResource.cpp" />
     <ClCompile Include="Source\GameBaseScene.cpp" />
     <ClCompile Include="Source\GameSceneManager.cpp" />
     <ClCompile Include="Source\GameScene\GameLogo.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Header\EnemyBullet.h" />
     <ClInclude Include="Header\EnemyBulletGenerator.h" />
     <ClInclude Include="Header\FontContainer.h" />
+    <ClInclude Include="Header\FontResource.h" />
     <ClInclude Include="Header\GameBaseScene.h" />
     <ClInclude Include="Header\GameSceneManager.h" />
     <ClInclude Include="Header\GameScene\GameLogo.h" />

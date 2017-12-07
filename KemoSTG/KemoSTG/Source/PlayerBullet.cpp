@@ -1,6 +1,7 @@
 ﻿#include "../Header/PlayerBullet.h"
 
 cImageResourceContainer gPlayerBulletImageContainer;
+cSoundResourceContainer gPlayerShotSoundContainer;
 
 cPlayerBullet::cPlayerBullet() 
 	: pTargetEnemy(nullptr), mType(ePlayer_TotalNum) {

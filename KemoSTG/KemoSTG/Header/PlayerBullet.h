@@ -4,6 +4,7 @@
 #include "Enemy.h"
 
 extern cImageResourceContainer gPlayerBulletImageContainer;
+extern class cSoundResourceContainer gPlayerShotSoundContainer;
 
 class cPlayerBullet : public cBullet {
 protected:

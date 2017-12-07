@@ -20,13 +20,15 @@ public:
 	cSoundResourceContainer();
 	~cSoundResourceContainer();
 
-	void Resize(const int Num);
+	void Load();
+	void Delete();
+
+	void Resize(const unsigned int Num);
+	void SetVolume(const int Volume);
+	unsigned int GetResourceCount();
 	cSoundResource* GetElement(const int Num);
 
 	void Initialize() override;
-	void Initialize(const int Num);
+	void Initialize(const unsigned int Num);
 	void Finalize() override;
 };
-
-static cSoundResourceContainer gBGMContainer;
-static cSoundResourceContainer gSEContainer;

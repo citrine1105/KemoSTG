@@ -7,11 +7,10 @@ cPlayer::cPlayer() : cSprite(), fEntry(false), /*fAlive(false),*/
 	pInputPad(nullptr), mMoveSpeed(1.0), mLife(3), mBomb(3),
 	mScoreRate(1) {
 	this->Initialize();
-	Sound = LoadSoundMem(_T("./Data/Sound/Effect/Game/shot.wav"), 1);
 }
 
 cPlayer::~cPlayer() {
-	DeleteSoundMem(Sound);
+	
 }
 
 void cPlayer::Entry() {
@@ -154,10 +153,6 @@ void cPlayer::Initialize() {
 }
 
 void cPlayer::Update() {
-	if (CheckHandleASyncLoad(Sound) == FALSE) {
-		ChangeVolumeSoundMem(128, Sound);
-	}
-
 	mInvincibleTime.Update();	// 無敵時間カウント
 	mPossessTime.Update();	// 憑依時間カウント
 	mAnimeTimer.Update();
@@ -248,14 +243,13 @@ void cPlayer::Update() {
 										
 			mBulletGenerator.at(i).AddBullet(tBullet);
 			mBulletGenerator.at(i).Generate();
-			//PlaySoundMem(gSEContainer.GetElement(eSE_Shot)->GetHandle(), DX_PLAYTYPE_BACK);
-			PlaySoundMem(Sound, DX_PLAYTYPE_BACK);
+
+			PlaySoundMem(gPlayerShotSoundContainer.GetElement(ePlayer_Rin)->GetHandle(), DX_PLAYTYPE_BACK);
 		}
 	}
 
 	if (pInputPad->GetInputState(eButton_Bomb) == 1) {
 		this->Bomb();
-		
 	}
 
 	cSprite::Update();

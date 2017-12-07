@@ -1,5 +1,6 @@
 ﻿#include "../../Header/GameScene/GameMain.h"
 
+cSoundResource gGameBGM;
 cImageResourceContainer gGameUIImageContainer;
 
 cMainGameScene::cMainGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
@@ -11,26 +12,6 @@ cMainGameScene::~cMainGameScene() {
 }
 
 void cMainGameScene::Initialize() {
-	//gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->SetPath(_T("./Data/Image/Game/Background/1.png"));
-	//gGameUIImageContainer.GetElement(eGameUI_Enemy)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
-	//gGameUIImageContainer.GetElement(eGameUI_PlayerBullet)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
-	//gGameUIImageContainer.GetElement(eGameUI_EnemyBullet)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
-	//gGameUIImageContainer.GetElement(eGameUI_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
-
-	gBGMContainer.Initialize(eBGM_TotalNum);
-	gSEContainer.Initialize(eSE_TotalNum);
-
-	gSEContainer.GetElement(eSE_Shot)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
-	gSEContainer.GetElement(eSE_Shot)->SetBufferNum(1);
-
-	//gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->Load();
-	//gGameUIImageContainer.GetElement(eGameUI_Enemy)->Load();
-	//gGameUIImageContainer.GetElement(eGameUI_PlayerBullet)->Load();
-	//gGameUIImageContainer.GetElement(eGameUI_EnemyBullet)->Load();
-	//gGameUIImageContainer.GetElement(eGameUI_GameOver)->Load();
-
-	gSEContainer.GetElement(eSE_Shot)->Load();
-
 	mBulletOutCollider.GetColliderPointer()->resize(1);
 	mBulletOutCollider.GetColliderPointer()->at(0).SetRange(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
 	mBulletOutCollider.SetPosition(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT / 2.0);
@@ -48,6 +29,10 @@ void cMainGameScene::Initialize() {
 	mTimer.Initialize(0);
 	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
+	gGameBGM.SetPath(_T("./Data/Sound/Music/bgm_test.wav"));
+	gGameBGM.SetBufferNum(1);
+	gGameBGM.Load();
+
 	mTimer.Start();
 	mBombAnimeTimer.Start();
 	mBossTimer.Start();
@@ -59,6 +44,7 @@ void cMainGameScene::Finalize() {
 	mEnemy.clear();
 	mPlayerBullet.clear();
 	mEnemyBullet.clear();
+	gGameBGM.Finalize();
 }
 
 void cMainGameScene::Update() {
@@ -68,6 +54,11 @@ void cMainGameScene::Update() {
 	mBackground.Move();
 	mBulletOutCollider.Update();
 	mFade.Update();
+
+	if (CheckHandleASyncLoad(gGameBGM.GetHandle()) == FALSE && CheckSoundMem(gGameBGM.GetHandle()) == 0) {
+		gGameBGM.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mBGMVolume * 255.0 / 100.0));
+		PlaySoundMem(gGameBGM.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
+	}
 
 	if (mTimer.GetTime() == 120) {
 		cEnemy tEnemy;

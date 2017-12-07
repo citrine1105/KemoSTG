@@ -29,11 +29,16 @@ void cGameScene::Initialize() {
 	gEnemyImageContainer.Initialize(eEnemy_TotalNum);
 	gEnemyBulletImageContainer.Initialize(eBullet_TotalNum);
 
+	gPlayerShotSoundContainer.Initialize(ePlayer_TotalNum);
+
+	// アトラクトロゴ画像
 	gLogoImageContainer.GetElement(eLogo_AM)->SetPath(_T("./Data/Image/Game/Logo/am.png"));
 	gLogoImageContainer.GetElement(eLogo_CLab)->SetPath(_T("./Data/Image/Game/Logo/clab.png"));
 
+	// タイトルロゴ画像
 	gGameTitleImageContainer.GetElement(eGameTitle_Logo)->SetPath(_T("./Data/Image/Game/Title/title.png"));
 
+	// UI画像
 	gGameUIImageContainer.GetElement(eGameUI_Life)->SetPath(_T("./Data/Image/Game/life.png"));
 	gGameUIImageContainer.GetElement(eGameUI_Bomb)->SetPath(_T("./Data/Image/Game/bomb.png"));
 	gGameUIImageContainer.GetElement(eGameUI_Bomb)->SetDivisionSize(4, 4, 1, 20, 20);
@@ -47,19 +52,30 @@ void cGameScene::Initialize() {
 	gGameUIImageContainer.GetElement(eGameUI_CaptionTime)->SetPath(_T("./Data/Image/Game/Caption/time.png"));
 	gGameUIImageContainer.GetElement(eGameUI_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
 
+	// 自機画像
 	gPlayerImageContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
 	gPlayerImageContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Image/Game/Player/kakeru.png"));
 	gPlayerImageContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Image/Game/Player/3.png"));
 
-
+	// 自機弾画像
 	gPlayerBulletImageContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Image/Game/Bullet/Player/rin.png"));
 	gPlayerBulletImageContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Image/Game/Bullet/Player/kakeru.png"));
 	gPlayerBulletImageContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Image/Game/Bullet/Player/3rd.png"));
 
+	// 敵画像
 	gEnemyImageContainer.GetElement(eEnemy_Zako)->SetPath(_T("./Data/Image/Game/Enemy/zako1.png"));
 
+	// 敵弾画像
 	gEnemyBulletImageContainer.GetElement(eBullet_Normal)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
 	gEnemyBulletImageContainer.GetElement(eBullet_Arrow)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/arrow.png"));
+
+	// プレイヤーショット音
+	gPlayerShotSoundContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
+	gPlayerShotSoundContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
+	gPlayerShotSoundContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
+	for (int i = ePlayer_Rin; i < ePlayer_TotalNum; i++) {
+		gPlayerShotSoundContainer.GetElement(i)->SetBufferNum(1);
+	}
 
 	mBackgroundImage.Load();
 	gLogoImageContainer.Load();
@@ -69,6 +85,8 @@ void cGameScene::Initialize() {
 	gPlayerBulletImageContainer.Load();
 	gEnemyImageContainer.Load();
 	gEnemyBulletImageContainer.Load();
+
+	gPlayerShotSoundContainer.Load();
 }
 
 void cGameScene::Finalize() {
@@ -83,13 +101,17 @@ void cGameScene::Finalize() {
 	gPlayerBulletImageContainer.Finalize();
 	gEnemyImageContainer.Finalize();
 	gEnemyBulletImageContainer.Finalize();
+
+	gPlayerShotSoundContainer.Finalize();
 }
 
 void cGameScene::Update() {
 	mFade.Update();
 
 	cScene::Update();
+	// ロード完了直後のみ呼ばれる処理
 	if (GetASyncLoadNum() == 0 && mFade.GetPositionX() >= 255.0) {
+		gPlayerShotSoundContainer.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mSEVolume * 255.0 / 100.0));
 		mFade.MoveToPoint(0.0, 0.0, 30);
 	}
 
@@ -106,7 +128,18 @@ void cGameScene::Update() {
 }
 
 void cGameScene::Draw() {
+	SetDrawScreen(mInterfaceScreen);
+	ClearDrawScreen();
+	SetDrawScreen(DX_SCREEN_BACK);
+
 	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, 0.0, mBackgroundImage.GetHandle(), FALSE);
+
+	if (GetASyncLoadNum() != 0) {
+		SetDrawScreen(mInterfaceScreen);
+		DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(12), DISPLAY_SHORT - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+		SetDrawScreen(DX_SCREEN_BACK);
+	}
+
 	if (CheckHandleASyncLoad(mGameScreen) == FALSE) {
 		if (mFade.GetPositionX() <= 0.0) {
 			SetDrawScreen(mGameScreen);
@@ -154,9 +187,15 @@ void cGameScene::Draw() {
 		DrawStringToHandle(DISPLAY_WIDTH / 2 - GetDrawStringWidthToHandle(tPauseMes.c_str(), tPauseMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, DISPLAY_HEIGHT / 2 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, tPauseMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
 	}
 
+	// フェードイン/アウト
 	if (mFade.GetPositionX() > 0.0) {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(mFade.GetPositionX()));
 		DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
+
+	// UIスクリーン
+	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
+	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)), mInterfaceScreen, TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }

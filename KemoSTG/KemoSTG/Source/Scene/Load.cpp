@@ -45,7 +45,7 @@ void cLoadScene::Draw() {
 		SetDrawScreen(mInterfaceScreen);
 		ClearDrawScreen();
 		if (CheckHandleASyncLoad(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) == FALSE) {
-			DrawStringToHandle(0, DISPLAY_SHORT - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+			DrawStringToHandle(0, DISPLAY_SHORT - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
 		}
 	}
 

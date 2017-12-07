@@ -7,6 +7,7 @@
 #include "../SelectTimer.h"
 
 extern cImageResourceContainer gGameUIImageContainer;
+extern cSoundResource gGameBGM;
 
 enum eGameUIIndex {
 	eGameUI_Life,
