@@ -2,6 +2,7 @@
 
 cPad cScene::mPad[2];
 cVirtualPad cScene::mVirtualPad[2];
+cFontContainer gSystemFont;
 
 cScene::cScene(iSceneChanger<eScene> *Changer) {
 	pSceneChanger = Changer;

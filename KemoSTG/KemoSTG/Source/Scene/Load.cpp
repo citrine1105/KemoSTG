@@ -12,21 +12,31 @@ void cLoadScene::Initialize() {
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// フォントハンドルの取得
-	if (cSystemConfig::GetInstance()->GetConfig().mDisplayWidth >= cSystemConfig::GetInstance()->GetConfig().mDisplayHeight) {
-		cFontContainer::GetInstance()->SetElement(eFont_MainInterfaceFont, CreateFontToHandle(_T("ＭＳ 明朝"), cSystemConfig::GetInstance()->GetConfig().mDisplayHeight / 24, 0, DX_FONTTYPE_ANTIALIASING_4X4));
-		cFontContainer::GetInstance()->SetElement(eFont_GlobalInterfaceFont, CreateFontToHandle(_T("Palatino Linotype"), cSystemConfig::GetInstance()->GetConfig().mDisplayHeight / 24, 0, DX_FONTTYPE_ANTIALIASING_4X4));
+	gSystemFont.Initialize(eSystemFont_TotalNum);
+	gSystemFont.GetElement(eSystemFont_UIFont)->SetFontName(_T("Palatino Linotype"));
+	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetFontName(_T("ＭＳ 明朝"));
+	for (int i = 0; i < eSystemFont_TotalNum; i++) {
+		gSystemFont.GetElement(i)->SetThickness(0);
+		gSystemFont.GetElement(i)->SetFontType(DX_FONTTYPE_ANTIALIASING_4X4);
+	}
+
+	if (DISPLAY_WIDTH >= DISPLAY_HEIGHT) {
+		gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_HEIGHT / 24);
+		gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_HEIGHT / 24);
 	}
 	else {
-		cFontContainer::GetInstance()->SetElement(eFont_MainInterfaceFont, CreateFontToHandle(_T("ＭＳ 明朝"), cSystemConfig::GetInstance()->GetConfig().mDisplayWidth / 24, 0, DX_FONTTYPE_ANTIALIASING_4X4));
-		cFontContainer::GetInstance()->SetElement(eFont_GlobalInterfaceFont, CreateFontToHandle(_T("Palatino Linotype"), cSystemConfig::GetInstance()->GetConfig().mDisplayWidth / 24, 0, DX_FONTTYPE_ANTIALIASING_4X4));
+		gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_WIDTH / 24);
+		gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_WIDTH / 24);
 	}
-	cFontContainer::GetInstance()->SetElement(eFont_GameFont, CreateFontToHandle(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
-	cFontContainer::GetInstance()->SetElement(eFont_GameCaption, CreateFontToHandle(_T("ＭＳ 明朝"), 20, 0, DX_FONTTYPE_ANTIALIASING_4X4));
-	cFontContainer::GetInstance()->SetElement(eFont_TimerFont, CreateFontToHandle(_T("Palatino Linotype"), 26, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
-	cFontContainer::GetInstance()->SetElement(eFont_MiniTimerFont, CreateFontToHandle(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
+	//cFontContainer::GetInstance()->SetElement(eFont_GameFont, CreateFontToHandle(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
+	//cFontContainer::GetInstance()->SetElement(eFont_GameCaption, CreateFontToHandle(_T("ＭＳ 明朝"), 20, 0, DX_FONTTYPE_ANTIALIASING_4X4));
+	//cFontContainer::GetInstance()->SetElement(eFont_TimerFont, CreateFontToHandle(_T("Palatino Linotype"), 26, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
+	//cFontContainer::GetInstance()->SetElement(eFont_MiniTimerFont, CreateFontToHandle(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4));
 
 	//cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/rect.png"));
 	//cImageResourceContainer::GetInstance()->GetElement(eImage_EllipseCollisionRange)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
+
+	gSystemFont.Load();
 }
 
 void cLoadScene::Finalize() {
@@ -44,8 +54,8 @@ void cLoadScene::Draw() {
 	if (CheckHandleASyncLoad(mInterfaceScreen) == FALSE) {
 		SetDrawScreen(mInterfaceScreen);
 		ClearDrawScreen();
-		if (CheckHandleASyncLoad(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) == FALSE) {
-			DrawStringToHandle(0, DISPLAY_SHORT - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+		if (CheckHandleASyncLoad(gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) == FALSE) {
+			DrawStringToHandle(0, DISPLAY_SHORT - GetFontSizeToHandle(gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 		}
 	}
 

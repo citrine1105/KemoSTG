@@ -242,7 +242,7 @@ void cMainGameScene::Draw() {
 	// 憑依ゲージ
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawFormatStringToHandle(12, 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), cFontContainer::GetInstance()->GetElement(eFont_TimerFont), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
+		DrawFormatStringToHandle(12, 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
 	}
 
 	// ライフ
@@ -297,26 +297,25 @@ void cMainGameScene::Draw() {
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
 		DrawGraph(0, 0, gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->GetHandle(0), TRUE);
-		DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-			tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(16 + GetDrawStringWidthToHandle(_T("3999999999"), _tcsclen(_T("3999999999")), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) - GetDrawStringWidthToHandle(tScore.at(0).c_str(), tScore.at(0).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()), 24,
+			tScore.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	}
 	else {
-		DrawStringToHandle(GAME_SCREEN_WIDTH * 2 / 9 - GetDrawStringWidthToHandle(tInformation.at(0).c_str(), tInformation.at(0).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
-			tInformation.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(GAME_SCREEN_WIDTH * 2 / 9 - GetDrawStringWidthToHandle(tInformation.at(0).c_str(), tInformation.at(0).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24,
+			tInformation.at(0).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
 		//DrawGraph(480 - 160, 0, gGameUIImageContainer.GetElement(eGameUI_ScoreBoard)->GetHandle(1), TRUE);
-		DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)), 24,
-			tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(480 - 16 - GetDrawStringWidthToHandle(tScore.at(1).c_str(), tScore.at(1).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()), 24,
+			tScore.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	}
 	else {
 		//if (mTimer.GetTime() % 60 < 30) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(tInformation.at(1).c_str(), tInformation.at(1).size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24,
-			tInformation.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(GAME_SCREEN_WIDTH * 7 / 9 - GetDrawStringWidthToHandle(tInformation.at(1).c_str(), tInformation.at(1).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24,
+			tInformation.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 		//}
 	}
-
 	//ppVirtualPad[0]->Draw();
 #ifdef _DEBUG
 	clsDx();

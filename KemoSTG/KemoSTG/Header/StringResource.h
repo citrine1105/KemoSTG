@@ -11,7 +11,7 @@ enum eLanguage {
 
 class cStringResource : public iInitialization {
 protected:
-	std::tstring mString[eLanguage_TotalNum];	// 文字列本体
+	std::array<std::tstring, eLanguage_TotalNum> mString;	// 文字列本体
 public:
 	cStringResource();	// デフォルトコンストラクタ
 	~cStringResource();	// デストラクタ

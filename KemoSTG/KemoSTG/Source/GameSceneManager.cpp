@@ -12,6 +12,12 @@ cGameSceneManager::cGameSceneManager() :  mNowScene(eGameScene_None), mNextScene
 
 void cGameSceneManager::Pause() {
 	fPause = !fPause;
+	if (fPause) {
+		StopSoundMem(gGameBGM.GetHandle());
+	}
+	else {
+		PlaySoundMem(gGameBGM.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
+	}
 }
 
 bool cGameSceneManager::GetPauseFlag() {

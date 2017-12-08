@@ -4,6 +4,8 @@
 #include "../../Header/GameScene/GameMain.h"
 #include "../../Header/Player.h"
 
+cFontContainer gGameFontContainer;
+
 cGameScene::cGameScene(iSceneChanger<eScene> *Changer) : cScene(Changer) {
 	
 }
@@ -30,6 +32,9 @@ void cGameScene::Initialize() {
 	gEnemyBulletImageContainer.Initialize(eBullet_TotalNum);
 
 	gPlayerShotSoundContainer.Initialize(ePlayer_TotalNum);
+
+	gGameFontContainer.Initialize(eGameFont_TotalNum);
+	gTimerFontContainer.Initialize(eTimerFont_TotalNum);
 
 	// アトラクトロゴ画像
 	gLogoImageContainer.GetElement(eLogo_AM)->SetPath(_T("./Data/Image/Game/Logo/am.png"));
@@ -77,6 +82,17 @@ void cGameScene::Initialize() {
 		gPlayerShotSoundContainer.GetElement(i)->SetBufferNum(1);
 	}
 
+	gGameFontContainer.GetElement(eGameFont_Interface)->SetProperty(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
+	std::tstring tPath;
+	tPath = _T("./Data/Font/");
+	tPath += _T("ja");	// TODO: ロケールIDを取得するクラスを作成
+	tPath += _T("/word.dft");
+	gGameFontContainer.GetElement(eGameFont_Word)->SetPath(tPath.c_str());
+	gGameFontContainer.GetElement(eGameFont_Word)->SetEdgeThickness(0);
+
+	gTimerFontContainer.GetElement(eTimerFont_Big)->SetProperty(_T("Palatino Linotype"), 26, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
+	gTimerFontContainer.GetElement(eTimerFont_Small)->SetProperty(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
+
 	mBackgroundImage.Load();
 	gLogoImageContainer.Load();
 	gGameTitleImageContainer.Load();
@@ -87,6 +103,9 @@ void cGameScene::Initialize() {
 	gEnemyBulletImageContainer.Load();
 
 	gPlayerShotSoundContainer.Load();
+
+	gGameFontContainer.Load();
+	gTimerFontContainer.Load();
 }
 
 void cGameScene::Finalize() {
@@ -136,7 +155,7 @@ void cGameScene::Draw() {
 
 	if (GetASyncLoadNum() != 0) {
 		SetDrawScreen(mInterfaceScreen);
-		DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(12), DISPLAY_SHORT - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+		DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 		SetDrawScreen(DX_SCREEN_BACK);
 	}
 
@@ -184,7 +203,7 @@ void cGameScene::Draw() {
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		//DrawLine(DISPLAY_WIDTH / 2, 0, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT, GetColor(0xFF, 0x00, 0x00));
 		//DrawLine(0, DISPLAY_HEIGHT / 2, DISPLAY_WIDTH, DISPLAY_HEIGHT / 2, GetColor(0xFF, 0x00, 0x00));
-		DrawStringToHandle(DISPLAY_WIDTH / 2 - GetDrawStringWidthToHandle(tPauseMes.c_str(), tPauseMes.size(), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, DISPLAY_HEIGHT / 2 - GetFontSizeToHandle(cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont)) / 2, tPauseMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GlobalInterfaceFont));
+		DrawStringToHandle(DISPLAY_WIDTH / 2 - GetDrawStringWidthToHandle(tPauseMes.c_str(), tPauseMes.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_HEIGHT / 2 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2, tPauseMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 	}
 
 	// フェードイン/アウト

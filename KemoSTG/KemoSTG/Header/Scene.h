@@ -16,6 +16,15 @@ enum eScene {
 	eScene_None
 };
 
+enum eSystemFontIndex {
+	eSystemFont_UIFont,				// UI(共通言語)
+	eSystemFont_LocalizedUIFont,	// UI(ローカライズ)
+
+	eSystemFont_TotalNum	// 総要素数
+};
+
+extern cFontContainer gSystemFont;
+
 class cScene : public iInitialization, iActivity {
 protected:
 	iSceneChanger<eScene> *pSceneChanger;	// シーン切り替えインターフェース

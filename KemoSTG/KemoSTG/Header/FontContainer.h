@@ -1,39 +1,21 @@
 ﻿#pragma once
 #pragma once
-#include "Include.h"
-
-enum eFontIndex {
-	eFont_MainInterfaceFont,		// UI等(ローカライズ)
-	eFont_GlobalInterfaceFont,		// UI等(共通)
-	eFont_GameFont,		// ゲーム画面
-	eFont_GameCaption,	// ゲーム画面のセリフ等
-	eFont_TimerFont,		// タイマーフォント
-	eFont_MiniTimerFont,		// 小タイマーフォント
-
-	eFont_None	// 総要素数
-};
+#include "FontResource.h"
 
 class cFontContainer : public iInitialization {
-private:
-	cFontContainer() {
-		this->Initialize();
-	}
-	cFontContainer(const cFontContainer& r) {}
-	cFontContainer& operator=(const cFontContainer& r) {}
-	~cFontContainer() {
-		this->Finalize();
-	}
 protected:
-	std::vector<int> mFontArray;
+	std::vector<cFontResource> mFontArray;
 public:
-	static cFontContainer* GetInstance() {
-		static cFontContainer inst;
-		return &inst;
-	}
+	cFontContainer();
+	~cFontContainer();
 
-	int GetElement(eFontIndex Index);
-	void SetElement(eFontIndex Index, const int Value);
+	cFontResource* GetElement(const int Index);
+
+	void Resize(const unsigned int Num);
+	void Load();
+	void Delete();
 
 	void Initialize() override;
+	void Initialize(const unsigned int Num);
 	void Finalize() override;
 };

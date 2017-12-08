@@ -3,6 +3,15 @@
 #include "../Sprite.h"
 #include "../GameSceneManager.h"
 
+extern cFontContainer gGameFontContainer;
+
+enum eGameFontIndex {
+	eGameFont_Interface,	// インターフェース
+	eGameFont_Word,		// セリフ
+
+	eGameFont_TotalNum	// 総要素数
+};
+
 class cGameScene : public cScene {
 protected:
 	int mGameScreen;

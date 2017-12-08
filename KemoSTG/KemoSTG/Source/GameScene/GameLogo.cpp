@@ -1,4 +1,5 @@
 ﻿#include "../../Header/GameScene/GameLogo.h"
+#include "../../Header/Scene/Game.h"
 
 cImageResourceContainer gLogoImageContainer;	// ロゴ画面で使う画像データコンテナ
 
@@ -73,7 +74,7 @@ void cLogoGameScene::Draw() {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	if (mTimer.GetTime() % 30 < 20) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), _tcsclen(_T("PRESS START BUTTON")), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 14 + 8,
-			tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), _tcsclen(_T("PRESS START BUTTON")), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 14 + 8,
+			tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	}
 }

@@ -1,21 +1,48 @@
 ﻿#include "../Header/FontContainer.h"
 
-int cFontContainer::GetElement(eFontIndex Index) {
-	return mFontArray[Index];
+cFontContainer::cFontContainer() {
+	this->Initialize();
 }
 
-void cFontContainer::SetElement(eFontIndex Index, const int Value) {
-	mFontArray[Index] = Value;
+cFontContainer::~cFontContainer() {
+	this->Finalize();
+}
+
+cFontResource* cFontContainer::GetElement(const int Index) {
+	return &mFontArray.at(Index);
+}
+
+void cFontContainer::Resize(const unsigned int Num) {
+	mFontArray.resize(Num);
+}
+
+void cFontContainer::Load() {
+	for (auto &i : mFontArray) {
+		i.Load();
+	}
+}
+
+void cFontContainer::Delete() {
+	for (auto &i : mFontArray) {
+		i.Delete();
+	}
 }
 
 void cFontContainer::Initialize() {
-	mFontArray.resize(eFontIndex::eFont_None);
+	for (auto &i : mFontArray) {
+		i.Delete();
+	}
+	mFontArray.clear();
+}
+
+void cFontContainer::Initialize(const unsigned int Num) {
+	this->Initialize();
+	mFontArray.resize(Num);
 }
 
 void cFontContainer::Finalize() {
-	for (int i = 0; i < eFontIndex::eFont_None; i++) {
-		DeleteFontToHandle(mFontArray[i]);
+	for (auto &i : mFontArray) {
+		i.Delete();
 	}
-
 	mFontArray.clear();
 }

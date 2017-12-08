@@ -1,4 +1,5 @@
 ﻿#include "../../Header/GameScene/GameNotice.h"
+#include "../../Header/Scene/Game.h"
 
 cNoticeGameScene::cNoticeGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 
@@ -47,14 +48,14 @@ void cNoticeGameScene::Draw() {
 	tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tNotice.c_str(), tNotice.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 3 + 8,
-		tNotice.c_str(), GetColor(0xFF, 0x00, 0x00), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 6 + 8,
-		tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 20 + 8,
-		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), cFontContainer::GetInstance()->GetElement(eFont_GameFont)) / 2, 24 * 22 + 8,
-		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), cFontContainer::GetInstance()->GetElement(eFont_GameFont));
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tNotice.c_str(), tNotice.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 3 + 8,
+		tNotice.c_str(), GetColor(0xFF, 0x00, 0x00), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 6 + 8,
+		tMessage.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 20 + 8,
+		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 22 + 8,
+		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	
 	//mTimer.Draw(240, 32);
 
