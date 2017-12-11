@@ -41,9 +41,13 @@ void cTitleGameScene::Update() {
 		mFade.Update();
 	}
 
+	if (cKeyboard::GetInstance()->GetKeyPushStateOnce(KEY_INPUT_D)) {
+		pSceneChanger->ChangeScene(eGameScene_Debug);
+	}
+
 	for (int i = 0; i < 2; i++) {
 		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
-			pSceneChanger->ChangeScene(eGameScene_Ranking);
+			pSceneChanger->ChangeScene(eGameScene_Logo);
 		}
 	}
 }

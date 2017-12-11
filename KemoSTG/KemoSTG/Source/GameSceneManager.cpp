@@ -4,10 +4,17 @@
 #include "../Header/GameScene/GameTitle.h"
 #include "../Header/GameScene/GameMain.h"
 #include "../Header/GameScene/GameRanking.h"
+#include "../Header/GameScene/GameDebug.h"
 
 cGameSceneManager::cGameSceneManager() :  mNowScene(eGameScene_None), mNextScene(eGameScene_None), fPause(false) {
-	pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
-	mNowScene = eGameScene_Logo;
+	if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
+		pScene = static_cast<cGameBaseScene*>(new cNoticeGameScene(this));
+		mNowScene = eGameScene_Notice;
+	}
+	else {
+		pScene = static_cast<cGameBaseScene*>(new cLogoGameScene(this));
+		mNowScene = eGameScene_Logo;
+	}
 }
 
 void cGameSceneManager::Pause() {
@@ -57,6 +64,9 @@ void cGameSceneManager::Update() {
 			break;
 		case eGameScene_Ranking:
 			pScene = static_cast<cGameBaseScene*>(new cRankingGameScene(this));
+			break;
+		case eGameScene_Debug:
+			pScene = static_cast<cGameBaseScene*>(new cDebugGameScene(this));
 			break;
 		}
 		mNextScene = eGameScene_None;

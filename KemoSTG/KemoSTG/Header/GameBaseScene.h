@@ -20,6 +20,8 @@ enum eGameScene {
 	eGameScene_Game,
 	eGameScene_NameEntry,
 	eGameScene_Ranking,
+	eGameScene_Debug,
+
 	eGameScene_None
 };
 

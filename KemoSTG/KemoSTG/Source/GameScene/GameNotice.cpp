@@ -10,8 +10,8 @@ cNoticeGameScene::~cNoticeGameScene() {
 }
 
 void cNoticeGameScene::Initialize() {
-	mTimer.SetDefaultSecond(7.0);
-	mTimer.SetSecond(7.0);
+	mTimer.SetDefaultSecond(6.0);
+	mTimer.SetSecond(6.0);
 	mTimer.SetCountMode(eCountMode_CountDown);
 	mTimer.Start();
 }
