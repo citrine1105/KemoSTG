@@ -29,6 +29,9 @@ void cMainGameScene::Initialize() {
 	mTimer.Initialize(0);
 	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
+	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/test.png"));
+	mCharacterImage.at(0).Load();
+
 	gGameBGM.SetPath(_T("./Data/Sound/Music/bgm_test.wav"));
 	gGameBGM.SetBufferNum(1);
 	gGameBGM.Load();
@@ -259,6 +262,10 @@ void cMainGameScene::Draw() {
 		}
 	}
 
+	// キャラ表示領域
+	//DrawBox(0, GAME_SCREEN_HEIGHT - 540, 280, GAME_SCREEN_HEIGHT, GetColor(0xFF, 0xFF, 0xFF), FALSE);
+	//DrawGraph(0, GAME_SCREEN_HEIGHT - 540, mCharacterImage.at(0).GetHandle(), TRUE);
+
 	// ボム
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
@@ -284,6 +291,13 @@ void cMainGameScene::Draw() {
 		//	}
 		//}
 	}
+
+	// 台詞
+	//DrawGraph(16, GAME_SCREEN_HEIGHT - 200, gGameUIImageContainer.GetElement(eGameUI_WordBackground)->GetHandle(), TRUE);
+	//DrawStringToHandle(94 + 17 - GetDrawStringWidthToHandle(_T("名もなきネコ"), _tcslen(_T("名もなきネコ")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 191, _T("名もなきネコ"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+	//DrawStringToHandle(94 + 16 - GetDrawStringWidthToHandle(_T("名もなきネコ"), _tcslen(_T("名もなきネコ")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 192, _T("名もなきネコ"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+	//DrawStringToHandle(31, GAME_SCREEN_HEIGHT - 151, _T("ゲーム制作なんて徹夜すれば終わるんだよ"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+	//DrawStringToHandle(30, GAME_SCREEN_HEIGHT - 152, _T("ゲーム制作なんて徹夜すれば終わるんだよ"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
@@ -316,6 +330,7 @@ void cMainGameScene::Draw() {
 			tInformation.at(1).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 		//}
 	}
+
 	//ppVirtualPad[0]->Draw();
 #ifdef _DEBUG
 	clsDx();

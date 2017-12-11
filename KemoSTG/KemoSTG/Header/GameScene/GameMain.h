@@ -15,6 +15,7 @@ enum eGameUIIndex {
 	eGameUI_ScoreBoard,
 	eGameUI_RateNumber,
 	eGameUI_LifeGauge,
+	eGameUI_WordBackground,
 	eGameUI_CaptionBomb,
 	eGameUI_CaptionTime,
 	eGameUI_GameOver,
@@ -31,6 +32,8 @@ private:
 	cSelectTimer mBossTimer;	// ボス戦残り時間
 
 	cSprite mBulletOutCollider;	// 弾画面外判定用
+
+	std::array<cImageResource, 3> mCharacterImage;	// 立ち絵
 
 	std::array<cPlayer, 2> mPlayer;	// 自機
 	std::list<cEnemy> mEnemy;	// 敵

@@ -46,4 +46,9 @@ void cEnemyBullet::Draw() {
 		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyBulletImageContainer.GetElement(eBullet_Normal)->GetHandle(), TRUE);
 		break;
 	}
+#ifdef _DEBUG
+	for (auto &i : cSprite::mCollider) {
+		i.Draw();
+	}
+#endif
 }

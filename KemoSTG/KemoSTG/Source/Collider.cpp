@@ -1,5 +1,7 @@
 #include "../Header/Collider.h"
 
+cImageResourceContainer gColliderDebugImageContainer;
+
 cCollider::cCollider() {
 
 }
@@ -86,10 +88,12 @@ bool cCollider::GetCollision(cCollider &Collider) {
 }
 
 void cCollider::Draw() {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(40.0 * 255.0 / 100.0));
+	DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), 16.0, 16.0, mRangeX / 32.0, mRangeY / 32.0,
+		0.0, gColliderDebugImageContainer.GetElement(eCollision_Rectangle)->GetHandle(), TRUE);
 	switch (mType) {
 	case eCollision_Rectangle:
-		//DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
-		//	cImageResourceContainer::GetInstance()->GetElement(eImage_RectCollisionRange)->GetHandle(), TRUE);
+
 		break;
 	case eCollision_Ellipse:
 		//DrawRotaGraph(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0,
@@ -100,4 +104,5 @@ void cCollider::Draw() {
 		//	cImageResourceContainer::GetInstance()->GetElement(eImage_None)->GetHandle(), TRUE);
 		break;
 	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }

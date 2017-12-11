@@ -12,6 +12,7 @@ enum eEnemyType {
 
 class cEnemy : public cSprite {
 protected:
+	eEnemyType mType;	// 種類
 	int mLife;	// 体力
 	cTimer mAnimeTimer;	// アニメーション用タイマー
 	std::vector<class cEnemyBulletGenerator> mBulletGenerator;	// 弾発射機構

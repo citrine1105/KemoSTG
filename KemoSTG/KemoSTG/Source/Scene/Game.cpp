@@ -53,6 +53,7 @@ void cGameScene::Initialize() {
 	gGameUIImageContainer.GetElement(eGameUI_RateNumber)->SetDivisionSize(11, 11, 1, 24, 36);
 	gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->SetPath(_T("./Data/Image/Game/gauge.png"));
 	gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->SetDivisionSize(4, 4, 1, 16, 16);
+	gGameUIImageContainer.GetElement(eGameUI_WordBackground)->SetPath(_T("./Data/Image/Game/wordback.png"));
 	gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->SetPath(_T("./Data/Image/Game/Caption/bomb.png"));
 	gGameUIImageContainer.GetElement(eGameUI_CaptionTime)->SetPath(_T("./Data/Image/Game/Caption/time.png"));
 	gGameUIImageContainer.GetElement(eGameUI_GameOver)->SetPath(_T("./Data/Image/Game/gameover.png"));
@@ -88,6 +89,7 @@ void cGameScene::Initialize() {
 	tPath += _T("ja");	// TODO: ロケールIDを取得するクラスを作成
 	tPath += _T("/word.dft");
 	gGameFontContainer.GetElement(eGameFont_Word)->SetPath(tPath.c_str());
+	//gGameFontContainer.GetElement(eGameFont_Word)->SetProperty(_T("Palatino Linotype"), 20, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
 	gGameFontContainer.GetElement(eGameFont_Word)->SetEdgeThickness(0);
 
 	gTimerFontContainer.GetElement(eTimerFont_Big)->SetProperty(_T("Palatino Linotype"), 26, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);

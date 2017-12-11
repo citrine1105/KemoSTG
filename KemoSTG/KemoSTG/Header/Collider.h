@@ -2,9 +2,13 @@
 #include "Point2D.h"
 #include "ImageResourceContainer.h"
 
+extern cImageResourceContainer gColliderDebugImageContainer;
+
 enum eCollisionType {
 	eCollision_Rectangle,	// 矩形
-	eCollision_Ellipse		// 楕円
+	eCollision_Ellipse,		// 楕円
+
+	eCollision_TotalNum
 };
 
 class cCollider {
