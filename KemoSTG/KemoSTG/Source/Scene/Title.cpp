@@ -20,6 +20,7 @@ void cTitleScene::Initialize() {
 
 	gTitleImageContainer.GetElement(eTitle_Logo)->SetPath(_T("./Data/Image/Title/logo.png"));
 	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.jpg"));
+	gTitleImageContainer.GetElement(eTitle_Guide)->SetPath(_T("./Data/Image/Title/guide.png"));
 
 	gTitleImageContainer.Load();
 }
@@ -62,7 +63,7 @@ void cTitleScene::Update() {
 }
 
 void cTitleScene::Draw() {
-	std::tstring tMes = _T("Press Any Button");
+	std::tstring tCopyright = _T("©2017 C-Lab");
 	std::tstring tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
@@ -74,20 +75,21 @@ void cTitleScene::Draw() {
 	SetDrawScreen(mInterfaceScreen);
 	ClearDrawScreen();
 
+	DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_SHORT * 29 / 32 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2,
+		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+
 	if (fNext) {
 		if (mMessageFlash.GetTime() % 12 < 6) {
-			DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_SHORT * 2 / 3 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2,
-				tMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+			DrawRotaGraph(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_LONG) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		}
 	}
 	else {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mMessageFade.GetPositionX());
-		DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tMes.c_str(), tMes.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_SHORT * 2 / 3 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2,
-			tMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+		DrawRotaGraph(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_LONG) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
 
-	DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_HEIGHT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8),
+	DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8),
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 
 	SetDrawScreen(DX_SCREEN_BACK);

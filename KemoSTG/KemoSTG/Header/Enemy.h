@@ -42,6 +42,8 @@ protected:
 	std::vector<cVector2D> mBulletGeneratorVector;	// 弾源移動制御用ベクトル
 	std::list<sEnemyPointMoveData> mPointMoveData;	// 移動データ
 	std::list<sEnemyPolarFormMoveData> mPolarFormMoveData;	// 移動データ
+
+	const int mAppearanceTime;	// 出現アニメーション時間
 public:
 	cEnemy();
 	cEnemy(sEnemyRegisterData &Data);
@@ -56,6 +58,7 @@ public:
 	bool GetAliveFlag();
 	void Initialize() override;
 	void Initialize(const sEnemyRegisterData &Data);
+	void Finalize() override;
 	void Update() override;
 	void Draw() override;
 };

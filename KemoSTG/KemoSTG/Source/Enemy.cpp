@@ -2,7 +2,7 @@
 
 cImageResourceContainer gEnemyImageContainer;
 
-cEnemy::cEnemy() : mLife(50), fActive(true) {
+cEnemy::cEnemy() : mLife(50), fActive(true), mAppearanceTime(24) {
 	this->Initialize();
 }
 
@@ -11,7 +11,7 @@ cEnemy::cEnemy(sEnemyRegisterData &Data) : cEnemy() {
 }
 
 cEnemy::~cEnemy() {
-
+	this->Finalize();
 }
 
 void cEnemy::Damage(const int Damage) {
@@ -77,10 +77,22 @@ void cEnemy::Initialize(const sEnemyRegisterData &Data) {
 	this->Initialize();
 }
 
+void cEnemy::Finalize() {
+	mBulletGenerator.clear();
+	mBulletGeneratorVector.clear();
+}
+
 void cEnemy::Update() {
 	cSprite::Update();
 	mMotionTimer.Update();
 	mAnimeTimer.Update();
+
+	switch (mType) {
+	default:
+		for (auto &i : mCollider) {
+			i.SetPosition(mPosition);
+		}
+	}
 
 	// 弾源
 	for (auto &i : mBulletGeneratorVector) {
@@ -117,17 +129,16 @@ void cEnemy::Update() {
 			for (int j = 0; j < 4; j++) {
 				tMoveVector.AddAngle(TO_RADIAN(360.0 / 4.0));
 				tBullet.Initialize(tMoveVector, eBullet_Normal);
-				mBulletGenerator.at(i).AddBullet(tBullet);
+				mBulletGenerator.at(0).AddBullet(tBullet);
 			}
-
-			mBulletGenerator.at(i).Generate();
 		}
+		mBulletGenerator.at(0).Generate();
 	}
 }
 
 void cEnemy::Draw() {
-	if (mAnimeTimer.GetTime() < 12) {
-		DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, mAnimeTimer.GetTime() / 12.0, 1.0 + (12 - mAnimeTimer.GetTime()) / 12.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+	if (mAnimeTimer.GetTime() < mAppearanceTime) {
+		DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, mAnimeTimer.GetTime() / static_cast<double>(mAppearanceTime), 1.0 + (mAppearanceTime - mAnimeTimer.GetTime()) / static_cast<double>(mAppearanceTime) * 2.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
 	}
 	else {
 		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
@@ -136,7 +147,7 @@ void cEnemy::Draw() {
 	std::tstring tHP;
 	tHP = _T("HP: ");
 	tHP += std::to_tstring(mLife);
-	DrawStringFToHandle(mPosition.GetX(), mPosition.GetY() + mCollider.at(0).GetRangeY(), tHP.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	DrawStringFToHandle(mPosition.GetX() - GetDrawStringWidthToHandle(tHP.c_str(), tHP.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, mPosition.GetY() + mCollider.at(0).GetRangeY(), tHP.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	for (auto &i : mCollider) {
 		i.Draw();
 	}

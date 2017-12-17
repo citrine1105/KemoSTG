@@ -30,7 +30,8 @@ void cEnemyBulletGenerator::AddBullet(std::vector<cEnemyBullet> &Bullet) {
 
 void cEnemyBulletGenerator::Generate() {
 	for (auto &i : mBuffer) {
-		i.SetPosition(mPosition.GetX(), mPosition.GetY());	// 座標設定
+		i.SetPosition(mPosition);	// 座標設定
+		i.GetColliderPointer()->at(0).SetPosition(mPosition);
 	}
 	if (pTargetContainer != nullptr) {
 		for (auto &i : mBuffer) {

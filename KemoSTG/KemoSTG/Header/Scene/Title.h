@@ -5,6 +5,7 @@
 enum eTitleIndex {
 	eTitle_Logo,
 	eTitle_Back,
+	eTitle_Guide,
 
 	eTitle_TotalNum
 };

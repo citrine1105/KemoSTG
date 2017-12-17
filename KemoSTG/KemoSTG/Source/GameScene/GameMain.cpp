@@ -16,7 +16,7 @@ cMainGameScene::~cMainGameScene() {
 void cMainGameScene::Initialize() {
 	mBulletOutCollider.GetColliderPointer()->resize(1);
 	mBulletOutCollider.GetColliderPointer()->at(0).SetRange(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
-	mBulletOutCollider.SetPosition(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT / 2.0);
+	mBulletOutCollider.GetColliderPointer()->at(0).SetPosition(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT / 2.0);
 
 	mPlayer.at(0).SetInputPad(ppVirtualPad[0]);
 	mPlayer.at(1).SetInputPad(ppVirtualPad[1]);
@@ -70,15 +70,19 @@ void cMainGameScene::Update() {
 		mBulletOutCollider.Update();
 		mFade.Update();
 
-		if (mTimer.GetTime() >= 120 && mTimer.GetTime() % 60 == 0) {
+		// 敵登録テスト
+		if (mTimer.GetTime() == 180) {
 			sEnemyRegisterData tRegisterData;
-			tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
-			tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+			tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 4.0;
+			tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
 			tRegisterData.mType = eEnemy_Zako;
 			tRegisterData.mMovePattern = 0;
 			tRegisterData.mGeneratorPattern = 0;
 			tRegisterData.mBulletPattern = 0;
-			mEnemy.push_back(cEnemy(tRegisterData));
+			for (int i = 0; i < 5; i++) {
+				mEnemy.push_back(cEnemy(tRegisterData));
+				tRegisterData.mAppearanceY += 64;
+			}
 		}
 
 		for (auto &i : mPlayerBullet) {

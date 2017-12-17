@@ -4,7 +4,7 @@ cImageResourceContainer gEnemyBulletImageContainer;
 
 cEnemyBullet::cEnemyBullet() 
 	: pTarget(nullptr) {
-	mCollider.resize(1);
+
 }
 
 cEnemyBullet::~cEnemyBullet() {

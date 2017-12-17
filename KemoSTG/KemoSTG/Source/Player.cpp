@@ -252,6 +252,9 @@ void cPlayer::Update() {
 		this->Bomb();
 	}
 
+	for (auto &i : mCollider) {
+		i.SetPosition(mPosition);
+	}
 	cSprite::Update();
 }
 

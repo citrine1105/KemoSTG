@@ -132,6 +132,9 @@ void cSprite::Initialize() {
 	mMoveTypeY = eEasing_Linear;
 	mMoveTimeX = 0;
 	mMoveTimeY = 0;
+	for (auto &i : mCollider) {
+		i.SetPosition(mPosition);
+	}
 }
 
 void cSprite::Finalize() {
@@ -160,9 +163,6 @@ void cSprite::Update() {
 		cVector2D tVector = mMoveVectorY;
 		tVector *= cEasing::GetInstance()->GetEase(mEaseFuncY, mMoveTypeY, 1.0 - static_cast<double>(mDelayTimerY.GetTime() - 1) / static_cast<double>(mMoveTimeY), 1.0);
 		mPosition.SetPoint(mPosition.GetX(), tVector.GetEndPoint().GetY());
-	}
-	for (auto &i : mCollider) {
-		i.SetPosition(mPosition);
 	}
 	//if (mDelayTimer.GetTime() <= 0) {
 	//	mDelayTimer.Stop();

@@ -5,6 +5,9 @@ class cBullet : public cSprite {
 protected:
 	bool fActive;
 public:
+	cBullet();
+	~cBullet();
+
 	void Erase();
 	bool GetActiveFlag();
 

@@ -5,6 +5,8 @@
 #define DISPLAY_HEIGHT cSystemConfig::GetInstance()->GetConfig().mDisplayHeight	// 画面の高さ
 #define DISPLAY_LONG (DISPLAY_WIDTH > DISPLAY_HEIGHT ? DISPLAY_WIDTH : DISPLAY_HEIGHT)	// 画面の長辺
 #define DISPLAY_SHORT (DISPLAY_WIDTH < DISPLAY_HEIGHT ? DISPLAY_WIDTH : DISPLAY_HEIGHT)	// 画面の短辺
+#define DISPLAY_MAX 3840
+#define DISPLAY_MIN 480
 
 #define CAPTION_STRING _T("朧の迷仔たち")	// キャプションテキスト
 #define VERSION_STRING _T("0.12")	// バージョン
