@@ -256,7 +256,7 @@ void cPlayer::Update() {
 }
 
 void cPlayer::Draw() {
-	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 2 == 0)
+	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 4 < 2)
 		|| mInvincibleTime.GetTime() <= 0) {
 		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(), TRUE);
 	}

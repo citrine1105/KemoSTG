@@ -5,6 +5,23 @@
 #include "Easing.h"
 #include "Collider.h"
 
+struct sPointMoveData {
+public:
+	cPoint2D mTargetPoint;	// 目標地点
+	int mMoveTime;	// 移動時間
+	eEasingType mMoveType;	// 移動方法
+	eEasingFunction mEasingFunction;	// 移動関数
+};
+
+struct sPolarFormMoveData {
+public:
+	double mAngle;	// 角度
+	double mMagnitude;	// 大きさ
+	int mMoveTime;	// 移動時間
+	eEasingType mMoveType;	// 移動方法
+	eEasingFunction mEasingFunction;	// 移動関数
+};
+
 class cSprite : public iInitialization, iActivity {
 protected:
 	cPoint2D mPosition;	// 座標
@@ -25,9 +42,14 @@ public:
 	~cSprite();	// デストラクタ
 
 	void Move();		// ベクトルに準じて移動
+	void Move(const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);
+	void Move(sPolarFormMoveData &MoveData);
 	void MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);	// 指定の場所に移動
+	void MoveToPoint(sPointMoveData &MoveData);
 	void MoveToPointX(const double PositionX, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);	// 指定の場所に移動
+	void MoveToPointX(sPointMoveData &MoveData);
 	void MoveToPointY(const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);	// 指定の場所に移動
+	void MoveToPointY(sPointMoveData &MoveData);
 	void AddToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);
 	void AddToPointX(const double PositionX, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);
 	void AddToPointY(const double PositionY, const int MoveTime, const eEasingType MoveType = eEasing_Linear, const eEasingFunction EasingFunction = eEasingFunction_Out);

@@ -26,6 +26,7 @@ enum eGameUIIndex {
 class cMainGameScene : public cGameBaseScene {
 protected:
 	cTimer mTimer;			// 経過時間
+	cTimer mDelayTimer;		// 処理落ちタイマー
 	cTimer mBombAnimeTimer;	// 残りボムのアニメーション用
 	cSprite mBackground;	// 背景
 	cSprite mFade;			// フェードアウト用

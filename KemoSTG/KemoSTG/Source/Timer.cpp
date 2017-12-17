@@ -174,6 +174,9 @@ void cTimer::Update() {
 	}
 	switch (mCountMode) {
 	case eCountMode_CountUp:
+		if (fActive) {
+			++mTime;
+		}
 		if (mTime >= mMaxTime) {
 			if (fLoop) {
 				mTime = 0;
@@ -182,9 +185,6 @@ void cTimer::Update() {
 				this->Stop();
 
 			}
-		}
-		if (fActive) {
-			++mTime;
 		}
 		break;
 	case eCountMode_CountDown:

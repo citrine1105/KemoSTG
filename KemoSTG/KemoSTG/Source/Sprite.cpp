@@ -12,9 +12,23 @@ void cSprite::Move() {
 	mPosition.AddPosition(mMoveVector.GetElementX(), mMoveVector.GetElementY());
 }
 
+void cSprite::Move(const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
+	this->MoveToPoint(mMoveVector.GetEndPoint().GetX(), mMoveVector.GetEndPoint().GetY(), MoveTime, MoveType, EasingFunction);
+}
+
+void cSprite::Move(sPolarFormMoveData &MoveData) {
+	mMoveVector.SetStartPoint(mPosition);
+	mMoveVector.SetPolarForm(MoveData.mAngle, MoveData.mMagnitude);
+	this->Move(MoveData.mMoveTime, MoveData.mMoveType, MoveData.mEasingFunction);
+}
+
 void cSprite::MoveToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
 	this->MoveToPointX(PositionX, MoveTime, MoveType, EasingFunction);
 	this->MoveToPointY(PositionY, MoveTime, MoveType, EasingFunction);
+}
+
+void cSprite::MoveToPoint(sPointMoveData &MoveData) {
+	this->MoveToPoint(MoveData.mTargetPoint.GetX(), MoveData.mTargetPoint.GetY(), MoveData.mMoveTime, MoveData.mMoveType, MoveData.mEasingFunction);
 }
 
 void cSprite::MoveToPointX(const double PositionX, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
@@ -27,6 +41,10 @@ void cSprite::MoveToPointX(const double PositionX, const int MoveTime, const eEa
 	mDelayTimerX.Start();
 }
 
+void cSprite::MoveToPointX(sPointMoveData &MoveData) {
+	this->MoveToPointX(MoveData.mTargetPoint.GetX(), MoveData.mMoveTime, MoveData.mMoveType, MoveData.mEasingFunction);
+}
+
 void cSprite::MoveToPointY(const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {
 	mMoveVectorY.SetStartPoint(mPosition);
 	mMoveVectorY.SetEndPoint(mPosition.GetX(), PositionY);
@@ -35,6 +53,10 @@ void cSprite::MoveToPointY(const double PositionY, const int MoveTime, const eEa
 	mEaseFuncY = EasingFunction;
 	mDelayTimerY.Initialize(mMoveTimeX, AUTO_INT_MAX, eCountMode_CountDown);
 	mDelayTimerY.Start();
+}
+
+void cSprite::MoveToPointY(sPointMoveData &MoveData) {
+	this->MoveToPointY(MoveData.mTargetPoint.GetY(), MoveData.mMoveTime, MoveData.mMoveType, MoveData.mEasingFunction);
 }
 
 void cSprite::AddToPoint(const double PositionX, const double PositionY, const int MoveTime, const eEasingType MoveType, const eEasingFunction EasingFunction) {

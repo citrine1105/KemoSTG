@@ -4,7 +4,9 @@ cSoundResource gGameBGM;
 cImageResourceContainer gGameUIImageContainer;
 
 cMainGameScene::cMainGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
-
+	mEnemy.clear();
+	mPlayerBullet.clear();
+	mEnemyBullet.clear();
 }
 
 cMainGameScene::~cMainGameScene() {
@@ -27,6 +29,7 @@ void cMainGameScene::Initialize() {
 	mFade.SetPosition(0.0, 0.0);
 
 	mTimer.Initialize(0);
+	mDelayTimer.Initialize(0, 1, eCountMode_CountUp, true);
 	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
 	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/test.png"));
@@ -37,6 +40,7 @@ void cMainGameScene::Initialize() {
 	gGameBGM.Load();
 
 	mTimer.Start();
+	mDelayTimer.Start();
 	mBombAnimeTimer.Start();
 	mBossTimer.Start();
 
@@ -51,104 +55,121 @@ void cMainGameScene::Finalize() {
 }
 
 void cMainGameScene::Update() {
-	mTimer.Update();
-	mBombAnimeTimer.Update();
-	mBossTimer.Update();
-	mBackground.Move();
-	mBulletOutCollider.Update();
-	mFade.Update();
+	mDelayTimer.Update();
 
 	if (CheckHandleASyncLoad(gGameBGM.GetHandle()) == FALSE && CheckSoundMem(gGameBGM.GetHandle()) == 0) {
 		gGameBGM.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mBGMVolume * 255.0 / 100.0));
 		PlaySoundMem(gGameBGM.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
 	}
 
-	if (mTimer.GetTime() == 120) {
-		cEnemy tEnemy;
-		tEnemy.SetPosition(240.0, 160.0);
+	if (mDelayTimer.GetTime() == 0) {
+		mTimer.Update();
+		mBombAnimeTimer.Update();
+		mBossTimer.Update();
+		mBackground.Move();
+		mBulletOutCollider.Update();
+		mFade.Update();
 
-		mEnemy.push_back(tEnemy);
-	}
-
-	for (auto &i : mPlayerBullet) {
-		i.Update();
-		if (!mBulletOutCollider.GetCollisionFlag(i)) {
-			i.Erase();
+		if (mTimer.GetTime() >= 120 && mTimer.GetTime() % 60 == 0) {
+			sEnemyRegisterData tRegisterData;
+			tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
+			tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+			tRegisterData.mType = eEnemy_Zako;
+			tRegisterData.mMovePattern = 0;
+			tRegisterData.mGeneratorPattern = 0;
+			tRegisterData.mBulletPattern = 0;
+			mEnemy.push_back(cEnemy(tRegisterData));
 		}
-		else {
-			for (auto &j : mEnemy) {
-				if (j.GetCollisionFlag(i)) {
-					//j.Damage(i.GetPower());
-					i.Erase();
-					if (mPlayer.at(0).GetPossessFlag()) {
-						mPlayer.at(0).AddScoreRate(1);
+
+		for (auto &i : mPlayerBullet) {
+			i.Update();
+			if (!mBulletOutCollider.GetCollisionFlag(i)) {
+				i.Erase();
+			}
+			else {
+				for (auto &j : mEnemy) {
+					if (j.GetCollisionFlag(i)) {
+						j.Damage(i.GetPower());
+						i.Erase();
+						if (mPlayer.at(0).GetPossessFlag()) {
+							mPlayer.at(0).AddScoreRate(1);
+						}
+						mPlayer.at(0).AddScore(10 * mPlayer.at(0).GetScoreRate());
 					}
-					mPlayer.at(0).AddScore(10 * mPlayer.at(0).GetScoreRate());
 				}
 			}
 		}
-	}
-	for (auto i = mPlayerBullet.begin(); i != mPlayerBullet.end();) {
-		if (!i->GetActiveFlag()) {
-			i = mPlayerBullet.erase(i);
-			continue;
+		for (auto i = mPlayerBullet.begin(); i != mPlayerBullet.end();) {
+			if (!i->GetActiveFlag()) {
+				i = mPlayerBullet.erase(i);
+				continue;
+			}
+			i++;
 		}
-		i++;
-	}
 
-	for (auto &i : mEnemyBullet) {
-		i.Update();
-		if (!mBulletOutCollider.GetCollisionFlag(i)) {
-			i.Erase();
-		}
-		
-	}
-	for (auto i = mEnemyBullet.begin(); i != mEnemyBullet.end();) {
-		if (!i->GetActiveFlag()) {
-			i = mEnemyBullet.erase(i);
-			continue;
-		}
-		i++;
-	}
-
-	for (auto &i : mPlayer) {
-		if (i.GetAliveFlag()) {
+		for (auto &i : mEnemyBullet) {
 			i.Update();
-		}
-	}
-
-	if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % (60 * 3) == 0) {
-		for (auto &i : mEnemy) {
-			i.MoveToPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT), 120, eEasing_Quad, eEasingFunction_InOut);
-		}
-	}
-
-	for (auto &i : mEnemy) {
-		i.SetBulletGenerateTarget(&mEnemyBullet);
-		i.Update();
-	}
-	for (auto i = mEnemy.begin(); i != mEnemy.end();) {
-		if (!i->GetAliveFlag()) {
-			i = mEnemy.erase(i);
-			continue;
-		}
-		i++;
-	}
-
-	for (auto &i : mPlayer) {
-		for (auto &j : mEnemyBullet) {
-			if (i.GetCollisionFlag(j) && !i.GetInvincibleFlag()) {
-				i.Damage();
+			if (!mBulletOutCollider.GetCollisionFlag(i)) {
+				i.Erase();
 			}
 		}
-	}
 
-	if (mPlayer.at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
-		mFade.MoveToPoint(255.0, 0.0, 90);
-	}
+		for (auto i = mEnemyBullet.begin(); i != mEnemyBullet.end();) {
+			if (!i->GetActiveFlag()) {
+				i = mEnemyBullet.erase(i);
+				continue;
+			}
+			i++;
+		}
 
-	if (mFade.GetPositionX() >= 255.0) {
-		pSceneChanger->ChangeScene(eGameScene_Logo);
+		for (auto &i : mPlayer) {
+			if (i.GetAliveFlag()) {
+				i.Update();
+			}
+		}
+
+		//if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % (60 * 3) == 0) {
+		//	for (auto &i : mEnemy) {
+		//		sSpriteMoveData tMove;
+		//		tMove.mTargetPoint.SetPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT));
+		//		tMove.mMoveTime = 120;
+		//		tMove.mMoveType = eEasing_Quad;
+		//		tMove.mEasingFunction = eEasingFunction_InOut;
+		//		i.MoveToPoint(tMove);
+		//	}
+		//}
+
+		for (auto &i : mEnemy) {
+			i.SetBulletGenerateTarget(&mEnemyBullet);
+			if (!mBulletOutCollider.GetCollisionFlag(i)) {
+				i.Erase();
+			}
+			i.Update();
+		}
+
+		for (auto i = mEnemy.begin(); i != mEnemy.end();) {
+			if (!i->GetActiveFlag()) {
+				i = mEnemy.erase(i);
+				continue;
+			}
+			i++;
+		}
+
+		for (auto &i : mPlayer) {
+			for (auto &j : mEnemyBullet) {
+				if (i.GetCollisionFlag(j) && !i.GetInvincibleFlag()) {
+					i.Damage();
+				}
+			}
+		}
+
+		if (mPlayer.at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
+			mFade.MoveToPoint(255.0, 0.0, 90);
+		}
+
+		if (mFade.GetPositionX() >= 255.0) {
+			pSceneChanger->ChangeScene(eGameScene_Logo);
+		}
 	}
 }
 
@@ -336,5 +357,6 @@ void cMainGameScene::Draw() {
 	clsDx();
 	printfDx(_T("Player Bullets: %d\n"), mPlayerBullet.size());
 	printfDx(_T("Enemy Bullets: %d\n"), mEnemyBullet.size());
+	printfDx(_T("Delay: %d\n"), mDelayTimer.GetTime());
 #endif
 }
