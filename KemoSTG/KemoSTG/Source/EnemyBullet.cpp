@@ -18,7 +18,7 @@ void cEnemyBullet::Initialize(cVector2D &MoveVector, const eBulletType Type) {
 	switch (mType) {
 	case eBullet_Normal:
 		mCollider.at(0).SetCollisionType(eCollision_Ellipse);
-		mCollider.at(0).SetRange(20.0, 20.0);
+		mCollider.at(0).SetRange(16.0, 16.0);
 		break;
 	default:
 		mCollider.at(0).SetCollisionType(eCollision_Ellipse);

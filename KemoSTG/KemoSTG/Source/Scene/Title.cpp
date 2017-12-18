@@ -80,12 +80,12 @@ void cTitleScene::Draw() {
 
 	if (fNext) {
 		if (mMessageFlash.GetTime() % 12 < 6) {
-			DrawRotaGraph(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_LONG) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
+			DrawRotaGraphF(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_SHORT) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		}
 	}
 	else {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mMessageFade.GetPositionX());
-		DrawRotaGraph(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_LONG) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
+		DrawRotaGraphF(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_SHORT) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
 

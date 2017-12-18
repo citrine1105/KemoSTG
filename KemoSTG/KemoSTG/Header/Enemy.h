@@ -33,6 +33,7 @@ public:
 class cEnemy : public cSprite {
 protected:
 	bool fActive;
+	bool fCollisionEnable;
 	eEnemyType mType;	// Ží—Þ
 	int mLife;	// ‘Ì—Í
 	int mMotion;	// “®‚«

@@ -2,7 +2,7 @@
 
 cImageResourceContainer gEnemyImageContainer;
 
-cEnemy::cEnemy() : mLife(50), fActive(true), mAppearanceTime(24) {
+cEnemy::cEnemy() : mLife(50), fActive(true), fCollisionEnable(false), mAppearanceTime(24) {
 	this->Initialize();
 }
 

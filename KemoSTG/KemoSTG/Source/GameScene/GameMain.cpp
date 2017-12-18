@@ -259,10 +259,10 @@ void cMainGameScene::Draw() {
 	if (mPlayer.at(1).GetAliveFlag()) {
 		for (int i = 0; i <= tScoreRateDigit.at(1); i++) {
 			if (i == tScoreRateDigit.at(1)) {
-				//DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(10), TRUE);
+				DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(10), TRUE);
 			}
 			else {
-				//DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
+				DrawGraph(GAME_SCREEN_WIDTH - 12 + -gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeX() * (i + 1), 108, gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetHandle(tDispScoreRate.at(1) / static_cast<int>(pow(10, i)) % 10), TRUE);
 			}
 		}
 	}
@@ -270,7 +270,15 @@ void cMainGameScene::Draw() {
 	// 憑依ゲージ
 	// 1P
 	if (mPlayer.at(0).GetAliveFlag()) {
-		DrawFormatStringToHandle(12, 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%.1f%%"), floor(mPlayer.at(0).GetPossessGauge() * 10.0) / 10.0);
+		DrawFormatStringToHandle(12, 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%d"), static_cast<int>(floor(mPlayer.at(0).GetPossessGauge())));
+		DrawFormatStringToHandle(12 + GetDrawFormatStringWidthToHandle(gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%d"), static_cast<int>(floor(mPlayer.at(0).GetPossessGauge()))), 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8 + (gTimerFontContainer.GetElement(eTimerFont_Big)->GetSize() - gTimerFontContainer.GetElement(eTimerFont_Small)->GetSize()),
+			GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Small)->GetHandle(), _T(".%d%%"), static_cast<int>(mPlayer.at(0).GetPossessGauge() * 10.0) % 10);
+	}
+	// 2P
+	if (mPlayer.at(1).GetAliveFlag()) {
+		DrawFormatStringToHandle(GAME_SCREEN_WIDTH - 12 - GetDrawFormatStringWidthToHandle(gTimerFontContainer.GetElement(eTimerFont_Small)->GetHandle(), _T(".%d%%"), static_cast<int>(mPlayer.at(1).GetPossessGauge() * 10.0) % 10) - GetDrawFormatStringWidthToHandle(gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%d"), static_cast<int>(floor(mPlayer.at(1).GetPossessGauge()))), 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8, GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle(), _T("%d"), static_cast<int>(floor(mPlayer.at(1).GetPossessGauge())));
+		DrawFormatStringToHandle(GAME_SCREEN_WIDTH - 12 - GetDrawFormatStringWidthToHandle(gTimerFontContainer.GetElement(eTimerFont_Small)->GetHandle(), _T(".%d%%"), static_cast<int>(mPlayer.at(1).GetPossessGauge() * 10.0) % 10), 108 + gGameUIImageContainer.GetElement(eGameUI_RateNumber)->GetSizeY() + 8 + (gTimerFontContainer.GetElement(eTimerFont_Big)->GetSize() - gTimerFontContainer.GetElement(eTimerFont_Small)->GetSize()),
+			GetColor(0x5E, 0xED, 0xC7), gTimerFontContainer.GetElement(eTimerFont_Small)->GetHandle(), _T(".%d%%"), static_cast<int>(mPlayer.at(1).GetPossessGauge() * 10.0) % 10);
 	}
 
 	// ライフ
@@ -283,7 +291,7 @@ void cMainGameScene::Draw() {
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
 		for (int i = 0; i < mPlayer.at(1).GetLife(); i++) {
-			//DrawGraph(480 - 12 - 20 + -24 * i, 80, gGameUIImageContainer.GetElement(eGameUI_Life)->GetHandle(), TRUE);
+			DrawGraph(480 - 12 - 20 + -24 * i, 80, gGameUIImageContainer.GetElement(eGameUI_Life)->GetHandle(), TRUE);
 		}
 	}
 
@@ -306,15 +314,15 @@ void cMainGameScene::Draw() {
 	}
 	// 2P
 	if (mPlayer.at(1).GetAliveFlag()) {
-		//DrawGraph(480 - 12 - gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetHandle(), TRUE);
-		//for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
-		//	if (mTimer.GetTime() / 5 % 6 < 4) {
-		//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
-		//	}
-		//	else {
-		//		DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
-		//	}
-		//}
+		DrawGraph(480 - 12 - gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetSizeX(), 640 - 8 - 20 - 8 - 14, gGameUIImageContainer.GetElement(eGameUI_CaptionBomb)->GetHandle(), TRUE);
+		for (int i = 0; i < mPlayer.at(1).GetBomb(); i++) {
+			if (mTimer.GetTime() / 5 % 6 < 4) {
+				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(mTimer.GetTime() / 5 % 6), TRUE);
+			}
+			else {
+				DrawGraph(480 - 12 - 20 + -24 * i, 640 - 8 - 20, gGameUIImageContainer.GetElement(eGameUI_Bomb)->GetHandle(6 - mTimer.GetTime() / 5 % 6), TRUE);
+			}
+		}
 	}
 
 	// 台詞
