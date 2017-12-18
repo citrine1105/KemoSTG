@@ -56,7 +56,7 @@ void cTitleGameScene::Draw() {
 	std::tstring tMessage;
 	std::tstring tRank;
 	std::array<std::tstring, 3> tExtend;
-	std::array<std::tstring, 2> tCopyright;
+	std::tstring tCopyright;
 	std::tstring tVersion;
 
 	tMessage = _T("PRESS START BUTTON");
@@ -65,8 +65,7 @@ void cTitleGameScene::Draw() {
 	tExtend.at(0) = _T("-EXTEND-");
 	tExtend.at(1) = _T("1ST   10,000,000PTS");
 	tExtend.at(2) = _T("2ND  100,000,000PTS");
-	tCopyright.at(0) = _T("©2017 Amusement Makers");
-	tCopyright.at(1) = _T("Developed by C-Lab");
+	tCopyright = _T("©2017 C-Lab");
 	tVersion = _T("Ver ");
 	tVersion += VERSION_STRING;
 
@@ -74,22 +73,20 @@ void cTitleGameScene::Draw() {
 	DrawGraph(0, 0, gGameTitleImageContainer.GetElement(eGameTitle_Logo)->GetHandle(), FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
-	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tRank.c_str(), tRank.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 16 + 8,
-		tRank.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	//DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tRank.c_str(), tRank.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 16 + 8,
+	//	tRank.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 
-	for (int i = 0; i < tExtend.size(); i++) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tExtend.at(i).c_str(), tExtend.at(i).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * (18 + i) + 8,
-			tExtend.at(i).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
-	}
-
-	for (int i = 0; i < tCopyright.size(); i++) {
-		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.at(i).c_str(), tCopyright.at(i).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * (22 + i) + 8,
-			tCopyright.at(i).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
-	}
-
-	//if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
-		DrawStringToHandle(8, 8, tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	//for (int i = 0; i < tExtend.size(); i++) {
+	//	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tExtend.at(i).c_str(), tExtend.at(i).size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * (18 + i) + 8,
+	//		tExtend.at(i).c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
 	//}
+
+	DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 23 + 8,
+		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+
+	if (cSystemConfig::GetInstance()->GetConfig().fArcade) {
+		DrawStringToHandle(8, 8, tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle());
+	}
 
 	if (mTimer.GetTime() % 30 < 20) {
 		DrawStringToHandle(GAME_SCREEN_WIDTH / 2 - GetDrawStringWidthToHandle(tMessage.c_str(), tMessage.size(), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle()) / 2, 24 * 14 + 8,

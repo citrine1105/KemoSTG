@@ -21,14 +21,6 @@ void cLoadScene::Initialize() {
 		gSystemFont.GetElement(i)->SetFontType(DX_FONTTYPE_ANTIALIASING_4X4);
 	}
 
-	//if (DISPLAY_WIDTH >= DISPLAY_HEIGHT) {
-	//	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_HEIGHT / 24);
-	//	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_HEIGHT / 24);
-	//}
-	//else {
-	//	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_WIDTH / 24);
-	//	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_WIDTH / 24);
-	//}
 	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 24);
 	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 24);
 
