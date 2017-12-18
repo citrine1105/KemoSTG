@@ -18,6 +18,7 @@ void cEnemy::Damage(const int Damage) {
 	if (Damage > 0) {
 		mLife -= Damage;
 		if (mLife <= 0) {
+			fCollisionEnable = false;	// 判定を無効にする
 			this->Erase();
 		}
 	}
@@ -84,64 +85,86 @@ void cEnemy::Finalize() {
 
 void cEnemy::Update() {
 	cSprite::Update();
-	mMotionTimer.Update();
 	mAnimeTimer.Update();
-
-	switch (mType) {
-	default:
-		for (auto &i : mCollider) {
-			i.SetPosition(mPosition);
+	if (!fCollisionEnable) {
+		if (mAnimeTimer.GetTime() >= mAppearanceTime) {	// 出現アニメーションが終わったら
+			fCollisionEnable = true;	// 判定を有効に
+			mAnimeTimer.Reset();		// タイマーをリセット
+		}
+		else if (!this->GetAliveFlag()) {	// ライフがなくなった場合
+			mAnimeTimer.Reset();
 		}
 	}
 
-	// 弾源
-	for (auto &i : mBulletGeneratorVector) {
-		i.SetStartPoint(mPosition);
-	}
-
-	for (int i = 0; i < mBulletGenerator.size(); i++) {
-		mBulletGenerator.at(i).SetPosition(mBulletGeneratorVector.at(i).GetEndPoint());	// 座標セット
-	}
-
-	for (auto i = mPointMoveData.begin(); i != mPointMoveData.end();) {
-		if (mMotionTimer.GetTime() == i->mTiming) {
-			this->MoveToPoint(*i);
-			i = mPointMoveData.erase(i);
-			continue;
-		}
-		i++;
-	}
-
-	for (auto i = mPolarFormMoveData.begin(); i != mPolarFormMoveData.end();) {
-		if (mMotionTimer.GetTime() == i->mTiming) {
-			this->Move(*i);
-			i = mPolarFormMoveData.erase(i);
-			continue;
-		}
-		i++;
-	}
-
-	if (mMotionTimer.GetTime() % 20 == 0) {
-		for (int i = 0; i < mBulletGenerator.size(); i++) {
-			cEnemyBullet tBullet;	// 弾
-			cVector2D tMoveVector;	// 弾移動速度
-			tMoveVector.SetPolarForm(TO_RADIAN(GetRand(360)), 2.4);
-			for (int j = 0; j < 4; j++) {
-				tMoveVector.AddAngle(TO_RADIAN(360.0 / 4.0));
-				tBullet.Initialize(tMoveVector, eBullet_Normal);
-				mBulletGenerator.at(0).AddBullet(tBullet);
+	if (fCollisionEnable) {
+		mMotionTimer.Update();
+		switch (mType) {
+		default:
+			for (auto &i : mCollider) {
+				i.SetPosition(mPosition);
 			}
 		}
-		mBulletGenerator.at(0).Generate();
+
+		// 弾源
+		for (auto &i : mBulletGeneratorVector) {
+			i.SetStartPoint(mPosition);
+		}
+
+		for (int i = 0; i < mBulletGenerator.size(); i++) {
+			mBulletGenerator.at(i).SetPosition(mBulletGeneratorVector.at(i).GetEndPoint());	// 座標セット
+		}
+
+		for (auto i = mPointMoveData.begin(); i != mPointMoveData.end();) {
+			if (mMotionTimer.GetTime() == i->mTiming) {
+				this->MoveToPoint(*i);
+				i = mPointMoveData.erase(i);
+				continue;
+			}
+			i++;
+		}
+
+		for (auto i = mPolarFormMoveData.begin(); i != mPolarFormMoveData.end();) {
+			if (mMotionTimer.GetTime() == i->mTiming) {
+				this->Move(*i);
+				i = mPolarFormMoveData.erase(i);
+				continue;
+			}
+			i++;
+		}
+
+		if (mMotionTimer.GetTime() % 20 == 0) {
+			for (int i = 0; i < mBulletGenerator.size(); i++) {
+				cEnemyBullet tBullet;	// 弾
+				cVector2D tMoveVector;	// 弾移動速度
+				tMoveVector.SetPolarForm(TO_RADIAN(GetRand(360)), 2.4);
+				for (int j = 0; j < 4; j++) {
+					tMoveVector.AddAngle(TO_RADIAN(360.0 / 4.0));
+					tBullet.Initialize(tMoveVector, eBullet_Normal);
+					mBulletGenerator.at(0).AddBullet(tBullet);
+				}
+			}
+			mBulletGenerator.at(0).Generate();
+		}
 	}
 }
 
 void cEnemy::Draw() {
-	if (mAnimeTimer.GetTime() < mAppearanceTime) {
-		DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, mAnimeTimer.GetTime() / static_cast<double>(mAppearanceTime), 1.0 + (mAppearanceTime - mAnimeTimer.GetTime()) / static_cast<double>(mAppearanceTime) * 2.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+	//if (mAnimeTimer.GetTime() < mAppearanceTime) {
+	//	DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, mAnimeTimer.GetTime() / static_cast<double>(mAppearanceTime), 1.0 + (mAppearanceTime - mAnimeTimer.GetTime()) / static_cast<double>(mAppearanceTime) * 2.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+	//}
+	//else {
+	//	DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+	//}
+	if (fCollisionEnable) {
+		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
 	}
 	else {
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+		if (mAnimeTimer.GetTime() < mAppearanceTime) {
+			DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, mAnimeTimer.GetTime() / static_cast<double>(mAppearanceTime), 1.0 + (mAppearanceTime - mAnimeTimer.GetTime()) / static_cast<double>(mAppearanceTime) * 2.0, 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+		}
+		else if (!this->GetAliveFlag()) {
+			DrawRotaGraph3F(mPosition.GetX(), mPosition.GetY(), gEnemyImageContainer.GetElement(mType)->GetSizeX() / 2.0, gEnemyImageContainer.GetElement(mType)->GetSizeY() / 2.0, 1.0 + (mAppearanceTime - mAnimeTimer.GetTime()) / static_cast<double>(mAppearanceTime) * 2.0, mAnimeTimer.GetTime() / static_cast<double>(mAppearanceTime), 0.0, gEnemyImageContainer.GetElement(mType)->GetHandle(), TRUE);
+		}
 	}
 #ifdef _DEBUG
 	std::tstring tHP;

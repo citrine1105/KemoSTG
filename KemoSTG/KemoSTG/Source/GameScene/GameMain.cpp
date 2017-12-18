@@ -35,7 +35,7 @@ void cMainGameScene::Initialize() {
 	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/test.png"));
 	mCharacterImage.at(0).Load();
 
-	gGameBGM.SetPath(_T("./Data/Sound/Music/bgm_test.wav"));
+	gGameBGM.SetPath(_T("./Data/Sound/Music/Game/1.wav"));
 	gGameBGM.SetBufferNum(1);
 	gGameBGM.Load();
 
