@@ -43,6 +43,9 @@ void cGameManager::Initialize() {
 }
 
 void cGameManager::Finalize() {
+	for (auto &i : mPlayer) {
+		i.Finalize();
+	}
 	mEnemy.clear();
 	mPlayerBullet.clear();
 	mEnemyBullet.clear();

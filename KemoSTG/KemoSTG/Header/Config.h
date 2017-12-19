@@ -29,11 +29,24 @@ struct sSystemConfig {
 	unsigned char mSEVolume;
 };
 
+enum eGameDifficulty {	// ゲーム難易度
+	eGameDiff_VeryEasy,	// とても簡単
+	eGameDiff_Easy,		// 簡単
+	eGameDiff_Normal,	// 普通
+	eGameDiff_Hard,		// 難しい
+	eGameDiff_VeryHard,	// とても難しい
+	eGameDiff_Nightmare,	// 悪夢
+
+	eGameDiff_TotalNum	// 総要素数
+};
+
 struct sGameConfig {
 	unsigned char mZoomX;
 	unsigned char mZoomY;
 	short mPositionX;
 	short mPositionY;
+	unsigned char mLevel;
+	unsigned char mLife;
 };
 
 class cSystemConfig : public iConfig {

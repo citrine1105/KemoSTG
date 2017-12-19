@@ -34,6 +34,7 @@ void cMainGameScene::Initialize() {
 	mBombAnimeTimer.Start();
 	mBossTimer.Start();
 
+	cGameManager::GetInstance()->Initialize();
 	cGameManager::GetInstance()->GetPlayerPointer()->at(0).Entry();
 }
 
@@ -72,17 +73,6 @@ void cMainGameScene::Update() {
 			}
 		}
 
-
-		//if (mTimer.GetTime() >= 60 * 10 && mTimer.GetTime() % (60 * 3) == 0) {
-		//	for (auto &i : mEnemy) {
-		//		sSpriteMoveData tMove;
-		//		tMove.mTargetPoint.SetPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT));
-		//		tMove.mMoveTime = 120;
-		//		tMove.mMoveType = eEasing_Quad;
-		//		tMove.mEasingFunction = eEasingFunction_InOut;
-		//		i.MoveToPoint(tMove);
-		//	}
-		//}
 		cGameManager::GetInstance()->Update();
 
 		if (cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {

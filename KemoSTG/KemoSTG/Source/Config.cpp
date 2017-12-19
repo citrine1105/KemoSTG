@@ -94,6 +94,8 @@ void cGameConfig::SetDefault() {
 	mConfig.mZoomY = 95;
 	mConfig.mPositionX = 0;
 	mConfig.mPositionY = 0;
+	mConfig.mLife = 3;
+	mConfig.mLevel = static_cast<unsigned char>(eGameDiff_Normal);
 }
 const sGameConfig cGameConfig::GetConfig() {
 	return mConfig;

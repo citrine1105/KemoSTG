@@ -51,7 +51,9 @@ bool cEnemy::GetAliveFlag() {
 
 void cEnemy::Initialize() {
 	mCollider.resize(1);
-	mCollider.at(0).SetRange(32.0, 32.0);
+	mCollider.at(0).SetRange(1.0, 1.0);
+	// TODO: 出現直後は判定を消したいが、消すとBulletOutColliderとの判定も消えてしまうので
+	// 上手く処理するメソッドを作る
 	mCollider.at(0).SetCollisionType(eCollision_Rectangle);
 	mMotionTimer.Start();
 	mAnimeTimer.Start();
@@ -98,6 +100,7 @@ void cEnemy::Update() {
 
 	if (fCollisionEnable) {
 		mMotionTimer.Update();
+		mCollider.at(0).SetRange(32.0, 32.0);
 		switch (mType) {
 		default:
 			for (auto &i : mCollider) {

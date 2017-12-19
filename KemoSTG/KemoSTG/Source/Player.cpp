@@ -4,8 +4,8 @@ cImageResourceContainer gPlayerImageContainer;
 
 cPlayer::cPlayer() : cSprite(), fEntry(false), /*fAlive(false),*/
 	mInvincibleTime(60 * 5, 60 * 5, eCountMode_CountDown), mPossessTime(15.0, 30.0, eCountMode_CountDown),
-	pInputPad(nullptr), mMoveSpeed(1.0), mLife(3), mBomb(3),
-	mScoreRate(1) {
+	pInputPad(nullptr), mMoveSpeed(1.0), mLife(cGameConfig::GetInstance()->GetConfig().mLife), mBomb(3),
+	mScoreRate(1), mMaxLife(7), mMaxBomb(6) {
 	this->Initialize();
 }
 
@@ -27,29 +27,41 @@ void cPlayer::Bomb() {
 }
 
 void cPlayer::Damage() {
+	++mScore.mDamaged;
 	if (mLife > 0) {
 		mLife--;
 	}
+	mPossessTime.Stop();	// 憑依解除
 	switch (mScore.mType) {
 	case ePossess_Half:
-		mScoreRate = static_cast<unsigned int>(ceil(mScoreRate / 2.0));
+		mScoreRate = static_cast<unsigned int>(ceil(mScoreRate / 2.0));	// スコア倍率を半減
+		mBomb = 3 + mScore.mDamaged;	// ボムを回復+補充
+		mPossessTime.Reset();	// 憑依時間を初期値に戻す
 		break;
 	case ePossess_Full:
-		mScoreRate = 1;
+		mScoreRate = static_cast<unsigned int>(ceil(mScoreRate / 4.0));	// スコア倍率を3/4減
+		mBomb = 3;	// ボムを回復
+		if (this->GetPossessGauge() <= 50.0) {	// 50%以下の場合
+			mPossessTime.Reset();	// 憑依時間を回復
+		}
 		break;
 	default:
 		mScoreRate = 999;
 		break;
 	}
-	mPossessTime.Reset();
-	mPossessTime.Stop();
 	mInvincibleTime.Reset();
 	mInvincibleTime.Start();
 }
 
+void cPlayer::Extend() {
+	if (mLife < mMaxLife) {	// 最大ライフより少ない場合
+		++mLife;	// ライフを増やす
+	}
+}
+
 void cPlayer::Continue() {
 	//mScore.mScore = ++mScore.mContinue >= 9 ? 9 : mScore.mContinue;
-	mScore.mScore++;
+	mScore.mContinue++;	// コンティニュー回数加算
 	if (mScore.mContinue >= 9) {
 		mScore.mScore = 9;	// 9回以上
 	}
@@ -132,7 +144,11 @@ void cPlayer::Initialize() {
 	mCollider.at(0).SetRange(1.0, 1.0);
 	mScore.mName.clear();
 	mMoveSpeed = 7.2;	// TODO: キャラごとに速度を変えるようにする
+	mLife = cGameConfig::GetInstance()->GetConfig().mLife;
+	mBomb = 3;
+	mScoreRate = 1U;
 	mScore.mScore = 0U;
+	mScore.mDamaged = 0;
 	mScore.mContinue = 0;
 	mScore.mMaxRate = 1U;
 	mScore.mCharacter = ePlayer_Rin;
@@ -263,10 +279,13 @@ void cPlayer::Draw() {
 		|| mInvincibleTime.GetTime() <= 0) {
 		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(), TRUE);
 	}
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {
 		DrawCircle(i.GetPositionX(), i.GetPositionY(), 3, GetColor(0xFF, 0xFF, 0xFF));
 	}
-//#endif
-	DrawCircleAA(mCollider.at(0).GetPosition().GetX(), mCollider.at(0).GetPosition().GetY(), 1, 8, GetColor(0xFF, 0xFF, 0xFF));
+	for (auto &i : mCollider) {
+		i.Draw();
+	}
+#endif
+	//DrawCircleAA(mCollider.at(0).GetPosition().GetX(), mCollider.at(0).GetPosition().GetY(), 1, 8, GetColor(0xFF, 0xFF, 0xFF));
 }

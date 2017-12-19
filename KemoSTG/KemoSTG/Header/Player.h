@@ -20,12 +20,13 @@ enum ePossessType {
 };
 
 struct sScoreData {
-	std::tstring mName;
-	unsigned int mScore;
-	unsigned char mContinue;
-	unsigned int mMaxRate;
-	ePlayerCharacter mCharacter;
-	ePossessType mType;
+	std::tstring mName;	// プレイヤー名
+	unsigned int mScore;	// スコア
+	unsigned char mDamaged;	// 被弾回数
+	unsigned char mContinue;	// コンティニュー回数
+	unsigned int mMaxRate;	// 最大レート値
+	ePlayerCharacter mCharacter;	// キャラクター
+	ePossessType mType;		// 変身タイプ
 	bool operator<(sScoreData &Score) const {
 		if (mScore == Score.mScore) {
 			if (mMaxRate == Score.mMaxRate) {
@@ -59,6 +60,9 @@ protected:
 	cTimer mAnimeTimer;	// アニメーション用タイマー
 	std::vector<class cPlayerBulletGenerator> mBulletGenerator;	// 弾発射機構
 	std::vector<cVector2D> mBulletGeneratorVector;	// 弾源移動制御用ベクトル
+
+	const unsigned char mMaxLife;	// ライフ上限
+	const unsigned char mMaxBomb;	// ボム上限
 public:
 	cPlayer();
 	~cPlayer();
@@ -66,6 +70,7 @@ public:
 	void Entry();	// エントリー
 	void Bomb();	// ボム使用処理
 	void Damage();	// ダメージ処理
+	void Extend();	// エクステンド処理
 	void Continue();	// コンティニュー処理
 
 	void SetInputPad(cVirtualPad *Pad);
