@@ -21,6 +21,7 @@ void cPlayer::Bomb() {
 	if (mBomb > 0) {
 		mInvincibleTime.SetSecond(8.0);
 		mInvincibleTime.Start();
+		mScore.mBomb++;
 		mBomb--;
 		// TODO: ボム発動処理もここに書く
 	}
@@ -148,6 +149,7 @@ void cPlayer::Initialize() {
 	mBomb = 3;
 	mScoreRate = 1U;
 	mScore.mScore = 0U;
+	mScore.mBomb = 0;
 	mScore.mDamaged = 0;
 	mScore.mContinue = 0;
 	mScore.mMaxRate = 1U;

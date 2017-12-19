@@ -22,6 +22,7 @@ enum ePossessType {
 struct sScoreData {
 	std::tstring mName;	// プレイヤー名
 	unsigned int mScore;	// スコア
+	unsigned char mBomb;	// ボム使用回数
 	unsigned char mDamaged;	// 被弾回数
 	unsigned char mContinue;	// コンティニュー回数
 	unsigned int mMaxRate;	// 最大レート値

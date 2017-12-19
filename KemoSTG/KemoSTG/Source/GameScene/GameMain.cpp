@@ -80,7 +80,7 @@ void cMainGameScene::Update() {
 		}
 
 		if (mFade.GetPositionX() >= 255.0) {
-			pSceneChanger->ChangeScene(eGameScene_Logo);
+			pSceneChanger->ChangeScene(eGameScene_NameEntry);
 		}
 	}
 }

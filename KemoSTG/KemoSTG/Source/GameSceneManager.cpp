@@ -3,6 +3,7 @@
 #include "../Header/GameScene/GameLogo.h"
 #include "../Header/GameScene/GameTitle.h"
 #include "../Header/GameScene/GameMain.h"
+#include "../Header/GameScene/GameNameEntry.h"
 #include "../Header/GameScene/GameRanking.h"
 #include "../Header/GameScene/GameDebug.h"
 
@@ -61,6 +62,9 @@ void cGameSceneManager::Update() {
 			break;
 		case eGameScene_Game:
 			pScene = static_cast<cGameBaseScene*>(new cMainGameScene(this));
+			break;
+		case eGameScene_NameEntry:
+			pScene = static_cast<cGameBaseScene*>(new cNameEntryGameScene(this));
 			break;
 		case eGameScene_Ranking:
 			pScene = static_cast<cGameBaseScene*>(new cRankingGameScene(this));
