@@ -5,6 +5,7 @@
 #include "../PlayerBullet.h"
 #include "../EnemyBullet.h"
 #include "../SelectTimer.h"
+#include "../GameManager.h"
 
 extern cImageResourceContainer gGameUIImageContainer;
 extern cSoundResource gGameBGM;
@@ -32,14 +33,8 @@ protected:
 	cSprite mFade;			// フェードアウト用
 	cSelectTimer mBossTimer;	// ボス戦残り時間
 
-	cSprite mBulletOutCollider;	// 弾画面外判定用
-
 	std::array<cImageResource, 3> mCharacterImage;	// 立ち絵
 
-	std::array<cPlayer, 2> mPlayer;	// 自機
-	std::list<cEnemy> mEnemy;	// 敵
-	std::list<cPlayerBullet> mPlayerBullet;	// 自機弾
-	std::list<cEnemyBullet> mEnemyBullet;	// 敵弾
 public:
 	cMainGameScene(iSceneChanger<eGameScene> *Changer);
 	~cMainGameScene();
