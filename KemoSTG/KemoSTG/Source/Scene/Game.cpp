@@ -151,6 +151,8 @@ void cGameScene::Update() {
 	// ロード完了直後のみ呼ばれる処理
 	if (GetASyncLoadNum() == 0 && mFade.GetPositionX() >= 255.0) {
 		gPlayerShotSoundContainer.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mSEVolume * 255.0 / 100.0));
+		gPossessSound.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mSEVolume * 255.0 / 100.0));
+		gBombSoundContainer.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mSEVolume * 255.0 / 100.0));
 		mFade.MoveToPoint(0.0, 0.0, 30);
 	}
 

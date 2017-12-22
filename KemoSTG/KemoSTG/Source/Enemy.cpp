@@ -3,7 +3,7 @@
 
 cImageResourceContainer gEnemyImageContainer;
 
-cEnemy::cEnemy() : mLife(50), fActive(true), fCollisionEnable(false), mAppearanceTime(24) {
+cEnemy::cEnemy() : mLife(40), fActive(true), fCollisionEnable(false), mAppearanceTime(24) {
 	this->Initialize();
 }
 
@@ -137,7 +137,7 @@ void cEnemy::Update() {
 			i++;
 		}
 
-		if (mMotionTimer.GetTime() % 40 == 0) {
+		if (mMotionTimer.GetTime() % 40 == 0 && mPosition.GetY() <= GAME_SCREEN_HEIGHT * 3 / 4) {
 			for (int i = 0; i < mBulletGenerator.size(); i++) {
 				cEnemyBullet tBullet;	// 弾
 				cVector2D tMoveVector;	// 弾移動速度
