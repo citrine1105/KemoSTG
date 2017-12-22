@@ -1,4 +1,5 @@
 ﻿#include "../Header/Enemy.h"
+#include "../Header/GameManager.h"
 
 cImageResourceContainer gEnemyImageContainer;
 
@@ -26,6 +27,7 @@ void cEnemy::Damage(const int Damage) {
 
 void cEnemy::Erase() {
 	fActive = false;
+	cGameManager::GetInstance()->GetEffectPointer()->push_back(cEffect(eEffect_BigBomb, mPosition));
 }
 
 void cEnemy::SetBulletGenerateTarget(std::list<cEnemyBullet> *Container) {

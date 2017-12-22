@@ -41,6 +41,17 @@ void cMainGameScene::Initialize() {
 	mBombAnimeTimer.Start();
 	mBossTimer.Start();
 
+	// 会話データ
+	mWordCount = 0;
+	mSerif.push_back({ _T("―…はぁ…"), 0 });
+	mSerif.push_back({ _T("もう10分はやってるのに…全然減らないや"), 0 });
+	mSerif.push_back({ _T("助けてあげよっか？"), 1 });
+	mSerif.push_back({ _T("！？　誰…？"), 0 });
+	mSerif.push_back({ _T("とりあえず逃げよっか、手伝ってあげるよ"), 1 });
+	mSerif.push_back({ _T("これを倒せばいいんだよね？\nえっと…おおかみさん、かな？"), 1 });
+	mWordTimer.Initialize(6.0, 6.0, eCountMode_CountDown);
+	mWordTimer.Start();
+
 	cGameManager::GetInstance()->Initialize();
 	cGameManager::GetInstance()->GetPlayerPointer()->at(0).Entry();
 }
@@ -51,6 +62,9 @@ void cMainGameScene::Finalize() {
 
 void cMainGameScene::Update() {
 	mDelayTimer.Update();
+			mBombAnimeTimer.Update();
+			mBackground.Move();
+			mFade.Update();
 
 	if (CheckHandleASyncLoad(gGameBGM.GetHandle()) == FALSE && CheckSoundMem(gGameBGM.GetHandle()) == 0) {
 		gGameBGM.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mBGMVolume * 255.0 / 100.0));
@@ -58,51 +72,60 @@ void cMainGameScene::Update() {
 	}
 
 	if (mDelayTimer.GetTime() == 0) {
-		mTimer.Update();
-		mBombAnimeTimer.Update();
-		mBossTimer.Update();
-		mBackground.Move();
-		//mBulletOutCollider.Update();
-		mFade.Update();
-
-		// 敵登録テスト
-		if (mTimer.GetTime() == 180) {
-			sEnemyRegisterData tRegisterData;
-			tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 2 - 180;
-			tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
-			tRegisterData.mType = eEnemy_Zako;
-			tRegisterData.mMovePattern = 0;
-			tRegisterData.mGeneratorPattern = 0;
-			tRegisterData.mBulletPattern = 0;
-			for (int i = 0; i < 5; i++) {
-				cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
-				tRegisterData.mAppearanceX += 90;
+		if (mWordCount < mSerif.size()) {
+			if (mWordTimer.GetTime() == 0) {
+				mWordTimer.SetSecond(6.0);
+				mWordCount++;
+			}
+			mWordTimer.Update();
+			if (ppVirtualPad[0]->GetInputState(eButton_Shot) == 1) {
+				mWordTimer.SetTime(0);
 			}
 		}
-		
-		if (mTimer.GetTime() >= 180) {
-			while (cGameManager::GetInstance()->GetEnemyPointer()->size() < 5) {
+		else {
+			mTimer.Update();
+			mBossTimer.Update();
+			//mBulletOutCollider.Update();
+
+			// 敵登録テスト
+			if (mTimer.GetTime() == 180) {
 				sEnemyRegisterData tRegisterData;
-				tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
-				tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+				tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 2 - 180;
+				tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
 				tRegisterData.mType = eEnemy_Zako;
 				tRegisterData.mMovePattern = 0;
 				tRegisterData.mGeneratorPattern = 0;
 				tRegisterData.mBulletPattern = 0;
-				cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+				for (int i = 0; i < 5; i++) {
+					cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+					tRegisterData.mAppearanceX += 90;
+				}
+			}
+
+			if (mTimer.GetTime() >= 180) {
+				while (cGameManager::GetInstance()->GetEnemyPointer()->size() < 5) {
+					sEnemyRegisterData tRegisterData;
+					tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
+					tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+					tRegisterData.mType = eEnemy_Zako;
+					tRegisterData.mMovePattern = 0;
+					tRegisterData.mGeneratorPattern = 0;
+					tRegisterData.mBulletPattern = 0;
+					cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+				}
+			}
+
+			cGameManager::GetInstance()->Update();
+
+			if (cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
+				mFade.MoveToPoint(255.0, 0.0, 90);
+			}
+
+			if (mFade.GetPositionX() >= 255.0 || mBossTimer.GetTime() <= 0) {
+				pSceneChanger->ChangeScene(eGameScene_NameEntry);
 			}
 		}
-
-		cGameManager::GetInstance()->Update();
-
-		if (cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
-			mFade.MoveToPoint(255.0, 0.0, 90);
-		}
-
-		if (mFade.GetPositionX() >= 255.0 || mBossTimer.GetTime() <= 0) {
-			pSceneChanger->ChangeScene(eGameScene_NameEntry);
-		}
-	}
+	}	
 }
 
 void cMainGameScene::Draw() {
@@ -194,8 +217,10 @@ void cMainGameScene::Draw() {
 	}
 
 	// キャラ表示領域
-	//DrawBox(0, GAME_SCREEN_HEIGHT - 540, 280, GAME_SCREEN_HEIGHT, GetColor(0xFF, 0xFF, 0xFF), FALSE);
-	//DrawGraph(0, GAME_SCREEN_HEIGHT - 540, mCharacterImage.at(0).GetHandle(), TRUE);
+	if (mWordCount < mSerif.size()) {
+		//DrawBox(0, GAME_SCREEN_HEIGHT - 540, 280, GAME_SCREEN_HEIGHT, GetColor(0xFF, 0xFF, 0xFF), FALSE);
+		DrawGraph(0, GAME_SCREEN_HEIGHT - 540, mCharacterImage.at(mSerif.at(mWordCount).mChara).GetHandle(), TRUE);
+	}
 
 	// ボム
 	// 1P
@@ -224,11 +249,21 @@ void cMainGameScene::Draw() {
 	}
 
 	// 台詞
-	//DrawGraph(16, GAME_SCREEN_HEIGHT - 200, gGameUIImageContainer.GetElement(eGameUI_WordBackground)->GetHandle(), TRUE);
-	//DrawStringToHandle(94 + 17 - GetDrawStringWidthToHandle(_T("名もなきネコ"), _tcslen(_T("名もなきネコ")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 191, _T("名もなきネコ"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
-	//DrawStringToHandle(94 + 16 - GetDrawStringWidthToHandle(_T("名もなきネコ"), _tcslen(_T("名もなきネコ")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 192, _T("名もなきネコ"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
-	//DrawStringToHandle(31, GAME_SCREEN_HEIGHT - 151, _T("ゲーム制作なんて徹夜すれば終わるんだよ"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
-	//DrawStringToHandle(30, GAME_SCREEN_HEIGHT - 152, _T("ゲーム制作なんて徹夜すれば終わるんだよ"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+	if (mWordCount < mSerif.size()) {
+		DrawGraph(16, GAME_SCREEN_HEIGHT - 200, gGameUIImageContainer.GetElement(eGameUI_WordBackground)->GetHandle(), TRUE);
+		switch (mSerif.at(mWordCount).mChara) {
+		case 0:
+			DrawStringToHandle(94 + 17 - GetDrawStringWidthToHandle(_T("神谷　倫"), _tcslen(_T("神谷　倫")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 191, _T("神谷　倫"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+			DrawStringToHandle(94 + 16 - GetDrawStringWidthToHandle(_T("神谷　倫"), _tcslen(_T("神谷　倫")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 192, _T("神谷　倫"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+			break;
+		case 1:
+			DrawStringToHandle(94 + 17 - GetDrawStringWidthToHandle(_T("霞"), _tcslen(_T("霞")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 191, _T("霞"), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+			DrawStringToHandle(94 + 16 - GetDrawStringWidthToHandle(_T("霞"), _tcslen(_T("霞")), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle()) / 2, GAME_SCREEN_HEIGHT - 192, _T("霞"), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+			break;
+		}
+		DrawStringToHandle(31, GAME_SCREEN_HEIGHT - 151, mSerif.at(mWordCount).mString.c_str(), GetColor(0x3F, 0x3F, 0x3F), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+		DrawStringToHandle(30, GAME_SCREEN_HEIGHT - 152, mSerif.at(mWordCount).mString.c_str(), GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Word)->GetHandle());
+	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, mFade.GetPositionX());
 	DrawBox(0, 0, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
@@ -267,5 +302,6 @@ void cMainGameScene::Draw() {
 	clsDx();
 	printfDx(_T("Player Bullets: %d\n"), cGameManager::GetInstance()->GetPlayerBulletPointer()->size());
 	printfDx(_T("Enemy Bullets: %d\n"), cGameManager::GetInstance()->GetEnemyBulletPointer()->size());
+	printfDx(_T("Effects: %d\n"), cGameManager::GetInstance()->GetEffectPointer()->size());
 #endif
 }
