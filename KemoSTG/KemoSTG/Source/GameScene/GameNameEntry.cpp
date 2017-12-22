@@ -9,6 +9,11 @@ cNameEntryGameScene::~cNameEntryGameScene() {
 }
 
 void cNameEntryGameScene::Initialize() {
+	mImage.SetPath(_T("./Data/Image/Game/Character/rin.png"));
+	mImageMove.SetPosition(-280, GAME_SCREEN_WIDTH);
+	mImageMove.MoveToPointX(0, 32, eEasing_Sine);
+	mImage.Load();
+
 	mItem.at(0) = _T("Maximum Rate");
 	mItem.at(1) = _T("Bomb Count");
 	mItem.at(2) = _T("Damage Count");
@@ -37,15 +42,18 @@ void cNameEntryGameScene::Initialize() {
 }
 
 void cNameEntryGameScene::Finalize() {
-
+	mImage.Finalize();
 }
 
 void cNameEntryGameScene::Update() {
 	mSceneTimer.Update();
 	mTimer.Update();
+	mImageMove.Update();
+
 	for (auto &i : mItemFade) {
 		i.Update();
 	}
+
 
 	for (int i = 0; i < mItem.size(); i++) {
 		if (mSceneTimer.GetTime() == 10 * (i + 1)) {
@@ -63,6 +71,10 @@ void cNameEntryGameScene::Draw() {
 	tPlayerStr.at(0) = _T("PLAYER1");
 	tPlayerStr.at(1) = _T("PLAYER2");
 	DrawFormatStringToHandle(12, 8, GetColor(0xFF, 0xFF, 0xFF), gGameFontContainer.GetElement(eGameFont_Interface)->GetHandle(), _T("Result"));
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 50.0 / 100.0));
+	DrawGraph(mImageMove.GetPositionX(), GAME_SCREEN_HEIGHT - 540, mImage.GetHandle(), TRUE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	for (int i = 0; i < mItem.size(); i++) {
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mItemFade.at(i).GetPositionX());

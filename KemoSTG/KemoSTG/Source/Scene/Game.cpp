@@ -62,6 +62,7 @@ void cGameScene::Initialize() {
 
 	// 自機画像
 	gPlayerImageContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Image/Game/Player/rin.png"));
+	gPlayerImageContainer.GetElement(ePlayer_Rin)->SetDivisionSize(2, 2, 1, 64, 64);
 	gPlayerImageContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Image/Game/Player/kakeru.png"));
 	gPlayerImageContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Image/Game/Player/3.png"));
 

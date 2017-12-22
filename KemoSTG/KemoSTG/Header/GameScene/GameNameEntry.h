@@ -10,6 +10,9 @@ private:
 	cTimer mSceneTimer;	// 経過時間
 	cSelectTimer mTimer;	// 残り時間カウント用
 
+	cImageResource mImage;
+	cSprite mImageMove;
+
 	std::array<std::tstring, 6> mItem;
 	std::array<std::array<std::tstring, 6>, 2> mResult;
 

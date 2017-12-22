@@ -298,7 +298,12 @@ void cPlayer::Update() {
 void cPlayer::Draw() {
 	if ((mInvincibleTime.GetTime() > 0 && mInvincibleTime.GetTime() % 4 < 2)
 		|| mInvincibleTime.GetTime() <= 0) {
-		DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(), TRUE);
+		if (mPossessTime.GetActiveFlag()) {
+			DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(1), TRUE);
+		}
+		else {
+			DrawRotaGraphF(mPosition.GetX(), mPosition.GetY(), 1.0, 0.0, gPlayerImageContainer.GetElement(mScore.mCharacter)->GetHandle(0), TRUE);
+		}
 	}
 #ifdef _DEBUG
 	for (auto &i : mBulletGenerator) {
