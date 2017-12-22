@@ -4,6 +4,7 @@
 enum eEffectType {
 	eEffect_RateNum,	// レート
 	eEffect_Bomb,	// 爆発
+	eEffect_BigBomb,	// 大きい爆発
 
 	eEffect_TotalNum	// 総要素数
 };
@@ -15,7 +16,7 @@ protected:
 	eEffectType mType;	// エフェクト種類
 	cTimer mAnimeTimer;
 
-	const std::array<unsigned int, eEffect_TotalNum> mEffectTime{ { 28, 8 } };	// 各エフェクト再生時間
+	const std::array<unsigned int, eEffect_TotalNum> mEffectTime{ { 28, 8, 32 } };	// 各エフェクト再生時間
 public:
 	cEffect();	// デフォルトコンストラクタ
 	cEffect(const eEffectType Type, cPoint2D &Position);	// エフェクト指定コンストラクタ

@@ -45,11 +45,11 @@ void cTitleGameScene::Update() {
 		pSceneChanger->ChangeScene(eGameScene_Debug);
 	}
 
-	for (int i = 0; i < 2; i++) {
-		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
-			pSceneChanger->ChangeScene(eGameScene_Logo);
-		}
-	}
+	//for (int i = 0; i < 2; i++) {
+	//	if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
+	//		pSceneChanger->ChangeScene(eGameScene_Logo);
+	//	}
+	//}
 }
 
 void cTitleGameScene::Draw() {

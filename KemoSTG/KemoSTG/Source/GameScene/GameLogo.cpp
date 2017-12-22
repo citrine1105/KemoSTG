@@ -55,11 +55,11 @@ void cLogoGameScene::Update() {
 		mFade.Update();
 	}
 
-	for (int i = 0; i < 2; i++) {
-		if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
-			pSceneChanger->ChangeScene(eGameScene_Title);
-		}
-	}
+	//for (int i = 0; i < 2; i++) {
+	//	if (ppVirtualPad[i]->GetInputState(eButton_Shot) == 1) {
+	//		pSceneChanger->ChangeScene(eGameScene_Title);
+	//	}
+	//}
 	if (mTimer.GetTime() >= 60 * 5 * gLogoImageContainer.GetResourceCount() - 1) {
 		pSceneChanger->ChangeScene(eGameScene_Title);
 	}

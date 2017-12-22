@@ -71,10 +71,16 @@ void cTimer::SetLoopFlag(const bool Flag) {
 
 void cTimer::AddTime(const AUTO_INT Time) {
 	mTime += Time;
+	if (mTime > mMaxTime) {
+		mTime = mMaxTime;
+	}
 }
 
 void cTimer::AddSecond(const double Second) {
 	mTime += static_cast<AUTO_INT>(Second * REFRESH_RATE);
+	if (mTime > mMaxTime) {
+		mTime = mMaxTime;
+	}
 }
 
 AUTO_INT cTimer::GetTime() {

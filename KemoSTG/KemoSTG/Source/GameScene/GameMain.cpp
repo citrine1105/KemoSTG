@@ -21,7 +21,7 @@ void cMainGameScene::Initialize() {
 
 	mTimer.Initialize(0);
 	mDelayTimer.Initialize(0, 1, eCountMode_CountUp, true);
-	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
+	mBossTimer.Initialize(100.0, 1000.0, eCountMode_CountDown);
 
 	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/rin.png"));
 	mCharacterImage.at(1).SetPath(_T("./Data/Image/Game/Character/kasumi.png"));
@@ -68,7 +68,7 @@ void cMainGameScene::Update() {
 		// 敵登録テスト
 		if (mTimer.GetTime() == 180) {
 			sEnemyRegisterData tRegisterData;
-			tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 4.0;
+			tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 2 - 180;
 			tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
 			tRegisterData.mType = eEnemy_Zako;
 			tRegisterData.mMovePattern = 0;
@@ -76,7 +76,20 @@ void cMainGameScene::Update() {
 			tRegisterData.mBulletPattern = 0;
 			for (int i = 0; i < 5; i++) {
 				cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
-				tRegisterData.mAppearanceY += 64;
+				tRegisterData.mAppearanceX += 90;
+			}
+		}
+		
+		if (mTimer.GetTime() >= 180) {
+			while (cGameManager::GetInstance()->GetEnemyPointer()->size() < 5) {
+				sEnemyRegisterData tRegisterData;
+				tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
+				tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+				tRegisterData.mType = eEnemy_Zako;
+				tRegisterData.mMovePattern = 0;
+				tRegisterData.mGeneratorPattern = 0;
+				tRegisterData.mBulletPattern = 0;
+				cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
 			}
 		}
 
@@ -86,7 +99,7 @@ void cMainGameScene::Update() {
 			mFade.MoveToPoint(255.0, 0.0, 90);
 		}
 
-		if (mFade.GetPositionX() >= 255.0) {
+		if (mFade.GetPositionX() >= 255.0 || mBossTimer.GetTime() <= 0) {
 			pSceneChanger->ChangeScene(eGameScene_NameEntry);
 		}
 	}

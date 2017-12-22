@@ -68,12 +68,16 @@ void cGameManager::Update() {
 			for (auto &j : mEnemy) {
 				if (j.GetCollisionFlag(*i)) {
 					j.Damage(i->GetPower());
+					if (j.GetLife() <= 0) {
+						mPlayer.at(0).AddPossessGauge(30);
+						mPlayer.at(0).AddScore(100 * mPlayer.at(0).GetScoreRate());
+					}
 					i->Erase();
 					mEffect.push_back(cEffect(eEffect_Bomb, i->GetPosition()));
 					if (mPlayer.at(0).GetPossessFlag()) {
 						mPlayer.at(0).AddScoreRate(1);
 					}
-					mPlayer.at(0).AddScore(10 * mPlayer.at(0).GetScoreRate());
+					mPlayer.at(0).AddScore(10);
 				}
 			}
 		}

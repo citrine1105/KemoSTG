@@ -89,6 +89,7 @@ public:
 	bool GetInvincibleFlag();
 	void AddScore(const unsigned int Score);
 	void AddScoreRate(const unsigned int ScoreRate);
+	void AddPossessGauge(const int Gauge);
 
 	void Initialize() override;
 	void Update() override;

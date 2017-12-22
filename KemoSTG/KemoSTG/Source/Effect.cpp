@@ -65,6 +65,11 @@ void cEffect::Draw() {
 		tRate = std::to_tstring(cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetScoreRate());
 		DrawStringFToHandle(mPosition.GetX(), mPosition.GetY(), tRate.c_str(), GetColor(0xFF, 0xFF, 0xFF), gTimerFontContainer.GetElement(eTimerFont_Big)->GetHandle());
 		break;
+	case eEffect_BigBomb:
+		if (gEffectImageContainer.GetElement(eEffect_Bomb)->GetHandleNum() > 0) {
+			DrawRotaGraph2F(mPosition.GetX(), mPosition.GetY(), gEffectImageContainer.GetElement(eEffect_Bomb)->GetSizeX() / 2, gEffectImageContainer.GetElement(eEffect_Bomb)->GetSizeY() / 2, 2.0, 0.0, gEffectImageContainer.GetElement(eEffect_Bomb)->GetHandle(static_cast<int>(static_cast<double>(mAnimeTimer.GetTime()) / static_cast<double>(gEffectImageContainer.GetElement(eEffect_Bomb)->GetHandleNum()))), TRUE);
+		}
+		break;
 	default:
 		if (gEffectImageContainer.GetElement(mType)->GetHandleNum() > 0) {
 			DrawGraphF(mPosition.GetX() - gEffectImageContainer.GetElement(mType)->GetSizeX() / 2, mPosition.GetY() - gEffectImageContainer.GetElement(mType)->GetSizeY() / 2, gEffectImageContainer.GetElement(mType)->GetHandle(static_cast<int>(static_cast<double>(mAnimeTimer.GetTime()) / static_cast<double>(gEffectImageContainer.GetElement(mType)->GetHandleNum()))), TRUE);

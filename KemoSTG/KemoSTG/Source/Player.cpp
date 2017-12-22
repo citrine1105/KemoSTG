@@ -1,4 +1,5 @@
 ﻿#include "../Header/Player.h"
+#include "../Header/GameManager.h"
 
 cImageResourceContainer gPlayerImageContainer;
 cSoundResource gPossessSound;
@@ -22,10 +23,17 @@ void cPlayer::Entry() {
 void cPlayer::Bomb() {
 	if (mBomb > 0) {
 		PlaySoundMem(gBombSoundContainer.GetElement(mScore.mCharacter)->GetHandle(), DX_PLAYTYPE_BACK);
+		cPoint2D tP;
+		for (int i = 0; i < 12; i++) {
+			tP.SetPoint(GetRand(GAME_SCREEN_WIDTH), GetRand(GAME_SCREEN_HEIGHT));
+			cGameManager::GetInstance()->GetEffectPointer()->push_back(cEffect(eEffect_BigBomb, tP));
+		}
 		mInvincibleTime.SetSecond(8.0);
 		mInvincibleTime.Start();
 		mScore.mBomb++;
 		mBomb--;
+		cGameManager::GetInstance()->GetEnemyPointer()->clear();
+		cGameManager::GetInstance()->GetEnemyBulletPointer()->clear();
 		// TODO: ボム発動処理もここに書く
 	}
 }
@@ -142,6 +150,10 @@ void cPlayer::AddScoreRate(const unsigned int ScoreRate) {
 	}
 }
 
+void cPlayer::AddPossessGauge(const int Gauge) {
+	mPossessTime.AddTime(Gauge);
+}
+
 void cPlayer::Initialize() {
 	mCollider.resize(1);
 	mCollider.at(0).SetCollisionType(eCollision_Ellipse);
@@ -159,7 +171,9 @@ void cPlayer::Initialize() {
 	mScore.mCharacter = ePlayer_Rin;
 	mScore.mType = ePossess_Half;
 	mPosition.SetPoint(GAME_SCREEN_WIDTH / 2.0, GAME_SCREEN_HEIGHT * 4.0 / 5.0);	// 初期位置
+	mInvincibleTime.Reset();
 	mInvincibleTime.Start();
+	mPossessTime.Initialize(15.0, 30.0, eCountMode_CountDown);
 	mAnimeTimer.Initialize(0, 15 * 3 - 1, eCountMode_CountUp, true);
 	mAnimeTimer.Start();
 	mBulletGenerator.resize(4);

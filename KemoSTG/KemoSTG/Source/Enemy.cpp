@@ -2,7 +2,7 @@
 
 cImageResourceContainer gEnemyImageContainer;
 
-cEnemy::cEnemy() : mLife(70), fActive(true), fCollisionEnable(false), mAppearanceTime(24) {
+cEnemy::cEnemy() : mLife(50), fActive(true), fCollisionEnable(false), mAppearanceTime(24) {
 	this->Initialize();
 }
 
@@ -135,11 +135,11 @@ void cEnemy::Update() {
 			i++;
 		}
 
-		if (mMotionTimer.GetTime() % 20 == 0) {
+		if (mMotionTimer.GetTime() % 40 == 0) {
 			for (int i = 0; i < mBulletGenerator.size(); i++) {
 				cEnemyBullet tBullet;	// 弾
 				cVector2D tMoveVector;	// 弾移動速度
-				tMoveVector.SetPolarForm(TO_RADIAN(GetRand(360)), 2.4);
+				tMoveVector.SetPolarForm(TO_RADIAN(GetRand(360)), 1.9);
 				for (int j = 0; j < 4; j++) {
 					tMoveVector.AddAngle(TO_RADIAN(360.0 / 4.0));
 					tBullet.Initialize(tMoveVector, eBullet_Normal);
