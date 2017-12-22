@@ -1,6 +1,8 @@
 ﻿#include "../Header/Player.h"
 
 cImageResourceContainer gPlayerImageContainer;
+cSoundResource gPossessSound;
+cSoundResourceContainer gBombSoundContainer;
 
 cPlayer::cPlayer() : cSprite(), fEntry(false), /*fAlive(false),*/
 	mInvincibleTime(60 * 5, 60 * 5, eCountMode_CountDown), mPossessTime(15.0, 30.0, eCountMode_CountDown),
@@ -19,6 +21,7 @@ void cPlayer::Entry() {
 
 void cPlayer::Bomb() {
 	if (mBomb > 0) {
+		PlaySoundMem(gBombSoundContainer.GetElement(mScore.mCharacter)->GetHandle(), DX_PLAYTYPE_BACK);
 		mInvincibleTime.SetSecond(8.0);
 		mInvincibleTime.Start();
 		mScore.mBomb++;
@@ -178,6 +181,7 @@ void cPlayer::Update() {
 	// 憑依
 	if (pInputPad->GetInputState(eButton_Possess) == 1) {
 		if (mPossessTime.GetActiveFlag()) {
+			PlaySoundMem(gPossessSound.GetHandle(), DX_PLAYTYPE_BACK);
 			mPossessTime.Stop();
 			mPossessTime.AddTime(-30);
 			if (mPossessTime.GetTime() < 0) {
@@ -185,6 +189,7 @@ void cPlayer::Update() {
 			}
 		}
 		else if (mPossessTime.GetTime() > 0) {
+			PlaySoundMem(gPossessSound.GetHandle(), DX_PLAYTYPE_BACK);
 			mPossessTime.Start();
 		}
 	}

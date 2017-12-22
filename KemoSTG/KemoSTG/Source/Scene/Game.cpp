@@ -21,7 +21,7 @@ void cGameScene::Initialize() {
 
 	mFade.SetPosition(255.0, 0.0);
 
-	mBackgroundImage.SetPath(_T("./Data/Image/Game/Background/1.jpg"));
+	mBackgroundImage.SetPath(_T("./Data/Image/Game/Background/back.png"));
 
 	gLogoImageContainer.Initialize(eLogo_TotalNum);
 	gGameTitleImageContainer.Initialize(eGameTitle_TotalNum);
@@ -30,8 +30,10 @@ void cGameScene::Initialize() {
 	gPlayerBulletImageContainer.Initialize(ePlayer_TotalNum);
 	gEnemyImageContainer.Initialize(eEnemy_TotalNum);
 	gEnemyBulletImageContainer.Initialize(eBullet_TotalNum);
+	gEffectImageContainer.Initialize(eEffect_TotalNum);
 
 	gPlayerShotSoundContainer.Initialize(ePlayer_TotalNum);
+	gBombSoundContainer.Initialize(ePlayer_TotalNum);
 
 	gGameFontContainer.Initialize(eGameFont_TotalNum);
 	gTimerFontContainer.Initialize(eTimerFont_TotalNum);
@@ -75,12 +77,25 @@ void cGameScene::Initialize() {
 	gEnemyBulletImageContainer.GetElement(eBullet_Normal)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/normal.png"));
 	gEnemyBulletImageContainer.GetElement(eBullet_Arrow)->SetPath(_T("./Data/Image/Game/Bullet/Enemy/arrow.png"));
 
+	gEffectImageContainer.GetElement(eEffect_Bomb)->SetPath(_T("./Data/Image/Game/Effect/bomb.png"));
+	gEffectImageContainer.GetElement(eEffect_Bomb)->SetDivisionSize(4, 4, 1, 64, 64);
+
 	// プレイヤーショット音
 	gPlayerShotSoundContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
 	gPlayerShotSoundContainer.GetElement(ePlayer_Kakeru)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
 	gPlayerShotSoundContainer.GetElement(ePlayer_3rd)->SetPath(_T("./Data/Sound/Effect/Game/shot.wav"));
 	for (int i = ePlayer_Rin; i < ePlayer_TotalNum; i++) {
 		gPlayerShotSoundContainer.GetElement(i)->SetBufferNum(1);
+	}
+
+	// 憑依音
+	gPossessSound.SetPath(_T("./Data/Sound/Effect/Game/possess.wav"));
+	gPossessSound.SetBufferNum(1);
+
+	// ボム発射音
+	gBombSoundContainer.GetElement(ePlayer_Rin)->SetPath(_T("./Data/Sound/Effect/Game/bomb.wav"));
+	for (int i = 0; i < ePlayer_TotalNum; i++) {
+		gBombSoundContainer.GetElement(i)->SetBufferNum(1);
 	}
 
 	gGameFontContainer.GetElement(eGameFont_Interface)->SetProperty(_T("Palatino Linotype"), 18, 0, DX_FONTTYPE_ANTIALIASING_EDGE_4X4);
@@ -103,8 +118,11 @@ void cGameScene::Initialize() {
 	gPlayerBulletImageContainer.Load();
 	gEnemyImageContainer.Load();
 	gEnemyBulletImageContainer.Load();
+	gEffectImageContainer.Load();
 
 	gPlayerShotSoundContainer.Load();
+	gPossessSound.Load();
+	gBombSoundContainer.Load();
 
 	gGameFontContainer.Load();
 	gTimerFontContainer.Load();
@@ -153,7 +171,7 @@ void cGameScene::Draw() {
 	ClearDrawScreen();
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 1.0, 0.0, mBackgroundImage.GetHandle(), FALSE);
+	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, DISPLAY_LONG / 3840.0, 0.0, mBackgroundImage.GetHandle(), FALSE);
 
 	if (GetASyncLoadNum() != 0) {
 		SetDrawScreen(mInterfaceScreen);

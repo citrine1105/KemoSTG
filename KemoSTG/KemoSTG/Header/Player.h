@@ -44,6 +44,8 @@ struct sScoreData {
 };
 
 extern cImageResourceContainer gPlayerImageContainer;
+extern cSoundResource gPossessSound;
+extern cSoundResourceContainer gBombSoundContainer;
 
 class cPlayer : public cSprite {
 protected:

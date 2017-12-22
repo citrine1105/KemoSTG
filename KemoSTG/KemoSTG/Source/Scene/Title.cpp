@@ -19,7 +19,7 @@ void cTitleScene::Initialize() {
 	gTitleImageContainer.Initialize(eTitle_TotalNum);
 
 	gTitleImageContainer.GetElement(eTitle_Logo)->SetPath(_T("./Data/Image/Title/logo.png"));
-	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.jpg"));
+	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.png"));
 	gTitleImageContainer.GetElement(eTitle_Guide)->SetPath(_T("./Data/Image/Title/guide.png"));
 
 	SetFontCacheUsePremulAlphaFlag(TRUE);
@@ -69,7 +69,7 @@ void cTitleScene::Draw() {
 	std::tstring tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
-	DrawGraph(0, 0, gTitleImageContainer.GetElement(eTitle_Back)->GetHandle(), FALSE);
+	DrawRotaGraph(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, DISPLAY_LONG / 3840.0, 0.0, gTitleImageContainer.GetElement(eTitle_Back)->GetHandle(), FALSE);
 	DrawRotaGraphF(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2,
 		static_cast<float>(DISPLAY_SHORT) / static_cast<float>(gTitleImageContainer.GetElement(eTitle_Logo)->GetSizeY()), TO_RADIAN(static_cast<double>(90 * cSystemConfig::GetInstance()->GetConfig().mRotation)),
 		gTitleImageContainer.GetElement(eTitle_Logo)->GetHandle(), TRUE);

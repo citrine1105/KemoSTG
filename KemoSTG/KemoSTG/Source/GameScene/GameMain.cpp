@@ -1,7 +1,8 @@
 ﻿#include "../../Header/GameScene/GameMain.h"
 
-cSoundResource gGameBGM;
-cImageResourceContainer gGameUIImageContainer;
+cImageResource gGameBackground;	// ゲーム背景
+cImageResourceContainer gGameUIImageContainer;	// ゲームUI
+cSoundResource gGameBGM;	// ゲームBGM
 
 cMainGameScene::cMainGameScene(iSceneChanger<eGameScene> *Changer) : cGameBaseScene(Changer) {
 	
@@ -22,8 +23,14 @@ void cMainGameScene::Initialize() {
 	mDelayTimer.Initialize(0, 1, eCountMode_CountUp, true);
 	mBossTimer.Initialize(120.0, 1000.0, eCountMode_CountDown);
 
-	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/test.png"));
-	mCharacterImage.at(0).Load();
+	mCharacterImage.at(0).SetPath(_T("./Data/Image/Game/Character/rin.png"));
+	mCharacterImage.at(1).SetPath(_T("./Data/Image/Game/Character/kasumi.png"));
+	for (auto &i : mCharacterImage) {
+		i.Load();
+	}
+
+	gGameBackground.SetPath(_T("./Data/Image/Game/Background/1.png"));
+	gGameBackground.Load();
 
 	gGameBGM.SetPath(_T("./Data/Sound/Music/Game/1.wav"));
 	gGameBGM.SetBufferNum(1);
@@ -111,18 +118,18 @@ void cMainGameScene::Draw() {
 	tScoreRateDigit.at(1) = static_cast<int>(floor(log10(tDispScoreRate.at(1)))) + 1;
 
 	for (int i = -1; i < 256; i++) {
-		//DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->GetSizeY() * i), gGameUIImageContainer.GetElement(eGameUI_GameBackGround)->GetHandle(), FALSE);
+		DrawGraphF(0.0f, static_cast<float>(mBackground.GetPositionY() - gGameBackground.GetSizeY() * i), gGameBackground.GetHandle(), FALSE);
 	}
 
 	cGameManager::GetInstance()->Draw();
 
 	// ボス体力ゲージ
-	DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
-	DrawGraph(12, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(0), TRUE);
-	DrawGraph(480 - 12 - 16, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(2), TRUE);
-	for (int i = 12 + 16; i < 480 - 12 - 16; i += 16) {
-		DrawGraph(i, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(1), TRUE);
-	}
+	//DrawBox(12 + 5, 56 + 2, 480 - 12 - 5, 56 + 16 - 2, GetColor(0x52, 0xCC, 0x14), TRUE);
+	//DrawGraph(12, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(0), TRUE);
+	//DrawGraph(480 - 12 - 16, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(2), TRUE);
+	//for (int i = 12 + 16; i < 480 - 12 - 16; i += 16) {
+	//	DrawGraph(i, 56, gGameUIImageContainer.GetElement(eGameUI_LifeGauge)->GetHandle(1), TRUE);
+	//}
 	mBossTimer.Draw(240, 110);
 
 	// スコアレート

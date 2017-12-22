@@ -7,6 +7,7 @@
 #include "../SelectTimer.h"
 #include "../GameManager.h"
 
+extern cImageResource gGameBackground;
 extern cImageResourceContainer gGameUIImageContainer;
 extern cSoundResource gGameBGM;
 
@@ -34,7 +35,6 @@ protected:
 	cSelectTimer mBossTimer;	// ボス戦残り時間
 
 	std::array<cImageResource, 3> mCharacterImage;	// 立ち絵
-
 public:
 	cMainGameScene(iSceneChanger<eGameScene> *Changer);
 	~cMainGameScene();

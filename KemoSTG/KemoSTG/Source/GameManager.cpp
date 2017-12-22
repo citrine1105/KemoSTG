@@ -69,7 +69,7 @@ void cGameManager::Update() {
 				if (j.GetCollisionFlag(*i)) {
 					j.Damage(i->GetPower());
 					i->Erase();
-					//mEffect.push_back(cEffect(eEffect_RateNum, i->GetPosition()));
+					mEffect.push_back(cEffect(eEffect_Bomb, i->GetPosition()));
 					if (mPlayer.at(0).GetPossessFlag()) {
 						mPlayer.at(0).AddScoreRate(1);
 					}
