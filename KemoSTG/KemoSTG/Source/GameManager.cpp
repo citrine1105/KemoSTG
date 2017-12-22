@@ -24,6 +24,10 @@ std::list<cEnemyBullet>* cGameManager::GetEnemyBulletPointer() {
 	return &mEnemyBullet;
 }
 
+std::list<cEffect>* cGameManager::GetEffectPointer() {
+	return &mEffect;
+}
+
 void cGameManager::Initialize() {
 	mBulletOutCollider.GetColliderPointer()->resize(1);
 	mBulletOutCollider.GetColliderPointer()->at(0).SetRange(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
@@ -36,6 +40,7 @@ void cGameManager::Initialize() {
 	mEnemy.clear();
 	mPlayerBullet.clear();
 	mEnemyBullet.clear();
+	mEffect.clear();
 	// 自機
 	for (auto &i : mPlayer) {
 		i.SetBulletGenerateTarget(&mPlayerBullet);
@@ -49,20 +54,22 @@ void cGameManager::Finalize() {
 	mEnemy.clear();
 	mPlayerBullet.clear();
 	mEnemyBullet.clear();
+	mEffect.clear();
 }
 
 void cGameManager::Update() {
 	// 自機弾
-	for (auto &i : mPlayerBullet) {
-		i.Update();
-		if (!mBulletOutCollider.GetCollisionFlag(i)) {
-			i.Erase();
+	for (auto i = mPlayerBullet.begin(); i != mPlayerBullet.end();) {
+		i->Update();
+		if (!mBulletOutCollider.GetCollisionFlag(*i)) {
+			i->Erase();
 		}
 		else {
 			for (auto &j : mEnemy) {
-				if (j.GetCollisionFlag(i)) {
-					j.Damage(i.GetPower());
-					i.Erase();
+				if (j.GetCollisionFlag(*i)) {
+					j.Damage(i->GetPower());
+					i->Erase();
+					//mEffect.push_back(cEffect(eEffect_RateNum, i->GetPosition()));
 					if (mPlayer.at(0).GetPossessFlag()) {
 						mPlayer.at(0).AddScoreRate(1);
 					}
@@ -70,8 +77,6 @@ void cGameManager::Update() {
 				}
 			}
 		}
-	}
-	for (auto i = mPlayerBullet.begin(); i != mPlayerBullet.end();) {
 		if (!i->GetActiveFlag()) {
 			i = mPlayerBullet.erase(i);
 			continue;
@@ -80,13 +85,11 @@ void cGameManager::Update() {
 	}
 
 	// 敵弾
-	for (auto &i : mEnemyBullet) {
-		i.Update();
-		if (!mBulletOutCollider.GetCollisionFlag(i)) {
-			i.Erase();
-		}
-	}
 	for (auto i = mEnemyBullet.begin(); i != mEnemyBullet.end();) {
+		i->Update();
+		if (!mBulletOutCollider.GetCollisionFlag(*i)) {
+			i->Erase();
+		}
 		if (!i->GetActiveFlag()) {
 			i = mEnemyBullet.erase(i);
 			continue;
@@ -101,15 +104,13 @@ void cGameManager::Update() {
 		}
 	}
 
-	// 敵消去
-	for (auto &i : mEnemy) {
-		i.SetBulletGenerateTarget(&mEnemyBullet);
-		if (!mBulletOutCollider.GetCollisionFlag(i)) {
-			i.Erase();
-		}
-		i.Update();
-	}
+	// 敵
 	for (auto i = mEnemy.begin(); i != mEnemy.end();) {
+		i->Update();
+		i->SetBulletGenerateTarget(&mEnemyBullet);
+		if (!mBulletOutCollider.GetCollisionFlag(*i)) {
+			i->Erase();
+		}
 		if (!i->GetActiveFlag()) {
 			i = mEnemy.erase(i);
 			continue;
@@ -124,6 +125,21 @@ void cGameManager::Update() {
 				i.Damage();
 			}
 		}
+		for (auto &j : mEnemy) {
+			if (i.GetCollisionFlag(j) && !i.GetInvincibleFlag()) {
+				i.Damage();
+			}
+		}
+	}
+
+	// エフェクト
+	for (auto i = mEffect.begin(); i != mEffect.end();) {
+		i->Update();
+		if (!i->GetPlayFlag()) {
+			i = mEffect.erase(i);
+			continue;
+		}
+		i++;
 	}
 }
 
@@ -139,6 +155,11 @@ void cGameManager::Draw() {
 
 	// 敵
 	for (auto &i : mEnemy) {
+		i.Draw();
+	}
+
+	// エフェクト
+	for (auto &i : mEffect) {
 		i.Draw();
 	}
 

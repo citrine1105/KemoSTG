@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
+#include "Effect.h"
 
 class cGameManager : public iInitialization, iActivity {
 private:
@@ -15,6 +16,7 @@ protected:
 	std::list<cEnemy> mEnemy;	// 敵
 	std::list<cPlayerBullet> mPlayerBullet;	// 自機弾
 	std::list<cEnemyBullet> mEnemyBullet;	// 敵弾
+	std::list<cEffect> mEffect;	// エフェクト
 public:
 	static cGameManager* GetInstance() {
 		static cGameManager inst;
@@ -25,6 +27,7 @@ public:
 	std::list<cEnemy>* GetEnemyPointer();
 	std::list<cPlayerBullet>* GetPlayerBulletPointer();
 	std::list<cEnemyBullet>* GetEnemyBulletPointer();
+	std::list<cEffect>* GetEffectPointer();
 
 	void Initialize() override;
 	void Finalize() override;

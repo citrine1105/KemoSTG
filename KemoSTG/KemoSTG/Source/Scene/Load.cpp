@@ -49,7 +49,7 @@ void cLoadScene::Draw() {
 		SetDrawScreen(mInterfaceScreen);
 		ClearDrawScreen();
 		if (CheckHandleASyncLoad(gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) == FALSE) {
-			DrawStringToHandle(0, DISPLAY_SHORT - GetFontSizeToHandle(gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+			DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 		}
 	}
 

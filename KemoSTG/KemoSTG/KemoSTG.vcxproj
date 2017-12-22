@@ -163,6 +163,7 @@
     <ClCompile Include="Source\Config.cpp" />
     <ClCompile Include="Source\Dialog.cpp" />
     <ClCompile Include="Source\Easing.cpp" />
+    <ClCompile Include="Source\Effect.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\EnemyBullet.cpp" />
     <ClCompile Include="Source\EnemyBulletGenerator.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Header\Config.h" />
     <ClInclude Include="Header\Dialog.h" />
     <ClInclude Include="Header\Easing.h" />
+    <ClInclude Include="Header\Effect.h" />
     <ClInclude Include="Header\Enemy.h" />
     <ClInclude Include="Header\EnemyBullet.h" />
     <ClInclude Include="Header\EnemyBulletGenerator.h" />
