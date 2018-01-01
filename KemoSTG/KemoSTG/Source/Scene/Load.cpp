@@ -21,8 +21,8 @@ void cLoadScene::Initialize() {
 		gSystemFont.GetElement(i)->SetFontType(DX_FONTTYPE_ANTIALIASING_4X4);
 	}
 
-	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 24);
-	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 24);
+	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 28);
+	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 28);
 
 	// 衝突判定デバッグ用
 	gColliderDebugImageContainer.Initialize(eCollision_TotalNum);
@@ -30,7 +30,9 @@ void cLoadScene::Initialize() {
 	gColliderDebugImageContainer.GetElement(eCollision_Ellipse)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
 
 	gColliderDebugImageContainer.Load();
+	SetFontCacheUsePremulAlphaFlag(TRUE);
 	gSystemFont.Load();
+	SetFontCacheUsePremulAlphaFlag(FALSE);
 }
 
 void cLoadScene::Finalize() {
@@ -49,7 +51,9 @@ void cLoadScene::Draw() {
 		SetDrawScreen(mInterfaceScreen);
 		ClearDrawScreen();
 		if (CheckHandleASyncLoad(gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) == FALSE) {
+			SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
 			DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		}
 	}
 

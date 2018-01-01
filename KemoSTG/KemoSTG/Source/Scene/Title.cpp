@@ -22,9 +22,9 @@ void cTitleScene::Initialize() {
 	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.png"));
 	gTitleImageContainer.GetElement(eTitle_Guide)->SetPath(_T("./Data/Image/Title/guide.png"));
 
-	SetFontCacheUsePremulAlphaFlag(TRUE);
+	SetUsePremulAlphaConvertLoad(TRUE);
 	gTitleImageContainer.Load();
-	SetFontCacheUsePremulAlphaFlag(FALSE);
+	SetUsePremulAlphaConvertLoad(FALSE);
 }
 
 void cTitleScene::Finalize() {
@@ -65,7 +65,7 @@ void cTitleScene::Update() {
 }
 
 void cTitleScene::Draw() {
-	std::tstring tCopyright = _T("©2017 C-Lab");
+	std::tstring tCopyright = _T("©2018 C-Lab");
 	std::tstring tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 
@@ -77,22 +77,30 @@ void cTitleScene::Draw() {
 	SetDrawScreen(mInterfaceScreen);
 	ClearDrawScreen();
 
+	// 著作権表記
+	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
 	DrawStringToHandle(DISPLAY_SHORT / 2 - GetDrawStringWidthToHandle(tCopyright.c_str(), tCopyright.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_SHORT * 29 / 32 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2,
 		tCopyright.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
+	// Press Any Button
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	if (fNext) {
 		if (mMessageFlash.GetTime() % 12 < 6) {
 			DrawRotaGraphF(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_SHORT) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		}
 	}
 	else {
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, mMessageFade.GetPositionX());
+		SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, mMessageFade.GetPositionX());
 		DrawRotaGraphF(DISPLAY_SHORT / 2.0, DISPLAY_SHORT * 2.0 / 3.0, static_cast<double>(DISPLAY_SHORT) / static_cast<double>(2160), 0.0, gTitleImageContainer.GetElement(eTitle_Guide)->GetHandle(), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
 
+	// バージョン表記
+	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
 	DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(tVersion.c_str(), tVersion.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8),
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
 	SetDrawScreen(DX_SCREEN_BACK);
 

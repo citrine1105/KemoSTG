@@ -65,7 +65,7 @@ void cTitleGameScene::Draw() {
 	tExtend.at(0) = _T("-EXTEND-");
 	tExtend.at(1) = _T("1ST   10,000,000PTS");
 	tExtend.at(2) = _T("2ND  100,000,000PTS");
-	tCopyright = _T("©2017 C-Lab");
+	tCopyright = _T("©2018 C-Lab");
 	tVersion = _T("Ver ");
 	tVersion += VERSION_STRING;
 

@@ -178,7 +178,9 @@ void cGameScene::Draw() {
 
 	if (GetASyncLoadNum() != 0) {
 		SetDrawScreen(mInterfaceScreen);
+		SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
 		DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("Loading"), _tcslen(_T("Loading")), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), DISPLAY_SHORT - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() - UPSCALE(8), _T("Loading"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		SetDrawScreen(DX_SCREEN_BACK);
 	}
 

@@ -44,7 +44,7 @@ void cNoticeGameScene::Draw() {
 		"SEVERE PENALTIES AND\n"
 		"WILL BE PROSECUTED TO\n"
 		"THE FULL EXTENT OF THE JAM.");
-	tCopyright = _T("©2017 C-Lab All rights reserved.");
+	tCopyright = _T("©2018 C-Lab All rights reserved.");
 	tVersion = _T("Version ");
 	tVersion += VERSION_STRING;
 

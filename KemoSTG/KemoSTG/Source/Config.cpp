@@ -5,8 +5,8 @@ void cSystemConfig::SetDefault() {
 	mConfig.mDisplayWidth = 640;
 	mConfig.mDisplayHeight = 480;
 	mConfig.mRotation = eRotation_Horizontal;
-	mConfig.mBGMVolume = 100;
-	mConfig.mSEVolume = 100;
+	mConfig.mBGMVolume = 70;
+	mConfig.mSEVolume = 70;
 }
 
 const sSystemConfig cSystemConfig::GetConfig() {

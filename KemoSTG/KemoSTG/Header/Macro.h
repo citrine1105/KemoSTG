@@ -9,7 +9,7 @@
 #define DISPLAY_MIN 480
 
 #define CAPTION_STRING _T("朧の迷仔たち")	// キャプションテキスト
-#define VERSION_STRING _T("0.15")	// バージョン
+#define VERSION_STRING _T("0.16")	// バージョン
 #define DX_ARCHIVE_KEY_STRING _T("dyaEu8S53Z9C")	// DXアーカイブ展開キー
 
 #define TO_DEGREE(value) (PI / 180.0 * (value))	// 弧度法に変換
