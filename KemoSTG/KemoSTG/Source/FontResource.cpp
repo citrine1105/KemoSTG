@@ -10,12 +10,14 @@ cFontResource::~cFontResource() {
 
 void cFontResource::Load() {
 	this->Delete();
+	SetFontCacheUsePremulAlphaFlag(fPremulAlpha);
 	if (mPath.empty()) {
 		mHandle = CreateFontToHandle(mName.c_str(), mSize, mThickness, mFontType, mCharSet, mEdgeThickness, FALSE);
 	}
 	else {
 		mHandle = LoadFontDataToHandle(mPath.c_str(), mEdgeThickness);
 	}
+	SetFontCacheUsePremulAlphaFlag(FALSE);
 }
 
 void cFontResource::Delete() {
@@ -25,7 +27,7 @@ void cFontResource::Delete() {
 	mHandle = NULL;
 }
 
-void cFontResource::SetProperty(const TCHAR *Name, const int Size, const int Thickness, const int FontType, const int CharSet, const int EdgeThickness, const bool Italic) {
+void cFontResource::SetProperty(const TCHAR *Name, const int Size, const int Thickness, const int FontType, const int CharSet, const int EdgeThickness, const bool Italic, const bool PremulAlpha) {
 	this->SetFontName(Name);
 	this->SetSize(Size);
 	this->SetThickness(Thickness);
@@ -33,6 +35,7 @@ void cFontResource::SetProperty(const TCHAR *Name, const int Size, const int Thi
 	this->SetEdgeThickness(EdgeThickness);
 	this->SetCharSet(CharSet);
 	this->SetItalicFlag(Italic);
+	this->SetPremulAlphaFlag(PremulAlpha);
 }
 
 void cFontResource::SetFontName(const TCHAR *Name) {
@@ -65,6 +68,10 @@ void cFontResource::SetCharSet(const int CharSet) {
 
 void cFontResource::SetItalicFlag(const bool Italic) {
 	fItalic = Italic;
+}
+
+void cFontResource::SetPremulAlphaFlag(const bool PremulAlpha) {
+	fPremulAlpha = PremulAlpha;
 }
 
 int cFontResource::GetHandle() {
@@ -109,6 +116,10 @@ bool cFontResource::GetItalicFlag() {
 	return fItalic;
 }
 
+bool cFontResource::GetPremulAlphaFlag() {
+	return fPremulAlpha;
+}
+
 void cFontResource::Initialize() {
 	this->Delete();
 	mName.clear();
@@ -119,6 +130,7 @@ void cFontResource::Initialize() {
 	mFontType = DX_FONTTYPE_NORMAL;
 	mCharSet = DX_CHARSET_DEFAULT;
 	fItalic = false;
+	fPremulAlpha = false;
 }
 
 void cFontResource::Finalize() {
@@ -131,4 +143,5 @@ void cFontResource::Finalize() {
 	mFontType = DX_FONTTYPE_NORMAL;
 	mCharSet = DX_CHARSET_DEFAULT;
 	fItalic = false;
+	fPremulAlpha = false;
 }

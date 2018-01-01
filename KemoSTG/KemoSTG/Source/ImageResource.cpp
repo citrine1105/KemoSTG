@@ -18,7 +18,7 @@ cImageResource::cImageResource(const TCHAR *FileName) : pHandle(nullptr) {
 	this->SetPath(FileName);
 }
 
-cImageResource::cImageResource(const TCHAR *FileName, const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY) : pHandle(nullptr) {
+cImageResource::cImageResource(const TCHAR *FileName, const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY, const bool PremulAlpha) : pHandle(nullptr) {
 	this->Initialize();
 	this->SetPath(FileName);
 	this->SetDivisionSize(TotalNum, NumX, NumY, SizeX, SizeY);
@@ -29,12 +29,14 @@ cImageResource::~cImageResource() {
 }
 
 void cImageResource::Load() {
+	SetUsePremulAlphaConvertLoad(fPremulAlpha);
 	if (mTotalNum == 1) {
 		this->Load(mPath.c_str());
 	}
 	else {
 		this->Load(mPath.c_str(), mTotalNum, mNumX, mNumY, mSizeX, mSizeY);
 	}
+	SetUsePremulAlphaConvertLoad(FALSE);
 }
 
 void cImageResource::Load(const TCHAR *FileName) {
@@ -42,11 +44,12 @@ void cImageResource::Load(const TCHAR *FileName) {
 	mPath = FileName;
 	mTotalNum = 1;
 	this->CreateHandle(1);
+	SetUsePremulAlphaConvertLoad(fPremulAlpha);
 	*pHandle = LoadGraph(FileName);
-	//GetGraphSize(*pHandle, &mSizeX, &mSizeY);
+	SetUsePremulAlphaConvertLoad(FALSE);
 }
 
-void cImageResource::Load(const TCHAR *FileName, const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY) {
+void cImageResource::Load(const TCHAR *FileName, const int TotalNum, const int NumX, const int NumY, const int SizeX, const int SizeY, const bool PremulAlpha) {
 	this->Delete();
 	mPath = FileName;
 	mTotalNum = TotalNum;
@@ -54,8 +57,11 @@ void cImageResource::Load(const TCHAR *FileName, const int TotalNum, const int N
 	mNumY = NumY;
 	mSizeX = SizeX;
 	mSizeY = SizeY;
+	fPremulAlpha = PremulAlpha;
 	this->CreateHandle(TotalNum);
+	SetUsePremulAlphaConvertLoad(fPremulAlpha);
 	LoadDivGraph(FileName, TotalNum, NumX, NumY, SizeX, SizeY, pHandle);
+	SetUsePremulAlphaConvertLoad(FALSE);
 }
 
 void cImageResource::Delete() {
@@ -84,6 +90,10 @@ void cImageResource::SetDivisionSize(const int TotalNum, const int NumX, const i
 	mNumY = NumY;
 	mSizeX = SizeX;
 	mSizeY = SizeY;
+}
+
+void cImageResource::SetPremulAlphaFlag(const bool PremulAlpha) {
+	fPremulAlpha = PremulAlpha;
 }
 
 int cImageResource::GetHandle(const int Num) {
@@ -120,6 +130,10 @@ int cImageResource::GetSizeY() {
 	return tSizeY;
 }
 
+bool cImageResource::GetPremulAlphaFlag() {
+	return fPremulAlpha;
+}
+
 void cImageResource::Initialize() {
 	mTotalNum = 1;
 	this->Delete();
@@ -128,6 +142,7 @@ void cImageResource::Initialize() {
 	mNumY = 0;
 	mSizeX = 0;
 	mSizeY = 0;
+	fPremulAlpha = false;
 }
 
 void cImageResource::Finalize() {
@@ -138,4 +153,5 @@ void cImageResource::Finalize() {
 	mNumY = 0;
 	mSizeX = 0;
 	mSizeY = 0;
+	fPremulAlpha = false;
 }

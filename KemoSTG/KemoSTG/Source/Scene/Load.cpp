@@ -24,15 +24,18 @@ void cLoadScene::Initialize() {
 	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 28);
 	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 28);
 
+	for (int i = 0; i < eSystemFont_TotalNum; i++) {
+		gSystemFont.GetElement(i)->SetPremulAlphaFlag(true);
+	}
+
 	// 衝突判定デバッグ用
 	gColliderDebugImageContainer.Initialize(eCollision_TotalNum);
 	gColliderDebugImageContainer.GetElement(eCollision_Rectangle)->SetPath(_T("./Data/Image/CollisionTest/rect.png"));
 	gColliderDebugImageContainer.GetElement(eCollision_Ellipse)->SetPath(_T("./Data/Image/CollisionTest/ellipse.png"));
 
 	gColliderDebugImageContainer.Load();
-	SetFontCacheUsePremulAlphaFlag(TRUE);
+
 	gSystemFont.Load();
-	SetFontCacheUsePremulAlphaFlag(FALSE);
 }
 
 void cLoadScene::Finalize() {

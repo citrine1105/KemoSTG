@@ -22,9 +22,11 @@ void cTitleScene::Initialize() {
 	gTitleImageContainer.GetElement(eTitle_Back)->SetPath(_T("./Data/Image/Title/back.png"));
 	gTitleImageContainer.GetElement(eTitle_Guide)->SetPath(_T("./Data/Image/Title/guide.png"));
 
-	SetUsePremulAlphaConvertLoad(TRUE);
+	for (int i = 0; i < eTitle_TotalNum; i++) {
+		gTitleImageContainer.GetElement(i)->SetPremulAlphaFlag(true);
+	}
+
 	gTitleImageContainer.Load();
-	SetUsePremulAlphaConvertLoad(FALSE);
 }
 
 void cTitleScene::Finalize() {

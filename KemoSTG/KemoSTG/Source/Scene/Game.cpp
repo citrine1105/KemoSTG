@@ -225,10 +225,9 @@ void cGameScene::Draw() {
 		std::tstring tPauseMes = _T("Pause");
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255.0 * 50.0 / 100.0));
 		DrawBox(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GetColor(0x00, 0x00, 0x00), TRUE);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-		//DrawLine(DISPLAY_WIDTH / 2, 0, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT, GetColor(0xFF, 0x00, 0x00));
-		//DrawLine(0, DISPLAY_HEIGHT / 2, DISPLAY_WIDTH, DISPLAY_HEIGHT / 2, GetColor(0xFF, 0x00, 0x00));
+		SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);
 		DrawStringToHandle(DISPLAY_WIDTH / 2 - GetDrawStringWidthToHandle(tPauseMes.c_str(), tPauseMes.size(), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) / 2, DISPLAY_HEIGHT / 2 - gSystemFont.GetElement(eSystemFont_UIFont)->GetSize() / 2, tPauseMes.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 	}
 
 	// フェードイン/アウト

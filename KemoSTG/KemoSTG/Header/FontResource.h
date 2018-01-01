@@ -12,6 +12,7 @@ protected:
 	int mFontType;	// フォント種類
 	int mCharSet;	// 文字セット
 	bool fItalic;	// 斜体フラグ
+	bool fPremulAlpha;	// 透過処理を行ったスクリーンに描画するか
 public:
 	cFontResource();
 	~cFontResource();
@@ -19,7 +20,7 @@ public:
 	void Load();
 	void Delete();
 
-	void SetProperty(const TCHAR *Name, const int Size = -1, const int Thickness = -1, const int FontType = DX_FONTTYPE_NORMAL, const int CharSet = DX_CHARSET_DEFAULT, const int EdgeThickness = -1, const bool Italic = false);
+	void SetProperty(const TCHAR *Name, const int Size = -1, const int Thickness = -1, const int FontType = DX_FONTTYPE_NORMAL, const int CharSet = DX_CHARSET_DEFAULT, const int EdgeThickness = -1, const bool Italic = false, const bool PremulAlpha = false);
 	void SetFontName(const TCHAR *Name);
 	void SetPath(const TCHAR *Path);
 	void SetSize(const int Size);
@@ -28,6 +29,7 @@ public:
 	void SetFontType(const int FontType);
 	void SetCharSet(const int CharSet);
 	void SetItalicFlag(const bool Italic);
+	void SetPremulAlphaFlag(const bool PremulAlpha);
 	int GetHandle();
 	std::tstring GetFontName();
 	int GetSize();
@@ -36,6 +38,7 @@ public:
 	int GetFontType();
 	int GetCharSet();
 	bool GetItalicFlag();
+	bool GetPremulAlphaFlag();
 
 	void Initialize() override;
 	void Finalize() override;
