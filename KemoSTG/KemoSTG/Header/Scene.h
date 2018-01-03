@@ -31,8 +31,8 @@ protected:
 
 	static int mInterfaceScreen;	// UI描画用スクリーン
 
-	static cPad mPad[2];
-	static cVirtualPad mVirtualPad[2];
+	static std::array<cPad, 2> mPad;
+	static std::array<cVirtualPad, 2> mVirtualPad;
 public:
 	cScene(iSceneChanger<eScene> *Changer);
 	virtual ~cScene();

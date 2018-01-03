@@ -1,7 +1,7 @@
 ﻿#include "../Header/Scene.h"
 
-cPad cScene::mPad[2];
-cVirtualPad cScene::mVirtualPad[2];
+std::array<cPad, 2> cScene::mPad;
+std::array<cVirtualPad, 2> cScene::mVirtualPad;
 cFontContainer gSystemFont;
 
 cScene::cScene(iSceneChanger<eScene> *Changer) {

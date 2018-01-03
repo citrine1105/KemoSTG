@@ -235,6 +235,7 @@
     <ClInclude Include="Header\Keyboard.h" />
     <ClInclude Include="Header\Macro.h" />
     <ClInclude Include="Header\Pad.h" />
+    <ClInclude Include="Header\PadInputPortInterface.h" />
     <ClInclude Include="Header\Player.h" />
     <ClInclude Include="Header\PlayerBullet.h" />
     <ClInclude Include="Header\PlayerBulletGenerator.h" />

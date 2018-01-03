@@ -17,7 +17,7 @@ cGameScene::~cGameScene() {
 void cGameScene::Initialize() {
 	mGameScreen = MakeScreen(GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
 	mGame.Initialize();
-	mGame.SetVirtualPad(mVirtualPad);
+	mGame.SetVirtualPad(mVirtualPad.data());
 
 	mFade.SetPosition(255.0, 0.0);
 

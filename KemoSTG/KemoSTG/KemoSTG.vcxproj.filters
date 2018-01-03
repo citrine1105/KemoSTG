@@ -302,6 +302,9 @@
     <ClInclude Include="Header\Effect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Header\PadInputPortInterface.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="KemoSTG.rc">

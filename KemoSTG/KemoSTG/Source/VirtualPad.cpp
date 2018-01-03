@@ -72,7 +72,7 @@ void cVirtualPad::SetJoyPad(cPad *Pad) {
 void cVirtualPad::SetKeyAssign(const eButtonAssign Assign, const unsigned char Key) {
 	int i, j;
 	for (i = 0; i < eButton_TotalNum; i++) {
-		if (mKeyAssign[i] == Key) {	// 既に同じ割り当てのキーがあるか探索
+		if (mKeyAssign.at(i) == Key) {	// 既に同じ割り当てのキーがあるか探索
 			break;
 		}
 	}
@@ -82,7 +82,7 @@ void cVirtualPad::SetKeyAssign(const eButtonAssign Assign, const unsigned char K
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mKeyAssign[i] = mKeyAssign[Assign];	// 入れ替え
+		mKeyAssign.at(i) = mKeyAssign[Assign];	// 入れ替え
 		mKeyAssign[Assign] = Key;
 	}
 	else if (j < eDPad_TotalNum) {
@@ -97,7 +97,7 @@ void cVirtualPad::SetKeyAssign(const eButtonAssign Assign, const unsigned char K
 void cVirtualPad::SetKeyAssign(const eDPadAssign Assign, const unsigned char Key) {
 	int i, j;
 	for (i = 0; i < eButton_TotalNum; i++) {
-		if (mKeyAssign[i] == Key) {	// 既に同じ割り当てのキーがあるか探索
+		if (mKeyAssign.at(i) == Key) {	// 既に同じ割り当てのキーがあるか探索
 			break;
 		}
 	}
@@ -107,7 +107,7 @@ void cVirtualPad::SetKeyAssign(const eDPadAssign Assign, const unsigned char Key
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mKeyAssign[i] = mDPadKeyAssign[Assign];	// 入れ替え
+		mKeyAssign.at(i) = mDPadKeyAssign[Assign];	// 入れ替え
 		mDPadKeyAssign[Assign] = Key;
 	}
 	else if (j < eDPad_TotalNum) {
@@ -122,12 +122,12 @@ void cVirtualPad::SetKeyAssign(const eDPadAssign Assign, const unsigned char Key
 void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eDirectInputAssign Button) {
 	int i;
 	for (i = 0; i < eButton_TotalNum; i++) {
-		if (mDirectInputAssign[i] == Button) {	// 既に同じ割り当てのボタンがあるか探索
+		if (mDirectInputAssign.at(i) == Button) {	// 既に同じ割り当てのボタンがあるか探索
 			break;
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mDirectInputAssign[i] = mDirectInputAssign[Assign];	// 入れ替え
+		mDirectInputAssign.at(i) = mDirectInputAssign[Assign];	// 入れ替え
 		mDirectInputAssign[Assign] = Button;
 	}
 	else {						// ない場合
@@ -138,12 +138,12 @@ void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eDirectInput
 void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eXInputAssign Button) {
 	int i;
 	for (i = 0; i < eButton_TotalNum; i++) {
-		if (mXInputAssign[i] == Button) {	// 既に同じ割り当てのボタンがあるか探索
+		if (mXInputAssign.at(i) == Button) {	// 既に同じ割り当てのボタンがあるか探索
 			break;
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mXInputAssign[i] = mXInputAssign[Assign];	// 入れ替え
+		mXInputAssign.at(i) = mXInputAssign[Assign];	// 入れ替え
 		mXInputAssign[Assign] = Button;
 	}
 	else {						// ない場合
@@ -192,6 +192,10 @@ bool cVirtualPad::GetVibrationFlag() {
 	}
 }
 
+const sVirtualPadInputState cVirtualPad::GetButtonState() {
+	return mButtonState;
+}
+
 void cVirtualPad::StartVibration(const int Power, const int Time) {
 	if (this->GetVibrationFlag()) {
 		StartJoypadVibration(this->GetJoyPad()->GetJoyPadNum(), Power, Time);
@@ -206,10 +210,10 @@ void cVirtualPad::StopVibration() {
 
 void cVirtualPad::ResetInputState() {
 	for (int i = 0; i < eButton_TotalNum; i++) {
-		mButtonInputState[i] = 0;
+		mButtonInputState.at(i) = 0;
 	}
 	for (int i = 0; i < eDPad_TotalNum; i++) {
-		mDPadInputState[i] = 0;
+		mDPadInputState.at(i) = 0;
 	}
 }
 
@@ -231,117 +235,136 @@ void cVirtualPad::Update() {
 	pPad->Update();
 
 	for (int i = 0; i < eButton_TotalNum; i++) {
-		if (cKeyboard::GetInstance()->GetKeyPushState(mKeyAssign[i]) != 0) {	// キーボード入力
-			++mButtonInputState[i];
+		if (cKeyboard::GetInstance()->GetKeyPushState(mKeyAssign.at(i)) != 0) {	// キーボード入力
+			//++mButtonInputState.at(i);
+			mButtonState.mButton.at(i) = true;
 		}
 		else if (pPad->GetXInputFlag() &&
-			(mXInputAssign[i] == eXInputAssign_LT || mXInputAssign[i] == eXInputAssign_RT) &&
-			pPad->GetJoyPadInputState(mXInputAssign[i]) >= static_cast<int>(254.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1) {	// LTかRTに割り当てられている場合
-					++mButtonInputState[i];
+			(mXInputAssign.at(i) == eXInputAssign_LT || mXInputAssign.at(i) == eXInputAssign_RT) &&
+			pPad->GetJoyPadInputState(mXInputAssign.at(i)) >= static_cast<int>(254.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1) {	// LTかRTに割り当てられている場合
+			mButtonState.mButton.at(i) = true;
 		}
 		else if (pPad->GetXInputFlag() &&
-			mXInputAssign[i] != eXInputAssign_LT && mXInputAssign[i] != eXInputAssign_RT &&
-			pPad->GetJoyPadInputState(mXInputAssign[i]) != 0) {		// XInput入力
-				++mButtonInputState[i];
+			mXInputAssign.at(i) != eXInputAssign_LT && mXInputAssign.at(i) != eXInputAssign_RT &&
+			pPad->GetJoyPadInputState(mXInputAssign.at(i)) != 0) {		// XInput入力
+			mButtonState.mButton.at(i) = true;
 		}
 		else if (!pPad->GetXInputFlag() &&
-			pPad->GetJoyPadInputState(mDirectInputAssign[i]) != 0) {		// DirectInput入力
-			++mButtonInputState[i];
+			pPad->GetJoyPadInputState(mDirectInputAssign.at(i)) != 0) {		// DirectInput入力
+			mButtonState.mButton.at(i) = true;
 		}
 		else {	// いずれの入力もない場合
-			mButtonInputState[i] = 0;
+			mButtonState.mButton.at(i) = false;
 		}
 	}
 
 	for (int i = 0; i < eDPad_TotalNum; i++) {
 		switch (i) {
 		case eDPad_Up:
-			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
-				++mDPadInputState[i];
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign.at(i)) != 0) {
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eXInputAssign_LeftY) >= static_cast<int>(32766.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1 || 
 				pPad->GetJoyPadInputState(eXInputAssign_DPadUp) != 0)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (!pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eDirectInputAssign_Y) <= static_cast<int>(-999.0 * (static_cast<double>(mStickDeadZone) / 100.0)) - 1 ||
 				pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 31500 ||
 				pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 0 || 
 				pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 4500)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else {
-				mDPadInputState[i] = 0;
+				mButtonState.mDPad.at(i) = false;
 			}
 			break;
 		case eDPad_Down:
-			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
-				++mDPadInputState[i];
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign.at(i)) != 0) {
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eXInputAssign_LeftY) <= static_cast<int>(-32767.0 * (static_cast<double>(mStickDeadZone) / 100.0)) - 1 ||
 					pPad->GetJoyPadInputState(eXInputAssign_DPadDown) != 0)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (!pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eDirectInputAssign_Y) >= static_cast<int>(999.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 13500 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 18000 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 22500)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else {
-				mDPadInputState[i] = 0;
+				mButtonState.mDPad.at(i) = false;
 			}
 			break;
 		case eDPad_Left:
-			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
-				++mDPadInputState[i];
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign.at(i)) != 0) {
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eXInputAssign_LeftX) <= static_cast<int>(-32767.0 * (static_cast<double>(mStickDeadZone) / 100.0)) - 1 ||
 					pPad->GetJoyPadInputState(eXInputAssign_DPadLeft) != 0)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (!pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eDirectInputAssign_X) <= static_cast<int>(-999.0 * (static_cast<double>(mStickDeadZone) / 100.0)) - 1 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 22500 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 27000 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 31500)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else {
-				mDPadInputState[i] = 0;
+				mButtonState.mDPad.at(i) = false;
 			}
 			break;
 		case eDPad_Right:
-			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign[i]) != 0) {
-				++mDPadInputState[i];
+			if (cKeyboard::GetInstance()->GetKeyPushState(mDPadKeyAssign.at(i)) != 0) {
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eXInputAssign_LeftX) >= static_cast<int>(32766.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1 ||
 					pPad->GetJoyPadInputState(eXInputAssign_DPadRight) != 0)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else if (!pPad->GetXInputFlag() &&
 				(pPad->GetJoyPadInputState(eDirectInputAssign_X) >= static_cast<int>(999.0 * (static_cast<double>(mStickDeadZone) / 100.0)) + 1 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 4500 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 9000 ||
 					pPad->GetJoyPadInputState(eDirectInputAssign_POV1) == 13500)) {
-				++mDPadInputState[i];
+				mButtonState.mDPad.at(i) = true;
 			}
 			else {
-				mDPadInputState[i] = 0;
+				mButtonState.mDPad.at(i) = false;
 			}
 			break;
+		}
+	}
+
+	for (int i = 0; i < eButton_TotalNum; i++) {
+		if (mButtonState.mButton.at(i)) {
+			mButtonInputState.at(i)++;
+		}
+		else {
+			mButtonInputState.at(i) = 0;
+		}
+	}
+
+	for (int i = 0; i < eDPad_TotalNum; i++) {
+		if (mButtonState.mDPad.at(i)) {
+			mDPadInputState.at(i)++;
+		}
+		else {
+			mDPadInputState.at(i) = 0;
 		}
 	}
 }
 
 void cVirtualPad::Draw() {
-	std::tstring tButtonAssign[eButton_TotalNum];
-	std::tstring tDPadAssign[eDPad_TotalNum];
+	std::array<std::tstring, eButton_TotalNum> tButtonAssign;
+	std::array<std::tstring, eDPad_TotalNum> tDPadAssign;
 
 	tButtonAssign[eButton_Shot] = _T("Shot");
 	tButtonAssign[eButton_Possess] = _T("Possess");
@@ -357,9 +380,9 @@ void cVirtualPad::Draw() {
 	tDPadAssign[eDPad_Right] = _T("Right");
 
 	for (int i = 0; i < eButton_TotalNum; i++) {
-		DrawFormatString(0, 18 * i, GetColor(0xFF, 0xFF, 0xFF), _T("%s: %u"), tButtonAssign[i].c_str(), this->GetInputState(static_cast<eButtonAssign>(i)));
+		DrawFormatString(0, 18 * i, GetColor(0xFF, 0xFF, 0xFF), _T("%s: %u"), tButtonAssign.at(i).c_str(), this->GetInputState(static_cast<eButtonAssign>(i)));
 	}
 	for (int i = 0; i < eDPad_TotalNum; i++) {
-		DrawFormatString(0, 18 * (i + eButton_TotalNum + 1), GetColor(0xFF, 0xFF, 0xFF), _T("%s: %u"), tDPadAssign[i].c_str(), this->GetInputState(static_cast<eDPadAssign>(i)));
+		DrawFormatString(0, 18 * (i + eButton_TotalNum + 1), GetColor(0xFF, 0xFF, 0xFF), _T("%s: %u"), tDPadAssign.at(i).c_str(), this->GetInputState(static_cast<eDPadAssign>(i)));
 	}
 }

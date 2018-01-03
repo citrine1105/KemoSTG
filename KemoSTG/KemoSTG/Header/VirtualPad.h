@@ -5,34 +5,45 @@
 
 enum eButtonAssign {
 	eButton_Shot,		// ショット
-	eButton_Possess,		// 憑依
+	eButton_Possess,	// 憑依
 	eButton_Bomb,		// ボム
 	eButton_FullAuto,	// 連射
 	eButton_Pause,		// ポーズ
 	eButton_Coin,		// コイン
-	eButton_Service,		// サービス
-	eButton_TotalNum		// 総要素数
+	eButton_Service,	// サービス
+
+	eButton_Decide,		// 決定
+	eButton_Cancel,		// キャンセル
+
+	eButton_TotalNum	// 総要素数
 };
 
 enum eDPadAssign {
 	eDPad_Up,		// 上
 	eDPad_Down,		// 下
 	eDPad_Left,		// 左
-	eDPad_Right,		// 右
+	eDPad_Right,	// 右
 	eDPad_TotalNum	// 総要素数
+};
+
+struct sVirtualPadInputState {
+public:
+	std::array<bool, eButton_TotalNum> mButton;
+	std::array<bool, eDPad_TotalNum> mDPad;
 };
 
 class cVirtualPad : public iInitialization, iActivity {
 protected:
 	cPad *pPad;		// 入力に使用するパッドのポインタ
-	unsigned char mKeyAssign[eButton_TotalNum];				// キーボード配置
-	unsigned char mDPadKeyAssign[eButton_TotalNum];			// 方向キー配置
-	eDirectInputAssign mDirectInputAssign[eButton_TotalNum];	// DirectInputボタン配置
-	eXInputAssign mXInputAssign[eButton_TotalNum];			// XInputボタン配置
-	unsigned AUTO_INT mButtonInputState[eButton_TotalNum];	// ボタンが押されているフレーム
-	unsigned AUTO_INT mDPadInputState[eDPad_TotalNum];		// 方向キーが押されているフレーム
+	sVirtualPadInputState mButtonState;	// ボタン押下状態
+	std::array<unsigned char, eButton_TotalNum> mKeyAssign;				// キーボード配置
+	std::array<unsigned char, eButton_TotalNum> mDPadKeyAssign;			// 方向キー配置
+	std::array<eDirectInputAssign, eButton_TotalNum> mDirectInputAssign;	// DirectInputボタン配置
+	std::array<eXInputAssign, eButton_TotalNum> mXInputAssign;			// XInputボタン配置
+	std::array<unsigned AUTO_INT, eButton_TotalNum> mButtonInputState;	// ボタンが押されているフレーム
+	std::array<unsigned AUTO_INT, eButton_TotalNum> mDPadInputState;		// 方向キーが押されているフレーム
 	int mStickDeadZone;		// スティック・トリガーの入力を無視する範囲
-	bool fVibration;			// 振動機能フラグ
+	bool fVibration;		// 振動機能フラグ
 public:
 	cVirtualPad();			// デフォルトコンストラクタ
 	cVirtualPad(cPad *Pad);	// パッド指定コンストラクタ
@@ -53,6 +64,7 @@ public:
 	eDirectInputAssign GetDirectInputAssign(const eButtonAssign Assign);	// DirectInputボタン配置を取得
 	eXInputAssign GetXInputAssign(const eButtonAssign Assign);			// XInputボタン配置を取得
 	bool GetVibrationFlag();		// 振動機能設定取得
+	const sVirtualPadInputState GetButtonState();	// ボタンの押下状態をまとめて取得
 	void StartVibration(const int Power, const int Time);	// 振動を開始する
 	void StopVibration();	// 振動を止める
 	void ResetInputState();	// ボタンの入力状態をリセットする
