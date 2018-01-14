@@ -16,50 +16,56 @@ cVirtualPad::~cVirtualPad() {
 void cVirtualPad::SetDefaultAssign(const int Type) {
 	switch (Type) {
 	case 1:
-		mKeyAssign[eButton_Shot] = KEY_INPUT_COMMA;
-		mKeyAssign[eButton_Possess] = KEY_INPUT_PERIOD;
-		mKeyAssign[eButton_Bomb] = KEY_INPUT_SLASH;
-		mKeyAssign[eButton_FullAuto] = KEY_INPUT_RSHIFT;
-		mKeyAssign[eButton_Pause] = KEY_INPUT_2;
-		mKeyAssign[eButton_Coin] = KEY_INPUT_6;
-		mKeyAssign[eButton_Service] = KEY_INPUT_0;
+		mKeyAssign.at(eButton_Shot) = KEY_INPUT_COMMA;
+		mKeyAssign.at(eButton_Possess) = KEY_INPUT_PERIOD;
+		mKeyAssign.at(eButton_Bomb) = KEY_INPUT_SLASH;
+		mKeyAssign.at(eButton_FullAuto) = KEY_INPUT_RSHIFT;
+		mKeyAssign.at(eButton_Pause) = KEY_INPUT_2;
+		mKeyAssign.at(eButton_Coin) = KEY_INPUT_6;
+		mKeyAssign.at(eButton_Service) = KEY_INPUT_0;
 
-		mDPadKeyAssign[eDPad_Up] = KEY_INPUT_W;
-		mDPadKeyAssign[eDPad_Down] = KEY_INPUT_S;
-		mDPadKeyAssign[eDPad_Left] = KEY_INPUT_A;
-		mDPadKeyAssign[eDPad_Right] = KEY_INPUT_D;
+		mDPadKeyAssign.at(eDPad_Up) = KEY_INPUT_W;
+		mDPadKeyAssign.at(eDPad_Down) = KEY_INPUT_S;
+		mDPadKeyAssign.at(eDPad_Left) = KEY_INPUT_A;
+		mDPadKeyAssign.at(eDPad_Right) = KEY_INPUT_D;
 		break;
 	default:
-		mKeyAssign[eButton_Shot] = KEY_INPUT_Z;
-		mKeyAssign[eButton_Possess] = KEY_INPUT_X;
-		mKeyAssign[eButton_Bomb] = KEY_INPUT_C;
-		mKeyAssign[eButton_FullAuto] = KEY_INPUT_LSHIFT;
-		mKeyAssign[eButton_Pause] = KEY_INPUT_1;
-		mKeyAssign[eButton_Coin] = KEY_INPUT_5;
-		mKeyAssign[eButton_Service] = KEY_INPUT_9;
+		mKeyAssign.at(eButton_Shot) = KEY_INPUT_Z;
+		mKeyAssign.at(eButton_Possess) = KEY_INPUT_X;
+		mKeyAssign.at(eButton_Bomb) = KEY_INPUT_C;
+		mKeyAssign.at(eButton_FullAuto) = KEY_INPUT_LSHIFT;
+		mKeyAssign.at(eButton_Pause) = KEY_INPUT_1;
+		mKeyAssign.at(eButton_Coin) = KEY_INPUT_5;
+		mKeyAssign.at(eButton_Service) = KEY_INPUT_9;
+		mKeyAssign.at(eButton_Decide) = KEY_INPUT_Z;
+		mKeyAssign.at(eButton_Cancel) = KEY_INPUT_X;
 
-		mDPadKeyAssign[eDPad_Up] = KEY_INPUT_UP;
-		mDPadKeyAssign[eDPad_Down] = KEY_INPUT_DOWN;
-		mDPadKeyAssign[eDPad_Left] = KEY_INPUT_LEFT;
-		mDPadKeyAssign[eDPad_Right] = KEY_INPUT_RIGHT;
+		mDPadKeyAssign.at(eDPad_Up) = KEY_INPUT_UP;
+		mDPadKeyAssign.at(eDPad_Down) = KEY_INPUT_DOWN;
+		mDPadKeyAssign.at(eDPad_Left) = KEY_INPUT_LEFT;
+		mDPadKeyAssign.at(eDPad_Right) = KEY_INPUT_RIGHT;
 		break;
 	}
 
-	mDirectInputAssign[eButton_Shot] = eDirectInputAssign_Button1;
-	mDirectInputAssign[eButton_Possess] = eDirectInputAssign_Button2;
-	mDirectInputAssign[eButton_Bomb] = eDirectInputAssign_Button3;
-	mDirectInputAssign[eButton_FullAuto] = eDirectInputAssign_Button4;
-	mDirectInputAssign[eButton_Pause] = eDirectInputAssign_Button5;
-	mDirectInputAssign[eButton_Coin] = eDirectInputAssign_Button6;
-	mDirectInputAssign[eButton_Service] = eDirectInputAssign_Button7;
+	mDirectInputAssign.at(eButton_Shot) = eDirectInputAssign_Button1;
+	mDirectInputAssign.at(eButton_Possess) = eDirectInputAssign_Button2;
+	mDirectInputAssign.at(eButton_Bomb) = eDirectInputAssign_Button3;
+	mDirectInputAssign.at(eButton_FullAuto) = eDirectInputAssign_Button4;
+	mDirectInputAssign.at(eButton_Pause) = eDirectInputAssign_Button5;
+	mDirectInputAssign.at(eButton_Coin) = eDirectInputAssign_Button6;
+	mDirectInputAssign.at(eButton_Service) = eDirectInputAssign_Button7;
+	mDirectInputAssign.at(eButton_Decide) = eDirectInputAssign_Button1;
+	mDirectInputAssign.at(eButton_Cancel) = eDirectInputAssign_Button2;
 
-	mXInputAssign[eButton_Shot] = eXInputAssign_A;
-	mXInputAssign[eButton_Possess] = eXInputAssign_B;
-	mXInputAssign[eButton_Bomb] = eXInputAssign_Y;
-	mXInputAssign[eButton_FullAuto] = eXInputAssign_RT;
-	mXInputAssign[eButton_Pause] = eXInputAssign_Start;
-	mXInputAssign[eButton_Coin] = eXInputAssign_LeftStickButton;
-	mXInputAssign[eButton_Service] = eXInputAssign_RightStickButton;
+	mXInputAssign.at(eButton_Shot) = eXInputAssign_A;
+	mXInputAssign.at(eButton_Possess) = eXInputAssign_B;
+	mXInputAssign.at(eButton_Bomb) = eXInputAssign_Y;
+	mXInputAssign.at(eButton_FullAuto) = eXInputAssign_RT;
+	mXInputAssign.at(eButton_Pause) = eXInputAssign_Start;
+	mXInputAssign.at(eButton_Coin) = eXInputAssign_LeftStickButton;
+	mXInputAssign.at(eButton_Service) = eXInputAssign_RightStickButton;
+	mXInputAssign.at(eButton_Decide) = eXInputAssign_A;
+	mXInputAssign.at(eButton_Cancel) = eXInputAssign_B;
 
 	mStickDeadZone = 50;
 	fVibration = true;
@@ -77,20 +83,20 @@ void cVirtualPad::SetKeyAssign(const eButtonAssign Assign, const unsigned char K
 		}
 	}
 	for (j = 0; j < eDPad_TotalNum; j++) {
-		if (mDPadKeyAssign[j] == Key) {	// 既に同じ割り当てのキーがあるか探索
+		if (mDPadKeyAssign.at(j) == Key) {	// 既に同じ割り当てのキーがあるか探索
 			break;
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mKeyAssign.at(i) = mKeyAssign[Assign];	// 入れ替え
-		mKeyAssign[Assign] = Key;
+		mKeyAssign.at(i) = mKeyAssign.at(Assign);	// 入れ替え
+		mKeyAssign.at(Assign) = Key;
 	}
 	else if (j < eDPad_TotalNum) {
-		mDPadKeyAssign[j] = mKeyAssign[Assign];	// 入れ替え
-		mKeyAssign[Assign] = Key;
+		mDPadKeyAssign.at(j) = mKeyAssign.at(Assign);	// 入れ替え
+		mKeyAssign.at(Assign) = Key;
 	}
 	else {						// ない場合
-		mKeyAssign[Assign] = Key;	// 設定
+		mKeyAssign.at(Assign) = Key;	// 設定
 	}
 }
 
@@ -102,20 +108,20 @@ void cVirtualPad::SetKeyAssign(const eDPadAssign Assign, const unsigned char Key
 		}
 	}
 	for (j = 0; j < eDPad_TotalNum; j++) {
-		if (mDPadKeyAssign[j] == Key) {	// 既に同じ割り当てのキーがあるか探索
+		if (mDPadKeyAssign.at(j) == Key) {	// 既に同じ割り当てのキーがあるか探索
 			break;
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mKeyAssign.at(i) = mDPadKeyAssign[Assign];	// 入れ替え
-		mDPadKeyAssign[Assign] = Key;
+		mKeyAssign.at(i) = mDPadKeyAssign.at(Assign);	// 入れ替え
+		mDPadKeyAssign.at(Assign) = Key;
 	}
 	else if (j < eDPad_TotalNum) {
-		mDPadKeyAssign[j] = mDPadKeyAssign[Assign];	// 入れ替え
-		mDPadKeyAssign[Assign] = Key;
+		mDPadKeyAssign.at(j) = mDPadKeyAssign.at(Assign);	// 入れ替え
+		mDPadKeyAssign.at(Assign) = Key;
 	}
 	else {						// ない場合
-		mKeyAssign[Assign] = Key;	// 設定
+		mKeyAssign.at(Assign) = Key;	// 設定
 	}
 }
 
@@ -127,11 +133,11 @@ void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eDirectInput
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mDirectInputAssign.at(i) = mDirectInputAssign[Assign];	// 入れ替え
-		mDirectInputAssign[Assign] = Button;
+		mDirectInputAssign.at(i) = mDirectInputAssign.at(Assign);	// 入れ替え
+		mDirectInputAssign.at(Assign) = Button;
 	}
 	else {						// ない場合
-		mDirectInputAssign[Assign] = Button;	// 設定
+		mDirectInputAssign.at(Assign) = Button;	// 設定
 	}
 }
 
@@ -143,11 +149,11 @@ void cVirtualPad::SetButtonAssign(const eButtonAssign Assign, const eXInputAssig
 		}
 	}
 	if (i < eButton_TotalNum) {	// ある場合
-		mXInputAssign.at(i) = mXInputAssign[Assign];	// 入れ替え
-		mXInputAssign[Assign] = Button;
+		mXInputAssign.at(i) = mXInputAssign.at(Assign);	// 入れ替え
+		mXInputAssign.at(Assign) = Button;
 	}
 	else {						// ない場合
-		mXInputAssign[Assign] = Button;	// 設定
+		mXInputAssign.at(Assign) = Button;	// 設定
 	}
 }
 
@@ -155,32 +161,36 @@ void cVirtualPad::SetVibrationFlag(const bool Flag) {
 	fVibration = Flag;
 }
 
+void cVirtualPad::SetButtonState(const sVirtualPadInputState &State) {
+	mButtonState = State;
+}
+
 cPad* cVirtualPad::GetJoyPad() {
 	return pPad;
 }
 
 unsigned AUTO_INT cVirtualPad::GetInputState(const eButtonAssign Button) {
-	return mButtonInputState[Button];
+	return mButtonInputState.at(Button);
 }
 
 unsigned AUTO_INT cVirtualPad::GetInputState(const eDPadAssign Button) {
-	return mDPadInputState[Button];
+	return mDPadInputState.at(Button);
 }
 
 unsigned char cVirtualPad::GetKeyAssign(const eButtonAssign Assign) {
-	return mKeyAssign[Assign];
+	return mKeyAssign.at(Assign);
 }
 
 unsigned char cVirtualPad::GetKeyAssign(const eDPadAssign Assign) {
-	return mDPadKeyAssign[Assign];
+	return mDPadKeyAssign.at(Assign);
 }
 
 eDirectInputAssign cVirtualPad::GetDirectInputAssign(const eButtonAssign Assign) {
-	return mDirectInputAssign[Assign];
+	return mDirectInputAssign.at(Assign);
 }
 
 eXInputAssign cVirtualPad::GetXInputAssign(const eButtonAssign Assign) {
-	return mXInputAssign[Assign];
+	return mXInputAssign.at(Assign);
 }
 
 bool cVirtualPad::GetVibrationFlag() {
@@ -236,7 +246,6 @@ void cVirtualPad::Update() {
 
 	for (int i = 0; i < eButton_TotalNum; i++) {
 		if (cKeyboard::GetInstance()->GetKeyPushState(mKeyAssign.at(i)) != 0) {	// キーボード入力
-			//++mButtonInputState.at(i);
 			mButtonState.mButton.at(i) = true;
 		}
 		else if (pPad->GetXInputFlag() &&
@@ -366,18 +375,18 @@ void cVirtualPad::Draw() {
 	std::array<std::tstring, eButton_TotalNum> tButtonAssign;
 	std::array<std::tstring, eDPad_TotalNum> tDPadAssign;
 
-	tButtonAssign[eButton_Shot] = _T("Shot");
-	tButtonAssign[eButton_Possess] = _T("Possess");
-	tButtonAssign[eButton_Bomb] = _T("Bomb");
-	tButtonAssign[eButton_FullAuto] = _T("FullAuto");
-	tButtonAssign[eButton_Pause] = _T("Pause");
-	tButtonAssign[eButton_Coin] = _T("Coin");
-	tButtonAssign[eButton_Service] = _T("Service");
+	tButtonAssign.at(eButton_Shot) = _T("Shot");
+	tButtonAssign.at(eButton_Possess) = _T("Possess");
+	tButtonAssign.at(eButton_Bomb) = _T("Bomb");
+	tButtonAssign.at(eButton_FullAuto) = _T("FullAuto");
+	tButtonAssign.at(eButton_Pause) = _T("Pause");
+	tButtonAssign.at(eButton_Coin) = _T("Coin");
+	tButtonAssign.at(eButton_Service) = _T("Service");
 
-	tDPadAssign[eDPad_Up] = _T("Up");
-	tDPadAssign[eDPad_Down] = _T("Down");
-	tDPadAssign[eDPad_Left] = _T("Left");
-	tDPadAssign[eDPad_Right] = _T("Right");
+	tDPadAssign.at(eDPad_Up) = _T("Up");
+	tDPadAssign.at(eDPad_Down) = _T("Down");
+	tDPadAssign.at(eDPad_Left) = _T("Left");
+	tDPadAssign.at(eDPad_Right) = _T("Right");
 
 	for (int i = 0; i < eButton_TotalNum; i++) {
 		DrawFormatString(0, 18 * i, GetColor(0xFF, 0xFF, 0xFF), _T("%s: %u"), tButtonAssign.at(i).c_str(), this->GetInputState(static_cast<eButtonAssign>(i)));

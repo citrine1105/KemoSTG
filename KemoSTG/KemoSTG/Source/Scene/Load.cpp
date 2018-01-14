@@ -21,8 +21,8 @@ void cLoadScene::Initialize() {
 		gSystemFont.GetElement(i)->SetFontType(DX_FONTTYPE_ANTIALIASING_4X4);
 	}
 
-	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 28);
-	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 28);
+	gSystemFont.GetElement(eSystemFont_UIFont)->SetSize(DISPLAY_SHORT / 32);
+	gSystemFont.GetElement(eSystemFont_LocalizedUIFont)->SetSize(DISPLAY_SHORT / 32);
 
 	for (int i = 0; i < eSystemFont_TotalNum; i++) {
 		gSystemFont.GetElement(i)->SetPremulAlphaFlag(true);

@@ -104,6 +104,12 @@ void cTitleScene::Draw() {
 		tVersion.c_str(), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 
+	// コントローラー情報(メニュー画面に実装して)
+	DrawStringToHandle(UPSCALE(12), UPSCALE(8),
+		_T("P1: Controller 1(X)"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+	DrawStringToHandle(DISPLAY_SHORT - GetDrawStringWidthToHandle(_T("P2: Keyboard"), _tcslen(_T("P2: Keyboard")), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle()) - UPSCALE(12), UPSCALE(8),
+		_T("P2: Keyboard"), GetColor(0xFF, 0xFF, 0xFF), gSystemFont.GetElement(eSystemFont_UIFont)->GetHandle());
+
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	SetDrawBlendMode(DX_BLENDMODE_PMA_ALPHA, 255);

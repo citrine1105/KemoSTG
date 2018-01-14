@@ -7,12 +7,12 @@ cFontContainer gSystemFont;
 cScene::cScene(iSceneChanger<eScene> *Changer) {
 	pSceneChanger = Changer;
 	cKeyboard::GetInstance()->Initialize();
-	mPad[0].SetJoyPadNum(DX_INPUT_PAD1);
-	mPad[1].SetJoyPadNum(DX_INPUT_PAD2);
-	mVirtualPad[0].SetJoyPad(&mPad[0]);
-	mVirtualPad[0].SetDefaultAssign(0);
-	mVirtualPad[1].SetJoyPad(&mPad[1]);
-	mVirtualPad[1].SetDefaultAssign(1);
+	mPad.at(0).SetJoyPadNum(DX_INPUT_PAD1);
+	mPad.at(1).SetJoyPadNum(DX_INPUT_PAD2);
+	mVirtualPad.at(0).SetJoyPad(&mPad.at(0));
+	mVirtualPad.at(0).SetDefaultAssign(0);
+	mVirtualPad.at(1).SetJoyPad(&mPad.at(1));
+	mVirtualPad.at(1).SetDefaultAssign(1);
 }
 
 cScene::~cScene() {
@@ -29,8 +29,8 @@ void cScene::Finalize() {
 
 void cScene::Update() {
 	cKeyboard::GetInstance()->Update();
-	mVirtualPad[0].Update();
-	mVirtualPad[1].Update();
+	mVirtualPad.at(0).Update();
+	mVirtualPad.at(1).Update();
 	// スクリーンショット
 	if (((cKeyboard::GetInstance()->GetKeyPushState(KEY_INPUT_LCONTROL) || cKeyboard::GetInstance()->GetKeyPushState(KEY_INPUT_RCONTROL))
 		&& cKeyboard::GetInstance()->GetKeyPushStateOnce(KEY_INPUT_P)) ||	// Ctrl+Pが押された場合

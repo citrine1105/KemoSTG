@@ -56,6 +56,7 @@ public:
 	void SetButtonAssign(const eButtonAssign Assign, const eDirectInputAssign Button);	// DirectInputボタン配置設定
 	void SetButtonAssign(const eButtonAssign Assign, const eXInputAssign Button);		// XInputボタン配置設定
 	void SetVibrationFlag(const bool Flag);		// 振動機能設定
+	void SetButtonState(const sVirtualPadInputState &State);	// ボタンの入力状態を指定(リプレイ再生用)
 	cPad* GetJoyPad();			// パッドのポインタを取得
 	unsigned AUTO_INT GetInputState(const eButtonAssign Button);	// ボタンの入力状態を取得
 	unsigned AUTO_INT GetInputState(const eDPadAssign Button);	// 十字ボタンの入力状態を取得
