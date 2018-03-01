@@ -160,8 +160,10 @@ void cGameScene::Update() {
 	if (mGame.GetNowScene() == eGameScene_Game && !mGame.GetPauseFlag() && GetWindowActiveFlag() == FALSE) {
 		mGame.Pause();
 	}
-	if (mGame.GetNowScene() == eGameScene_Game && mVirtualPad[0].GetInputState(eButton_Pause) == 1) {
-		mGame.Pause();
+	for (auto &i : mVirtualPad) {
+		if (mGame.GetNowScene() == eGameScene_Game && i.GetInputState(eButton_Pause) == 1) {
+			mGame.Pause();
+		}
 	}
 
 	if (mFade.GetPositionX() <= 0.0) {

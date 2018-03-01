@@ -28,6 +28,7 @@ enum eDPadAssign {
 
 struct sVirtualPadInputState {
 public:
+	sVirtualPadInputState();
 	std::array<bool, eButton_TotalNum> mButton;
 	std::array<bool, eDPad_TotalNum> mDPad;
 };

@@ -13,8 +13,8 @@ cMainGameScene::~cMainGameScene() {
 }
 
 void cMainGameScene::Initialize() {
-	cGameManager::GetInstance()->GetPlayerPointer()->at(0).SetInputPad(ppVirtualPad[0]);
-	cGameManager::GetInstance()->GetPlayerPointer()->at(1).SetInputPad(ppVirtualPad[1]);
+	cGameManager::GetInstance()->GetPlayerPointer()->at(0).SetInputPad(&mVirtualPad.at(0));
+	cGameManager::GetInstance()->GetPlayerPointer()->at(1).SetInputPad(&mVirtualPad.at(1));
 	mBackground.GetMoveVectorPointer()->SetElement(0.0, 0.7);
 
 	mFade.SetPosition(0.0, 0.0);
@@ -43,17 +43,13 @@ void cMainGameScene::Initialize() {
 
 	// 会話データ
 	mWordCount = 0;
-	mSerif.push_back({ _T("―…はぁ…"), 0 });
-	mSerif.push_back({ _T("もう10分はやってるのに…全然減らないや"), 0 });
-	mSerif.push_back({ _T("助けてあげよっか？"), 1 });
-	mSerif.push_back({ _T("！？　誰…？"), 0 });
-	mSerif.push_back({ _T("とりあえず逃げよっか、手伝ってあげるよ"), 1 });
-	mSerif.push_back({ _T("これを倒せばいいんだよね？\nえっと…おおかみさん、かな？"), 1 });
 	mWordTimer.Initialize(6.0, 6.0, eCountMode_CountDown);
 	mWordTimer.Start();
 
 	cGameManager::GetInstance()->Initialize();
 	cGameManager::GetInstance()->GetPlayerPointer()->at(0).Entry();
+
+	mVirtualPad.at(0).SetJoyPad(nullptr);
 }
 
 void cMainGameScene::Finalize() {
@@ -61,71 +57,94 @@ void cMainGameScene::Finalize() {
 }
 
 void cMainGameScene::Update() {
+	sVirtualPadInputState tInput;
+	tInput.mButton.at(eButton_FullAuto) = true;
+	tInput.mDPad.at((mTimer.GetTime() / 30) % 4) = true;
+	if (mTimer.GetTime() % 360 == 0) {
+		tInput.mButton.at(eButton_Bomb) = true;
+	}
+	mVirtualPad.at(0).SetButtonState(tInput);
+
+	for (int i = 0; i < 2; i++) {
 	mDelayTimer.Update();
-			mBombAnimeTimer.Update();
-			mBackground.Move();
-			mFade.Update();
+	mBombAnimeTimer.Update();
+	mBackground.Move();
+	mFade.Update();
 
 	if (CheckHandleASyncLoad(gGameBGM.GetHandle()) == FALSE && CheckSoundMem(gGameBGM.GetHandle()) == 0) {
 		gGameBGM.SetVolume(static_cast<int>(cSystemConfig::GetInstance()->GetConfig().mBGMVolume * 255.0 / 100.0));
 		PlaySoundMem(gGameBGM.GetHandle(), DX_PLAYTYPE_LOOP, FALSE);
 	}
 
-	if (mDelayTimer.GetTime() == 0) {
-		if (mWordCount < mSerif.size()) {
-			if (mWordTimer.GetTime() == 0) {
-				mWordTimer.SetSecond(6.0);
-				mWordCount++;
+		if (mDelayTimer.GetTime() == 0) {
+			for (auto &i : mVirtualPad) {
+				i.Update();
 			}
-			mWordTimer.Update();
-			if (ppVirtualPad[0]->GetInputState(eButton_Shot) == 1) {
-				mWordTimer.SetTime(0);
-			}
-		}
-		else {
-			mTimer.Update();
-			mBossTimer.Update();
-			//mBulletOutCollider.Update();
 
-			// 敵登録テスト
-			if (mTimer.GetTime() == 180) {
-				sEnemyRegisterData tRegisterData;
-				tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 2 - 180;
-				tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
-				tRegisterData.mType = eEnemy_Zako;
-				tRegisterData.mMovePattern = 0;
-				tRegisterData.mGeneratorPattern = 0;
-				tRegisterData.mBulletPattern = 0;
-				for (int i = 0; i < 5; i++) {
-					cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
-					tRegisterData.mAppearanceX += 90;
+			if (mWordCount < mSerif.size()) {
+				if (mWordTimer.GetTime() == 0) {
+					mWordTimer.SetSecond(6.0);
+					mWordCount++;
+				}
+				mWordTimer.Update();
+				if (mVirtualPad.at(0).GetInputState(eButton_Shot) == 1) {
+					mWordTimer.SetTime(0);
 				}
 			}
+			else {
+				mTimer.Update();
+				mBossTimer.Update();
+				//mBulletOutCollider.Update();
 
-			if (mTimer.GetTime() >= 180) {
-				while (cGameManager::GetInstance()->GetEnemyPointer()->size() < 5) {
+				// 敵登録テスト
+				if (mTimer.GetTime() == 180) {
 					sEnemyRegisterData tRegisterData;
-					tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
-					tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+					tRegisterData.mAppearanceX = GAME_SCREEN_WIDTH / 2 - 180;
+					tRegisterData.mAppearanceY = GAME_SCREEN_HEIGHT / 5;
 					tRegisterData.mType = eEnemy_Zako;
 					tRegisterData.mMovePattern = 0;
 					tRegisterData.mGeneratorPattern = 0;
 					tRegisterData.mBulletPattern = 0;
-					cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+					for (int i = 0; i < 5; i++) {
+						cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+						tRegisterData.mAppearanceX += 90;
+					}
+				}
+
+				if (mTimer.GetTime() >= 180) {
+					while (cGameManager::GetInstance()->GetEnemyPointer()->size() < 5) {
+						sEnemyRegisterData tRegisterData;
+						tRegisterData.mAppearanceX = GetRand(GAME_SCREEN_WIDTH);
+						tRegisterData.mAppearanceY = GetRand(GAME_SCREEN_HEIGHT);
+						tRegisterData.mType = eEnemy_Zako;
+						tRegisterData.mMovePattern = 0;
+						tRegisterData.mGeneratorPattern = 0;
+						tRegisterData.mBulletPattern = 0;
+						cGameManager::GetInstance()->GetEnemyPointer()->push_back(cEnemy(tRegisterData));
+					}
+				}
+
+				cGameManager::GetInstance()->Update();
+
+				if (cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
+					mFade.MoveToPoint(255.0, 0.0, 90);
+				}
+
+				if (mFade.GetPositionX() >= 255.0 || mBossTimer.GetTime() <= 0) {
+					pSceneChanger->ChangeScene(eGameScene_NameEntry);
 				}
 			}
 
-			cGameManager::GetInstance()->Update();
-
-			if (cGameManager::GetInstance()->GetPlayerPointer()->at(0).GetLife() <= 0 && mFade.GetPositionX() == 0.0) {
-				mFade.MoveToPoint(255.0, 0.0, 90);
+			if (cGameManager::GetInstance()->GetEnemyBulletPointer()->size() >= 20) {
+				mDelayTimer.SetMaxTime(2);
+				mDelayTimer.Reset();
 			}
-
-			if (mFade.GetPositionX() >= 255.0 || mBossTimer.GetTime() <= 0) {
-				pSceneChanger->ChangeScene(eGameScene_NameEntry);
+			else {
+				mDelayTimer.SetMaxTime(0);
+				mDelayTimer.Reset();
 			}
 		}
-	}	
+	}
 }
 
 void cMainGameScene::Draw() {
@@ -303,5 +322,7 @@ void cMainGameScene::Draw() {
 	printfDx(_T("Player Bullets: %d\n"), cGameManager::GetInstance()->GetPlayerBulletPointer()->size());
 	printfDx(_T("Enemy Bullets: %d\n"), cGameManager::GetInstance()->GetEnemyBulletPointer()->size());
 	printfDx(_T("Effects: %d\n"), cGameManager::GetInstance()->GetEffectPointer()->size());
+
+	mVirtualPad.at(0).Draw();
 #endif
 }

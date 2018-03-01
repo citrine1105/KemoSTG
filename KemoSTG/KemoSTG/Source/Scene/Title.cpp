@@ -54,13 +54,15 @@ void cTitleScene::Update() {
 			mMessageFade.MoveToPoint(255.0, 0.0, 40, eEasing_Sine);
 		}
 
-		for (int i = 0; i < eButton_TotalNum; i++) {
-			if (mVirtualPad[0].GetInputState(static_cast<eButtonAssign>(i)) == 1) {
-				//pSceneChanger->ChangeScene(eScene_Game);
-				fNext = true;
-				mMessageFlash.Reset();
-				mFade.MoveToPoint(255.0, 0.0, 60);
-				break;
+		for (auto &i : mVirtualPad) {
+			for (int j = 0; j < eButton_TotalNum; j++) {
+				if (i.GetInputState(static_cast<eButtonAssign>(j)) == 1) {	// いずれかのボタンが押されたら
+					//pSceneChanger->ChangeScene(eScene_Game);
+					fNext = true;
+					mMessageFlash.Reset();
+					mFade.MoveToPoint(255.0, 0.0, 60);
+					break;
+				}
 			}
 		}
 	}

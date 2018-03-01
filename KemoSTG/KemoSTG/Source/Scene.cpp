@@ -7,12 +7,12 @@ cFontContainer gSystemFont;
 cScene::cScene(iSceneChanger<eScene> *Changer) {
 	pSceneChanger = Changer;
 	cKeyboard::GetInstance()->Initialize();
-	mPad.at(0).SetJoyPadNum(DX_INPUT_PAD1);
-	mPad.at(1).SetJoyPadNum(DX_INPUT_PAD2);
-	mVirtualPad.at(0).SetJoyPad(&mPad.at(0));
-	mVirtualPad.at(0).SetDefaultAssign(0);
+	mPad.at(0).SetJoyPadNum(DX_INPUT_PAD1);	// 入力を読み取るパッドを指定
+	mPad.at(1).SetJoyPadNum(DX_INPUT_PAD2);	// TODO: 設定ファイルから情報を読み取るように変更
+	mVirtualPad.at(0).SetJoyPad(&mPad.at(0));	// 仮想パッドの入力を物理パッドと紐づけ
+	mVirtualPad.at(0).SetDefaultAssign(0);		// デフォルト配置の設定
 	mVirtualPad.at(1).SetJoyPad(&mPad.at(1));
-	mVirtualPad.at(1).SetDefaultAssign(1);
+	mVirtualPad.at(1).SetDefaultAssign(1);		// TODO: この処理の後に設定ファイルに準じて設定を行うように
 }
 
 cScene::~cScene() {
@@ -63,10 +63,10 @@ void cScene::Update() {
 
 		for (auto &i : tStream) {
 			tFileName += i.str();	// ファイル名生成
-			tFileName += _T("_");
+			//tFileName += _T("_");
 		}
 
-		tFileName.pop_back();	// 1文字消す
+		//tFileName.pop_back();	// 1文字消す
 		tFileName += _T(".png");
 
 		SaveDrawScreenToPNG(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, tFileName.c_str());	// スクリーンショットを保存

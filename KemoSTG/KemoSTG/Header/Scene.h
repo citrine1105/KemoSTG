@@ -6,6 +6,8 @@
 #include "ImageResourceContainer.h"
 #include "FontContainer.h"
 
+#define GAMEPAD_NUM 2	// ゲーム全体で使用するパッドの数
+
 enum eScene {
 	eScene_Load,
 	eScene_Logo,
@@ -31,8 +33,8 @@ protected:
 
 	static int mInterfaceScreen;	// UI描画用スクリーン
 
-	static std::array<cPad, 2> mPad;
-	static std::array<cVirtualPad, 2> mVirtualPad;
+	static std::array<cPad, GAMEPAD_NUM> mPad;	// 物理パッド入力
+	static std::array<cVirtualPad, GAMEPAD_NUM> mVirtualPad;	// 仮想パッド入力
 public:
 	cScene(iSceneChanger<eScene> *Changer);
 	virtual ~cScene();

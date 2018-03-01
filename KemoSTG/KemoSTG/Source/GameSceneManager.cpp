@@ -85,7 +85,7 @@ void cGameSceneManager::Draw() {
 	pScene->Draw();
 }
 
-void cGameSceneManager::SetVirtualPad(cVirtualPad Pad[2]) {
+void cGameSceneManager::SetVirtualPad(cVirtualPad *Pad) {
 	pScene->SetVirtualPad(Pad);
 }
 

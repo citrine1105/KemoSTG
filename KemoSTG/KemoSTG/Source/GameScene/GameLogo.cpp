@@ -24,8 +24,10 @@ void cLogoGameScene::Finalize() {
 }
 
 void cLogoGameScene::Update() {
-	for (int i = 0; i < 2; i++) {
-		if (ppVirtualPad[i]->GetInputState(eButton_Pause) == 1) {
+	cGameBaseScene::Update();
+
+	for (auto &i : mVirtualPad) {
+		if (i.GetInputState(eButton_Pause) == 1) {
 			pSceneChanger->ChangeScene(eGameScene_Game);
 		}
 	}

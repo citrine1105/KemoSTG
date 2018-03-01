@@ -42,7 +42,7 @@ void cRankingGameScene::Finalize() {
 void cRankingGameScene::Update() {
 	mTimer.Update();
 
-	if (ppVirtualPad[0]->GetInputState(eButton_Shot) == 1) {
+	if (mVirtualPad.at(0).GetInputState(eButton_Shot) == 1) {
 		pSceneChanger->ChangeScene(eGameScene_Logo);
 	}
 

@@ -17,8 +17,8 @@ void cDebugGameScene::Finalize() {
 }
 
 void cDebugGameScene::Update() {
-	for (int i = 0; i < 2; i++) {
-		if (ppVirtualPad[i]->GetInputState(eButton_Possess) == 1) {
+	for (auto &i : mVirtualPad) {
+		if (i.GetInputState(eButton_Possess) == 1) {
 			pSceneChanger->ChangeScene(eGameScene_Logo);
 		}
 	}

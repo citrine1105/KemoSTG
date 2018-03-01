@@ -225,7 +225,9 @@ void cPad::Finalize() {
 }
 
 void cPad::Update() {
-	fXInput ? GetJoypadXInputState(mPadNumber, &mXInputState) : GetJoypadDirectInputState(mPadNumber, &mDirectInputState);
+	if (mPadNumber != NULL) {
+		fXInput ? GetJoypadXInputState(mPadNumber, &mXInputState) : GetJoypadDirectInputState(mPadNumber, &mDirectInputState);
+	}
 }
 
 void cPad::Draw() {

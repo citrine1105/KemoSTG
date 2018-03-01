@@ -17,13 +17,12 @@ public:
 
 	bool GetPauseFlag();
 	eGameScene GetNowScene();
+	void SetVirtualPad(cVirtualPad *Pad);
 
 	void Initialize() override;
 	void Finalize() override;
 	void Update() override;
 	void Draw() override;
-
-	void SetVirtualPad(cVirtualPad Pad[2]);
 
 	void ChangeScene(eGameScene NextScene) override;
 };
